@@ -10,7 +10,11 @@ const Navbar = () => {
         <p className="text-white">Indian Public School</p>
       </div>
       <div>
-        <input type="text" placeholder="search student" />
+        <input
+          className="text-center	"
+          type="text"
+          placeholder="Search Student"
+        />
       </div>
       <div className="flex mr-4 justify-around items-center">
         <select name="date" id="date">
