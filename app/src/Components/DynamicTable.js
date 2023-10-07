@@ -17,7 +17,7 @@ const DynamicTable = ({ data, rowHeight, action }) => {
         <tr>
           {columns.map((column) => (
             <th
-              className={`h-${rowHeight} py-2 px-4 text-center bg-gray-200 border border-gray-300`}
+              className={`h-[${rowHeight}px] py-2 px-4 text-center bg-gray-200 border border-gray-300`}
               key={column}
             >
               {column}
@@ -25,7 +25,7 @@ const DynamicTable = ({ data, rowHeight, action }) => {
           ))}
           {action && (
             <th
-              className={`h-${rowHeight} py-2 px-4 text-center bg-gray-200 border border-gray-300`}
+              className={`h-[${rowHeight}px] py-2 px-4 text-center bg-gray-200 border border-gray-300`}
             >
               Edit/Delete
             </th>
@@ -34,7 +34,7 @@ const DynamicTable = ({ data, rowHeight, action }) => {
       </thead>
       <tbody>
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex} className={`h-${rowHeight}`}>
+          <tr key={rowIndex} className={`h-[${rowHeight}px]`}>
             {columns.map((column) => (
               <td
                 className="py-2 px-4 border border-gray-300 text-center"
@@ -45,7 +45,7 @@ const DynamicTable = ({ data, rowHeight, action }) => {
             ))}
             {action && (
               <td
-                className={`h-${rowHeight} py-2 px-4 border border-gray-300 text-center flex items-center justify-around`}
+                className={`h-[${rowHeight}px] py-2 px-4 border border-gray-300 text-center flex items-center justify-around`}
               >
                 <FaEdit className="cursor-pointer text-blue-500 mr-2" />
                 <ImCross className="w-5 h-5 cursor-pointer text-white mr-1 rounded-full bg-red-500 p-1" />
