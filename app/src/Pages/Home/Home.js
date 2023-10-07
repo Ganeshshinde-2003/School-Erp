@@ -8,14 +8,15 @@ const Home = () => {
     <div className="mt-5">
       <div className="flex justify-around">
         <div className="birthdays-table">
-          <h1 className="text-center font-bold text-white	">
+          <h1 className="h-8 text-center font-bold text-white flex items-center justify-center">
             Today's Birthday's
           </h1>
-          <DynamicTable data={Birthdays} />
+          <DynamicTable data={Birthdays} rowHeight={8} action={false} />
         </div>
         <div className="attendance-table">
-          <h1 className="text-center font-bold text-white	">Attendance Count</h1>
-          <DynamicTable data={Attendance} />
+          <h1 className="h-8 text-center font-bold text-white	flex items-center justify-center">
+            Attendance Count</h1>
+          <DynamicTable data={Attendance} rowHeight={8} action={false} />
         </div>
       </div>
     </div>
