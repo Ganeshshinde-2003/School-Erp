@@ -38,7 +38,7 @@ const Home = () => {
                <h2 className="px-3">{fees.totalFeesCollected}/-</h2>
             </div>
             <div className="flex items-center justify-cente border">
-            <div className="text-center font-bold  bg-blue-500  px-4">
+            <div className="text-center font-bold  bg-blue-500  px-4 text-white">
               <h2>Total Fees</h2>
                <h2>Collected</h2>
             </div>
