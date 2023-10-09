@@ -8,9 +8,9 @@ const attendance = [
   },
   {
     "SI.No": 2,
-    Class: "V",
+    Class: "V" ,
     Sec: "A",
-    Present: 10,
+    Present: 10, 
     Absent: 3,
   },
   {
