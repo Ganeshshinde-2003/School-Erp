@@ -38,7 +38,7 @@ const Home = () => {
   });
 
   return (
-    <div className="mt-5 flex flex-col	items-center">
+    <div className="mt-5 flex flex-col w-full	items-center">
       <div className="flex justify-around w-full">
         <div className="birthdays-table">
           <h1 className="h-8 text-center font-bold text-white flex items-center justify-center">

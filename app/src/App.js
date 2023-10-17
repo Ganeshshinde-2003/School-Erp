@@ -4,16 +4,32 @@ import Home from "./Pages/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddClassAndSection from "./Pages/AddClassAndSection/AddClassAndSection";
 import AddOptionalSubject from "./Pages/AddOptionalSubject/AddOptionalSubject";
+import Sidebar from "./Components/Sidebar";
+import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 const App = () => {
   return (
     <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/add-class-and-section" element={<AddClassAndSection />} />
-        <Route path="/add-optional-subject" element={<AddOptionalSubject />} />
-
-      </Routes>
+      <div className="flex flex-col">
+        <Navbar />
+        <div className="flex">
+          <Sidebar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/class-master/add-subjects"
+              element={<AddSubjects />}
+            />
+            <Route
+              path="/class-master/add-optional-subject"
+              element={<AddOptionalSubject />}
+            />
+            <Route
+              path="/class-master/add-class-and-section"
+              element={<AddClassAndSection />}
+            />
+          </Routes>
+        </div>
+      </div>
     </BrowserRouter>
   );
 };

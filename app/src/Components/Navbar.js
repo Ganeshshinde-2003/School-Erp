@@ -4,7 +4,7 @@ import { deepPurple } from "@mui/material/colors";
 import "./Navbar.css";
 const Navbar = () => {
   return (
-    <nav className="navbar	flex justify-between items-center">
+    <nav className="navbar flex justify-between items-center sticky top-0">
       <div className="flex items-center ml-4">
         <img src="assets/icons/navbar-logo.png" alt="logo" />
         <p className="text-white">Indian Public School</p>
