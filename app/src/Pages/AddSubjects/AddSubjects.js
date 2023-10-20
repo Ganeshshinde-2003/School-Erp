@@ -6,7 +6,7 @@ import AddButton from "../../Components/AddButton";
 const AddSubject = () => {
   return (
     <div className="mt-4 w-full">
-      <h1 className="text-center"> Add Subjects</h1>
+      {/* <h1 className="text-center"> Add Subjects</h1> */}
       <div className="mt-5 max-w- min-w-full">
         <div className="flex justify-around">
           <div className="add-optional-sub-table">

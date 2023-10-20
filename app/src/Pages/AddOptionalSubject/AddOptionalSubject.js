@@ -6,12 +6,12 @@ import AddButton from "../../Components/AddButton";
 const AddOptionalSubject = () => {
   return (
     <div className="mt-4 w-full">
-      <h1 className="text-center"> Add Optional Subjects</h1>
+      {/* <h1 className="text-center"> </h1> */}
       <div className="mt-5 max-w- min-w-full">
         <div className="flex justify-around">
           <div className="add-optional-sub-table">
             <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-              Add Subjects
+            Add Optional Subjects
             </h1>
             <DynamicTable
               data={AddOptionalSubjectData}

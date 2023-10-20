@@ -10,7 +10,7 @@ const AddClassAndSubject = () => {
         <div className="flex justify-around">
           <div className="add-optional-sub-table">
             <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-              Add Subjects
+              Add Classes
             </h1>
             <DynamicTable
               data={AddClassAndSectionData}
