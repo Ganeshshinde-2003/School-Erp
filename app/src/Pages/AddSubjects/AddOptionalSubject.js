@@ -1,12 +1,12 @@
 import React from "react";
-import AddSubjectData from "../../Database/AddSubjects";
+import AddOptionalSubjectData from "../../Database/AddOptionalSubject";
 import DynamicTable from "../../Components/DynamicTable";
-import "./AddSubject.css";
+import "./AddOptionalSubject.css";
 import AddButton from "../../Components/AddButton";
-const AddSubject = () => {
+const AddOptionalSubject = () => {
   return (
     <div className="mt-4 w-full">
-      <h1 className="text-center"> Add Subjects</h1>
+      <h1 className="text-center"> Add Optional Subjects</h1>
       <div className="mt-5 max-w- min-w-full">
         <div className="flex justify-around">
           <div className="add-optional-sub-table">
@@ -14,7 +14,7 @@ const AddSubject = () => {
               Add Subjects
             </h1>
             <DynamicTable
-              data={AddSubjectData}
+              data={AddOptionalSubjectData}
               rowHeight={100}
               action={true}
             />
@@ -28,5 +28,4 @@ const AddSubject = () => {
   );
 };
 
-export default AddSubject;
-
+export default AddOptionalSubject;
