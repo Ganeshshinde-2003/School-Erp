@@ -1,6 +1,6 @@
 const AddClassAndSubject = [
     {
-      "SI.No": 1,
+      "SI.No": 2,
       "Class Name": "Nursery",
       "No. of Sections": 1,
       "Subjects": "English, Maths, Science, SST",
