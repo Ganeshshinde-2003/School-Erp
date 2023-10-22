@@ -16,7 +16,7 @@ const SidebarNav = styled.nav`
   top: 2.7rem;
   z-index: 10;
   overflow: auto;
-  width: 20rem;
+  width: 25rem;
 `;
 
 const SidebarWrap = styled.div`
