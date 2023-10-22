@@ -30,26 +30,15 @@ export const SidebarData = [
     ],
   },
   {
-    title: "Reports",
-    path: "/reports",
+    title: "Teacher Master",
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
     subNav: [
       {
-        title: "Reports",
-        path: "/reports/reports1",
-
+        title: "Add Teacher",
+        path: "/teacher-master/add-teacher",
         cName: "sub-nav",
-      },
-      {
-        title: "Reports 2",
-        path: "/reports/reports2",
-        cName: "sub-nav",
-      },
-      {
-        title: "Reports 3",
-        path: "/reports/reports3",
       },
     ],
   },
