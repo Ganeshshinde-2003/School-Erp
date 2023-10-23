@@ -6,7 +6,12 @@ import AddClassAndSection from "./Pages/AddClassAndSection/AddClassAndSection";
 import AddOptionalSubject from "./Pages/AddOptionalSubject/AddOptionalSubject";
 import Sidebar from "./Components/Sidebar";
 import AddSubjects from "./Pages/AddSubjects/AddSubjects";
+// import {db} from "./config/firebase";
+// import {getDocs, collection} from "firebase/firestore";
+
 const App = () => {
+  
+
   return (
     <BrowserRouter>
       <div className="flex flex-col">

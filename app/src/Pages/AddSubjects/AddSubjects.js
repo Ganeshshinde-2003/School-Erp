@@ -3,6 +3,7 @@ import AddSubjectData from "../../Database/AddSubjects";
 import DynamicTable from "../../Components/DynamicTable";
 import "./AddSubject.css";
 import AddButton from "../../Components/AddButton";
+import addSubjectToDatabase from "../../api/subject";
 const AddSubject = () => {
   return (
     <div className="mt-4 w-full">
@@ -19,7 +20,8 @@ const AddSubject = () => {
               action={true}
             />
             <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-              <AddButton buttonText={"Add subject"} />
+            //This is for temporary purpose, this is how we can add subject data to database
+            <AddButton buttonText={"Add subject"}  onClickButton={() => addSubjectToDatabase("10", "009", "Chemistry")} />
             </p>
           </div>
         </div>
