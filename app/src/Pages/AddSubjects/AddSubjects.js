@@ -5,6 +5,14 @@ import "./AddSubject.css";
 import AddButton from "../../Components/AddButton";
 import addSubjectToDatabase from "../../api/subject";
 const AddSubject = () => {
+  
+  // this is a sample object foermate that should be pass to the addSubjectToDatabase(object:subjectData)
+  const subjectData = {
+    className: "6", 
+    subjectName: "Mathematics", 
+    subjectId: "1012", 
+};
+
   return (
     <div className="mt-4 w-full">
       {/* <h1 className="text-center"> Add Subjects</h1> */}
@@ -20,7 +28,7 @@ const AddSubject = () => {
               action={true}
             />
             <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-            <AddButton buttonText={"Add subject"}  onClickButton={() => addSubjectToDatabase("10", "009", "Chemistry")} />
+            <AddButton buttonText={"Add subject"}  onClickButton={() => addSubjectToDatabase(subjectData)} />
             </p>
           </div>
         </div>
