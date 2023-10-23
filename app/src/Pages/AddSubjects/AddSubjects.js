@@ -20,7 +20,6 @@ const AddSubject = () => {
               action={true}
             />
             <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-            //This is for temporary purpose, this is how we can add subject data to database
             <AddButton buttonText={"Add subject"}  onClickButton={() => addSubjectToDatabase("10", "009", "Chemistry")} />
             </p>
           </div>
