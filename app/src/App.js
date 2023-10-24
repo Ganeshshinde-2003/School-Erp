@@ -6,6 +6,7 @@ import AddClassAndSection from "./Pages/AddClassAndSection/AddClassAndSection";
 import AddOptionalSubject from "./Pages/AddOptionalSubject/AddOptionalSubject";
 import Sidebar from "./Components/Sidebar";
 import AddSubjects from "./Pages/AddSubjects/AddSubjects";
+import AddTeacher  from "./Pages/AddTeacher/AddTeacher.js";
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
 
@@ -32,6 +33,11 @@ const App = () => {
               path="/class-master/add-class-and-section"
               element={<AddClassAndSection />}
             />
+            <Route 
+              path="/teacher-master/add-teacher"
+              element={<AddTeacher />}
+              />
+            
           </Routes>
         </div>
       </div>

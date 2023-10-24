@@ -1,30 +1,26 @@
 import React, { useState } from "react";
-import AddSubjectData from "../../Database/AddSubjects";
+import AddSubjectData from "../../Database/AddTeacher";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
-// import Modal from "../../Components/AddSubject_Modal"; // Import the Modal component yet to made working on it
 import "./AddTeacher.css";
+import AddSubjectForm from "./AddTeacherForm";
 
 const AddTeacher = () => {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [subjectAdded, setSubjectAdded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [subjectAdded, setSubjectAdded] = useState(false);
 
-  // // Function to open the modal
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
+  // Function to open the modal
+  const openModal = () => {
+    console.log("Open modal");
+    setIsModalOpen(true);
+  };
 
-  // // Function to close the modal
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
-
-  // const handleSubjectAdded = () => {
-  //   setSubjectAdded(true);
-  //   setTimeout(() => {
-  //     setSubjectAdded(false);
-  //   }, 2000); // Hide the message after 2 seconds
-  // };
+  const handleSubjectAdded = () => {
+    setSubjectAdded(true);
+    setTimeout(() => {
+      setSubjectAdded(false);
+    }, 2000); // Hide the message after 2 seconds
+  };
 
   return (
     <div className="mt-4 w-full">
@@ -41,9 +37,15 @@ const AddTeacher = () => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} onSubjectAdded={handleSubjectAdded} />
+      <AddSubjectForm
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        handleSubjectAdded={handleSubjectAdded}
+      />
       {subjectAdded && (
-        <div className="text-green-500 text-center mt-2">Subject has been successfully added!</div>
+        <div className="text-green-500 text-center mt-2">
+          Subject has been successfully added!
+        </div>
       )}
     </div>
   );
