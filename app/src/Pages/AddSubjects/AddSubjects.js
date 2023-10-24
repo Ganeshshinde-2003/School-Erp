@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import AddSubjectData from "../../Database/AddSubjects";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
-import Modal from "../../Components/AddSubject_Modal"; // Import the Modal component
 import "./AddSubject.css";
+import AddSubjectForm from "./AddSubjectForm";
 
 const AddSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,12 +11,8 @@ const AddSubject = () => {
 
   // Function to open the modal
   const openModal = () => {
+    console.log("Open modal");
     setIsModalOpen(true);
-  };
-
-  // Function to close the modal
-  const closeModal = () => {
-    setIsModalOpen(false);
   };
 
   const handleSubjectAdded = () => {
@@ -41,9 +37,15 @@ const AddSubject = () => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} onSubjectAdded={handleSubjectAdded} />
+      <AddSubjectForm
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        handleSubjectAdded={handleSubjectAdded}
+      />
       {subjectAdded && (
-        <div className="text-green-500 text-center mt-2">Subject has been successfully added!</div>
+        <div className="text-green-500 text-center mt-2">
+          Subject has been successfully added!
+        </div>
       )}
     </div>
   );
