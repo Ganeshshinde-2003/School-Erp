@@ -1,6 +1,6 @@
 import { db } from "../config/firebase";
-import { addDoc, collection } from "firebase/firestore";
-
+import { getDoc,getDocs,addDoc, collection } from "firebase/firestore";
+// import {getDocs, collection} from "firebase/firestore";
 /**
  * Add a subject to the database.
  * @param {Object} subjectData - An object containing subject data.
@@ -8,7 +8,7 @@ import { addDoc, collection } from "firebase/firestore";
  * @param {string} subjectData.subjectName - The name of the subject.
  * @param {string} subjectData.subjectId - The unique identifier for the subject.
  */
-const addSubjectToDatabase = async (subjectData) => {
+export const addSubjectToDatabase = async (subjectData) => {
     const subjectsRef = collection(db, "subjects");
     try {
         await addDoc(subjectsRef, {
@@ -17,9 +17,30 @@ const addSubjectToDatabase = async (subjectData) => {
             Subject_Id: subjectData.subjectId,
         });
         console.log("Document successfully written!");
+        return { status: true, message: "Document successfully added" };
+
     } catch (error) {
         console.log(error);
     }
 };
 
-export default addSubjectToDatabase;
+export const getSubjectDatabase = async () => {
+    const subjectsRef = collection(db, "subjects");
+    try {
+        const querySnapshot = await getDocs(subjectsRef);
+
+        const subjectData = [];
+        
+        querySnapshot.forEach((doc) => {
+            subjectData.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+
+        return subjectData; // Return the subjectdata
+    } catch (error) {
+        console.error(error);
+    }
+};
+

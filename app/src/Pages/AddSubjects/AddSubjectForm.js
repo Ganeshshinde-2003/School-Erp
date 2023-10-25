@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import addSubjectToDatabase from "../../api/subject";
+import { addSubjectToDatabase }from "../../api/subject";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "./AddSubjectForm.css";
@@ -30,22 +30,24 @@ const AddSubjectForm = ({
     if (
       !subjectData.className ||
       !subjectData.subjectName ||
-      !subjectData.wsubjectId
+      !subjectData.subjectId
     ) {
       setError(true);
     } else {
       // Call the addSubjectToDatabase function with subjectData
-      await addSubjectToDatabase(subjectData);
+      const response = await addSubjectToDatabase(subjectData);
 
       // Reset the subjectData
       setSubjectData({
-        className: "6",
+        className: "",
         subjectName: "",
         subjectId: "",
       });
 
       // Show a confirmation message
-      setConfirmationMessage("Subject has been successfully added!");
+      if(response.status){
+          setConfirmationMessage(response.message);
+      }
 
       // Close the modal after a delay (you can customize the delay as needed)
       setTimeout(() => {

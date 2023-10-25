@@ -3,7 +3,7 @@ import AddClassAndSectionData from "../../Database/AddClassAndSection";
 import DynamicTable from "../../Components/DynamicTable";
 import "./AddClassAndSection.css";
 import AddButton from "../../Components/AddButton";
-import addStudentToDatabase from "../../api/student"
+import { addStudentToDatabase }from "../../api/student"
 const AddClassAndSubject = () => {
 
 // this is a sample object foermate that should be pass to the addStudentToDatabase(object:studentData)

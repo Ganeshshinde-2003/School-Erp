@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { getDocs,addDoc, collection } from "firebase/firestore";
 
 /**
  * Add a teacher to the database.
@@ -11,7 +11,7 @@ import { addDoc, collection } from "firebase/firestore";
  * @param {string[]} teacherData.subjectName - The name of the subject taught by the teacher.
  * @param {string[]} teacherData.subjectId - The unique identifier for the subject taught by the teacher.
  */
-const addTeacherToDatabase = async (teacherData) => {
+export const addTeacherToDatabase = async (teacherData) => {
     const teacherRef = collection(db, "teachers");
     try {
         await addDoc(teacherRef, {
@@ -22,12 +22,34 @@ const addTeacherToDatabase = async (teacherData) => {
             sub_names:teacherData.subjectName,
             subject: teacherData.subjectId,
         });
-        console.log("Document successfully added to teachers database!");
+        return { status: true, message: "Document successfully added" };
     } catch (error) {
         console.log(error);
     }
 };
 
-export default addTeacherToDatabase;
 
+export const getTeacherDatabase = async () => {
+    const teachersRef = collection(db, "teachers");
+    try {
+        const querySnapshot = await getDocs(teachersRef);
+
+        const teacherData = [];
+        
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            delete data.password;
+            
+            teacherData.push({
+                id: doc.id,
+                ...data
+            });
+        });
+
+        console.log(teacherData);
+        return teacherData; // Return the teacherData
+    } catch (error) {
+        console.error(error);
+    }
+};
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import addSubjectToDatabase from "../../api/subject";
+import { addSubjectToDatabase } from "../../api/subject";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "./AddTeacherForm.css";

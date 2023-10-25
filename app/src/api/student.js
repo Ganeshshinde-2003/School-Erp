@@ -1,5 +1,5 @@
 import {db} from "../config/firebase";
-import {addDoc, collection} from "firebase/firestore";
+import {getDocs,addDoc, collection} from "firebase/firestore";
 
 /**
  * Add a student to the database.
@@ -17,7 +17,7 @@ import {addDoc, collection} from "firebase/firestore";
  * @param {string[]} subjects - An array of subjects the student is enrolled in.
  */
 
-const addStudentToDatabase = async (attendancePercent,attended,className,classId,division,name,rollNo,totalClasses,absent,id,password,subjects
+export const addStudentToDatabase = async (attendancePercent,attended,className,classId,division,name,rollNo,totalClasses,absent,id,password,subjects
     ) => {
     const studentsRef = collection(db, "students");
     try {
@@ -35,11 +35,30 @@ const addStudentToDatabase = async (attendancePercent,attended,className,classId
             password:password,
             subjects: subjects,
         });
-        console.log("student Document successfully added!");
+        return { status: true, message: "Document successfully added" };
     } catch (error) {
         console.log(error);
     }
 }
 
-export default addStudentToDatabase;
+export const getStudentDatabase = async () => {
+    const studentsRef = collection(db, "students");
+    try {
+        const querySnapshot = await getDocs(studentsRef);
 
+        const studentData = [];
+        
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            delete data.password;
+            
+            studentData.push({
+                id: doc.id,
+                ...data
+            });
+        });
+        return studentData; // Return the studentData
+    } catch (error) {
+        console.error(error);
+    }
+};

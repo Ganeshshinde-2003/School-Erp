@@ -3,7 +3,7 @@ import AddOptionalSubjectData from "../../Database/AddOptionalSubject";
 import DynamicTable from "../../Components/DynamicTable";
 import "./AddOptionalSubject.css";
 import AddButton from "../../Components/AddButton";
-import addTeacherToDatabase from "../../api/teacher"
+import { addTeacherToDatabase }from "../../api/teacher"
 
 const AddOptionalSubject = () => {
 
