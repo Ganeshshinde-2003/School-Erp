@@ -67,6 +67,7 @@ const AddSubjectForm = ({
           Fill all the fields
         </Alert>
       )}
+
       <span
         className="close absolute top-0 right-0 m-2 text-gray-600 cursor-pointer"
         onClick={() => setIsModalOpen(false)}
@@ -74,6 +75,7 @@ const AddSubjectForm = ({
         &times;
       </span>
       <h2 className="text-xl font-semibold mb-4 text-center">Add Subject</h2>
+
       <form>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
