@@ -6,11 +6,7 @@ const Backdrop = ({ setShowModal }) => {
 };
 
 const ModalOverlay = (props) => {
-  return (
-    <div className="modal">
-      <div className="w-full">{props.children}</div>
-    </div>
-  );
+  return <div className="modal">{props.children}</div>;
 };
 const portal = document.getElementById("overlay");
 const Modal = (props) => {
