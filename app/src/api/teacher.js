@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { getDocs,addDoc, collection } from "firebase/firestore";
+import { getDocs,addDoc,doc,updateDoc,deleteDoc, collection } from "firebase/firestore";
 
 /**
  * Add a teacher to the database.
@@ -53,3 +53,32 @@ export const getTeacherDatabase = async () => {
     }
 };
 
+
+export const updateSubjectInDatabase = async (documentId, updatedTeacherData) => {
+    const teachersRef = collection(db, "teachers");
+    const teacherDocRef = doc(teachersRef, documentId); // Use Id to reference the specific document
+
+    try {
+        await updateDoc(teacherDocRef, updatedTeacherData);
+        console.log("Document successfully updated!");
+        return { status: true, message: "Document successfully updated" };
+    } catch (error) {
+        console.error("Error updating document:", error);
+        return { status: false, message: "Error updating document" };
+    }
+};
+
+
+export const deleteSubject = async (subjectId) => {
+    const teachersRef = collection(db, "teachers");
+    const teacherDocRef = doc(teachersRef, subjectId);
+
+    try {
+        await deleteDoc(teacherDocRef);
+        console.log("Document successfully deleted!");
+        return { status: true, message: "Document successfully deleted" };
+    } catch (error) {
+        console.error("Error deleting document:", error);
+        return { status: false, message: "Error deleting document" };
+    }
+};

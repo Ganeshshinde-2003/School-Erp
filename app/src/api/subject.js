@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { getDoc,getDocs,addDoc, collection } from "firebase/firestore";
+import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc } from "firebase/firestore";
 // import {getDocs, collection} from "firebase/firestore";
 /**
  * Add a subject to the database.
@@ -41,6 +41,35 @@ export const getSubjectDatabase = async () => {
         return subjectData; // Return the subjectdata
     } catch (error) {
         console.error(error);
+    }
+};
+
+export const updateSubjectInDatabase = async (documentId, updatedSubjectData) => {
+    const subjectsRef = collection(db, "subjects");
+    const subjectDocRef = doc(subjectsRef, documentId); // Use Id to reference the specific document
+
+    try {
+        await updateDoc(subjectDocRef, updatedSubjectData);
+        console.log("Document successfully updated!");
+        return { status: true, message: "Document successfully updated" };
+    } catch (error) {
+        console.error("Error updating document:", error);
+        return { status: false, message: "Error updating document" };
+    }
+};
+
+
+export const deleteSubject = async (subjectId) => {
+    const subjectsRef = collection(db, "subjects");
+    const subjectDocRef = doc(subjectsRef, subjectId);
+
+    try {
+        await deleteDoc(subjectDocRef);
+        console.log("Document successfully deleted!");
+        return { status: true, message: "Document successfully deleted" };
+    } catch (error) {
+        console.error("Error deleting document:", error);
+        return { status: false, message: "Error deleting document" };
     }
 };
 

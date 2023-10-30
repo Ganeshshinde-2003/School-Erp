@@ -1,5 +1,5 @@
 import {db} from "../config/firebase";
-import {getDocs,addDoc, collection} from "firebase/firestore";
+import {getDocs,addDoc, doc,collection} from "firebase/firestore";
 
 /**
  * Add a student to the database.
@@ -60,5 +60,30 @@ export const getStudentDatabase = async () => {
         return studentData; // Return the studentData
     } catch (error) {
         console.error(error);
+    }
+};
+
+export const updateStudentInDatabase = async (documentId, updateData) => {
+    const studentsRef = doc(db, "students", documentId); // Assuming you have the document ID to update
+
+    try {
+        await updateDoc(studentsRef, updateData);
+        return { status: true, message: "Document successfully updated" };
+    } catch (error) {
+        console.log(error);
+        return { status: false, message: "Error updating document" };
+    }
+};
+
+export const deleteStudentFromDatabase = async (documentId, updateData) => {
+    const studentsRef = doc(db, "students", documentId); // Assuming you have the document ID to update
+
+    try {
+        await deleteDoc(studentsRef);
+        console.log("Document successfully deleted!");
+        return { status: true, message: "Document successfully deleted" };
+    } catch (error) {
+        console.error("Error deleting document:", error);
+        return { status: false, message: "Error deleting document" };
     }
 };
