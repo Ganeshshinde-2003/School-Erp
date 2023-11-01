@@ -3,7 +3,7 @@ import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import "./AddSubject.css";
 import AddSubjectForm from "./AddSubjectForm";
-import { getSubjectDatabase } from "../../api/subject";
+import { deleteSubject, getSubjectDatabase, updateSubjectInDatabase } from "../../api/subject";
 
 import { Oval } from 'react-loader-spinner'
 
@@ -16,8 +16,8 @@ const AddSubject = () => {
   useEffect(() => {
     getSubjectDatabase()  
      .then((data) => {
-        const filteredData = data.map(({ id, ...rest }) => rest);
-        setSubjectData(filteredData);
+        // const filteredData = data.map(({ id, ...rest }) => rest);
+        setSubjectData(data);
         setIsLoading(false);
 
       })
@@ -27,6 +27,31 @@ const AddSubject = () => {
 
       });
   }, []); 
+
+  const updateData = {
+    Class: "Updated Class Name",
+    Subject_Name: "Updated Subject Name",
+  };
+const handleDeleteClick = (id) => {
+  deleteSubject(id).then(()=>{
+    setSubjectData(prevData => prevData.filter(item => item._id !== id))
+    }).catch(err => console.log(err));
+
+  }
+
+  const handleActionfunction = (actionType, documentId) => {
+    console.log('document with ID:', documentId);
+
+    if (actionType === 'edit') {
+      // Handle edit action with documentId
+      const response = updateSubjectInDatabase(documentId,updateData)
+      console.log('Edit document with ID:', documentId);
+    } else if (actionType === 'delete') {
+      // Handle delete action with documentId
+      const response = deleteSubject(documentId)
+      console.log('Delete document with ID:', documentId);
+    }
+  };
 
 
   // Function to open the modal
@@ -66,7 +91,7 @@ const AddSubject = () => {
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
                 Add Subjects
               </h1>
-              <DynamicTable data={subjectData} rowHeight={100} action={true} />
+              <DynamicTable data={subjectData} rowHeight={100} action={true}  handleAction={handleActionfunction} />
               <p className="h-16 text-center font-bold text-white flex items-center justify-center">
                 <AddButton buttonText={"Add subject"} onClickButton={openModal} />
               </p>
