@@ -16,7 +16,7 @@ const DynamicTable = ({ data, rowHeight, action,handleAction }) => {
   useEffect(() => {
     // Update SI.No when data changes
     setSiNo(1);
-  }, [data]);
+  }, []);
 
 
   const hiddenColumns=['id'];
