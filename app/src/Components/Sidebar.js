@@ -8,7 +8,7 @@ import { IconContext } from "react-icons/lib";
 import SubMenu from "./SubMenu";
 
 const SidebarNav = styled.nav`
-  background-image: linear-gradient(#343dff, #1e50a5);
+  background-image: linear-gradient(grey, grey);
   height: 100vh;
   display: flex;
   justify-content: center;

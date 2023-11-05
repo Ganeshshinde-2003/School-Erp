@@ -68,8 +68,9 @@ const Home = () => {
           <PieGraph data={expenseData} />
         </div>
         <div className="fees">
-          <div className="flex items-center justify-center border ">
-            <div className="text-center font-bold bg-[rgba(164,194,240,1)] px-4">
+          <div className="flex items-center justify-center border "> 
+
+            <div className="text-center font-bold bg-[rgba(181, 181, 181, 1)] px-4">
               <h2>Total Fees</h2>
               <h2>Collected</h2>
             </div>
