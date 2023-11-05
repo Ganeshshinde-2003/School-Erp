@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc } from "firebase/firestore";
+import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, where, query } from "firebase/firestore";
 // import {getDocs, collection} from "firebase/firestore";
 /**
  * Add a subject to the database.
@@ -10,19 +10,30 @@ import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc } from "fireb
  */
 export const addSubjectToDatabase = async (subjectData) => {
     const subjectsRef = collection(db, "AddSubjects");
+    
+    // Check if subjectCode already exists
+    const querySnapshot = await getDocs(query(subjectsRef, where("subjectCode", "==", subjectData.subjectCode)));
+    
+    if (!querySnapshot.empty) {
+        console.log("Subject with the same subjectCode already exists");
+        return { status: false, message: "Subject with the same subjectCode already exists" };
+    }
+    
     try {
         await addDoc(subjectsRef, {
             subjectName: subjectData.subjectName,
-            subjectTotalMarks	: subjectData.subjectTotalMarks,
+            subjectTotalMarks: subjectData.subjectTotalMarks,
             subjectCode: subjectData.subjectCode,
         });
         console.log("Document successfully written!");
         return { status: true, message: "Document successfully added" };
-
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        return { status: false, message: "Error adding document" };
     }
 };
+
+
 
 export const getSubjectDatabase = async () => {
     const subjectsRef = collection(db, "AddSubjects");
