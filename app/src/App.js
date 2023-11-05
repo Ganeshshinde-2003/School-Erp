@@ -7,6 +7,7 @@ import AddOptionalSubject from "./Pages/AddOptionalSubject/AddOptionalSubject";
 import Sidebar from "./Components/Sidebar";
 import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 import AddTeacher  from "./Pages/AddTeacher/AddTeacher.js";
+import AddStudent from "./Pages/AddStudents/AddStudent.js";
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
 
@@ -36,6 +37,10 @@ const App = () => {
             <Route 
               path="/teacher-master/add-teacher"
               element={<AddTeacher />}
+              />
+            <Route 
+              path="/student-master/add-student"
+              element={<AddStudent />}
               />
             
           </Routes>
