@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { getDocs,addDoc,doc,updateDoc,deleteDoc, collection } from "firebase/firestore";
+import { getDocs,addDoc,doc,updateDoc,deleteDoc, collection,getDoc } from "firebase/firestore";
 
 /**
  * Add a teacher to the database.
@@ -38,6 +38,7 @@ export const getTeacherDatabase = async () => {
         
         querySnapshot.forEach((doc) => {
             const data = doc.data();
+            
             delete data.password;
             
             teacherData.push({

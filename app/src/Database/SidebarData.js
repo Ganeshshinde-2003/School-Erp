@@ -50,7 +50,7 @@ export const SidebarData = [
     subNav: [
       {
         title: "Add Student  Directly",
-        path: "/teacher-master/add-teacher",
+        path: "/student-master/add-student",
         cName: "sub-nav",
       },
       {
