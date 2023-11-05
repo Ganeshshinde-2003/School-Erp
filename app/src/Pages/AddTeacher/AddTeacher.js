@@ -9,6 +9,25 @@ const AddTeacher = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subjectAdded, setSubjectAdded] = useState(false);
 
+  const handleAction = async (actionType, documentId) => {
+      
+    if (actionType === 'edit') {
+      console.log('edit ocument with ID:', documentId);
+      setSubjectUpdate(true)
+      setDocId(documentId);
+      console.log(docId);
+      setIsModalOpen(true);
+      
+
+     
+    } else if (actionType === 'delete') {
+      const response =await deleteSubject(documentId);
+      console.log('Delete document with ID:', documentId);
+      if (response.status) {
+        setDataChanged(true);
+      }
+    }
+  };
   // Function to open the modal
   const openModal = () => {
     console.log("Open modal");
@@ -30,7 +49,7 @@ const AddTeacher = () => {
             <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
               Add Subjects
             </h1>
-            <DynamicTable data={AddSubjectData} rowHeight={100} action={true} />
+            <DynamicTable data={AddSubjectData} rowHeight={100} action={true} handleAction={handleAction} />
             <p className="h-16 text-center font-bold text-white flex items-center justify-center">
               <AddButton buttonText={"Add subject"} onClickButton={openModal} />
             </p>
