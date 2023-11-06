@@ -27,7 +27,7 @@ const DynamicTable = ({ data, rowHeight, action,handleAction }) => {
       <thead className="table-cols">
         <tr>
         <th
-            className={`h-[${rowHeight}px] py-2 px-4 text-center bg-gray-200 border border-gray-300`}
+            className={`h-[${rowHeight}px] py-2 px-4 text-center color-white bg-gray-200 border border-gray-300`}
           >
             SI.No
         </th>

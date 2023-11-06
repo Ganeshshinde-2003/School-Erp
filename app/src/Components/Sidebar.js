@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
 import { SidebarData } from "../Database/SidebarData";
 import { IconContext } from "react-icons/lib";
 import SubMenu from "./SubMenu";
 
 const SidebarNav = styled.nav`
-  background-image: linear-gradient(grey, grey);
+  background-image: linear-gradient(#333333, #333333);
   height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   position: sticky;
   top: 2.7rem;
   z-index: 10;
   overflow: auto;
   width: 25rem;
+  border: none; /* Remove the border */
+  padding: 0; /* Remove padding */
 `;
 
 const SidebarWrap = styled.div`
@@ -25,20 +26,18 @@ const SidebarWrap = styled.div`
 
 const Sidebar = () => {
   return (
-    <>
-      <IconContext.Provider value={{ color: "#fff" }}>
-        <SidebarNav>
-          <SidebarWrap>
-            <div>
-              <img src="assets/images/logo.png" className="w-full	" />
-            </div>
-            {SidebarData.map((item, index) => {
-              return <SubMenu item={item} key={index} />;
-            })}
-          </SidebarWrap>
-        </SidebarNav>
-      </IconContext.Provider>
-    </>
+    <IconContext.Provider value={{ color: "#fff" }}>
+      <SidebarNav>
+        <SidebarWrap>
+          <div>
+            <img src="assets/images/logo.png" className="w-full" alt="Logo" />
+          </div>
+          {SidebarData.map((item, index) => (
+            <SubMenu item={item} key={index} />
+          ))}
+        </SidebarWrap>
+      </SidebarNav>
+    </IconContext.Provider>
   );
 };
 
