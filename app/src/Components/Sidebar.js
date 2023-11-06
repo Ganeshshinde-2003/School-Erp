@@ -8,9 +8,10 @@ import { IconContext } from "react-icons/lib";
 import SubMenu from "./SubMenu";
 
 const SidebarNav = styled.nav`
-  background-image: linear-gradient(grey, grey);
+  background-image: linear-gradient( #333333,  #333333);
   height: 100vh;
   display: flex;
+  border: 1px solid #333333;
   justify-content: center;
   position: sticky;
   top: 2.7rem;
@@ -21,6 +22,7 @@ const SidebarNav = styled.nav`
 
 const SidebarWrap = styled.div`
   width: 100%;
+  broder : 1px solid #333333;
 `;
 
 const Sidebar = () => {
