@@ -12,10 +12,10 @@
   position: fixed;
   top: 7vh;
   left: 5%;
-  /* width: 90% !important; */
-  background-color: white;
+  background-color: rgb(247, 240, 240);
   padding: 2rem;
   border-radius: 14px;
+  border: 5px solid #333333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;
