@@ -2,7 +2,7 @@
   import DynamicTable from "../../Components/DynamicTable";
   import AddButton from "../../Components/AddButton";
   import "./AddSubject.css";
-  import { getSubjectFromDatabase ,deleteSubject, getSubjectDatabase, updateSubjectInDatabase } from "../../api/Addsubject";
+  import { getSubjectDataFromDb ,deleteSubject, getAddSubjectDatabase, updateSubjectInDatabase } from "../../api/ClassMaster/Addsubject";
   import { Oval } from 'react-loader-spinner';
 import AddOrUpdateSubjectForm from "./AddOrUpdateSubjectForm ";
   
@@ -18,7 +18,7 @@ import AddOrUpdateSubjectForm from "./AddOrUpdateSubjectForm ";
 
   
     const fetchData = () => {
-      getSubjectDatabase()
+      getAddSubjectDatabase()
         .then((data) => {
           setSubjectData(data);
           setIsLoading(false);

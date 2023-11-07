@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import "./AddOptionalSubject.css";
 import AddButton from "../../Components/AddButton";
-import { deleteOptionalSubject, getOptionalSubjectDatabase } from "../../api/AddOptionalSubject";
+import { deleteOptionalSubject, getOptionalSubjectDatabase } from "../../api/ClassMaster/AddOptionalSubject";
 import AddOrUpdateOptionalSubjectForm from "./AddOrUpdateOptionalSubjectForm ";
 import { Oval } from 'react-loader-spinner';
 
