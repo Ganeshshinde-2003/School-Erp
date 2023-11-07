@@ -1,19 +1,21 @@
 import { db } from "../config/firebase";
-import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc } from "firebase/firestore";
+import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, serverTimestamp } from "firebase/firestore";
 /**
  * Add a subject to the database.
- * @param {Object} subjectData - An object containing subject data.
- * @param {string} subjectData.className - The class name to which the subject belongs.
- * @param {string} subjectData.subjectName - The name of the subject.
- * @param {string} subjectData.subjectCode - The unique identifier for the subject.
+ * @param {Object} optionalSubjectData - An object containing subject data.
+ * @param {string} optionalSubjectData.className - The class name to which the subject belongs.
+ * @param {string} optionalSubjectData.subjectName - The name of the subject.
+ * @param {string} optionalSubjectData.subjectCode - The unique identifier for the subject.
  */
-export const addOptionalSubjectToDatabase = async (subjectData) => {
+export const addOptionalSubjectToDatabase = async (optionalSubjectData) => {
     const subjectsRef = collection(db, "AddOptionalSubjects");
     try {
         await addDoc(subjectsRef, {
-            subjectName: subjectData.subjectName,
-            subjectTotalMarks	: subjectData.subjectTotalMarks,
-            subjectCode: subjectData.subjectCode,
+            subjectName: optionalSubjectData.subjectName,
+            subjectTotalMarks:optionalSubjectData.subjectTotalMarks,
+            subjectCode: optionalSubjectData.subjectCode,
+            createdAt: serverTimestamp(),
+
         });
         console.log("Document successfully written!");
         return { status: true, message: "Document successfully added" };
@@ -26,9 +28,11 @@ export const addOptionalSubjectToDatabase = async (subjectData) => {
 export const getOptionalSubjectDatabase = async () => {
     const subjectsRef = collection(db, "AddOptionalSubjects");
     try {
-        const querySnapshot = await getDocs(subjectsRef);
+        const q = query(subjectsRef, orderBy("createdAt", "asc")); // Add the orderBy query here
 
-        const subjectData = [];
+        const querySnapshot = await getDocs(q);
+
+        const optionalSubjectData = [];
         
         querySnapshot.forEach((doc) => {
             
@@ -39,11 +43,11 @@ export const getOptionalSubjectDatabase = async () => {
                 "Subject Name": data.subjectName,
                 "Subject Total Marks Reduced": data.subjectTotalMarks,
             };
-            subjectData.push(modifiedData);
+            optionalSubjectData.push(modifiedData);
 
         });     
 
-        return subjectData; // Return the subjectdata
+        return optionalSubjectData; // Return the optionalSubjectData
     } catch (error) {
         console.error(error);
     }
