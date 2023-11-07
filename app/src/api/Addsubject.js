@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, where, query } from "firebase/firestore";
+import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, where, query, orderBy, serverTimestamp } from "firebase/firestore";
 // import {getDocs, collection} from "firebase/firestore";
 /**
  * Add a subject to the database.
@@ -24,6 +24,8 @@ export const addSubjectToDatabase = async (subjectData) => {
             subjectName: subjectData.subjectName,
             subjectTotalMarks: subjectData.subjectTotalMarks,
             subjectCode: subjectData.subjectCode,
+            createdAt: serverTimestamp(),
+
         });
         console.log("Document successfully written!");
         return { status: true, message: "Document successfully added" };
@@ -38,15 +40,14 @@ export const addSubjectToDatabase = async (subjectData) => {
 export const getSubjectDatabase = async () => {
     const subjectsRef = collection(db, "AddSubjects");
     try {
-        const querySnapshot = await getDocs(subjectsRef);
+        const q = query(subjectsRef, orderBy("createdAt", "asc")); // Add the orderBy query here
 
+        const querySnapshot = await getDocs(q);
+        
         const subjectData = [];
         
         querySnapshot.forEach((doc) => {
-            // subjectData.push({
-            //     id: doc.id,
-            //     ...doc.data()
-            // });
+          
             const data = doc.data();
             const modifiedData = {
                 "id": doc.id,                
