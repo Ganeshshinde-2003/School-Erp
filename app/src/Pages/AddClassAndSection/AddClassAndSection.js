@@ -3,7 +3,7 @@ import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import { Oval } from 'react-loader-spinner';
 import AddOrUpdateSubjectForm from "../AddSubjects/AddOrUpdateSubjectForm "; 
-import { deleteClassAndSectionsData, getClassAndSectionsDatabase } from "../../api/AddClassAndSection";
+import { addClassAndSectionsToDatabase, deleteClassAndSectionsData, getClassAndSectionsDatabase } from "../../api/ClassMaster/AddClassAndSection";
 
 const AddClassAndSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,6 +15,13 @@ const AddClassAndSubject = () => {
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
 
+  const data = {//temp data to add
+    "className": "7",
+    "noOfSections": 2,
+    "optionalSubjects": ["Sanskrit", "Music","Art"],
+    "subjects": ["Science", "Physics", "Biology"]
+  }
+  
 
   const fetchData = () => {
     getClassAndSectionsDatabase()
@@ -59,10 +66,11 @@ const AddClassAndSubject = () => {
 
 // Function to open the modal
 const openModal = () => {
-console.log("Open modal");
-setDocId(null);
-setSubjectUpdate(false)
-setIsModalOpen(true);
+  addClassAndSectionsToDatabase(data)
+// console.log("Open modal");
+// setDocId(null);
+// setSubjectUpdate(false)
+// setIsModalOpen(true);
 };
 
 const handleSubjectAdded = () => {

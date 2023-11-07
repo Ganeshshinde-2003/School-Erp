@@ -1,41 +1,52 @@
-import { db } from "../config/firebase";
-import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../config/firebase";
+import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, where, query, orderBy, serverTimestamp } from "firebase/firestore";
+
 /**
  * Add a subject to the database.
- * @param {Object} optionalSubjectData - An object containing subject data.
- * @param {string} optionalSubjectData.className - The class name to which the subject belongs.
- * @param {string} optionalSubjectData.subjectName - The name of the subject.
- * @param {string} optionalSubjectData.subjectCode - The unique identifier for the subject.
+ * @param {Object} subjectData - An object containing subject data.
+ * @param {string} subjectData.subjectTotalMarks - The maximun marks which the subject belongs.
+ * @param {string} subjectData.subjectName - The name of the subject.
+ * @param {string} subjectData.subjectCode - The unique identifier for the subject.
  */
-export const addOptionalSubjectToDatabase = async (optionalSubjectData) => {
-    const subjectsRef = collection(db, "AddOptionalSubjects");
+
+export const addSubjectToDatabase = async (subjectData) => {
+    const subjectsRef = collection(db, "AddSubjects");
+    
+    // Check if subjectCode already exists
+    const querySnapshot = await getDocs(query(subjectsRef, where("subjectCode", "==", subjectData.subjectCode)));
+    
+    if (!querySnapshot.empty) {
+        return { status: false, message: "Subject with the same subjectCode already exists" };
+    }
+    
     try {
         await addDoc(subjectsRef, {
-            subjectName: optionalSubjectData.subjectName,
-            subjectTotalMarks:optionalSubjectData.subjectTotalMarks,
-            subjectCode: optionalSubjectData.subjectCode,
+            subjectName: subjectData.subjectName,
+            subjectTotalMarks: subjectData.subjectTotalMarks,
+            subjectCode: subjectData.subjectCode,
             createdAt: serverTimestamp(),
 
         });
-        console.log("Document successfully written!");
         return { status: true, message: "Document successfully added" };
-
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        return { status: false, message: "Error adding document" };
     }
 };
 
-export const getOptionalSubjectDatabase = async () => {
-    const subjectsRef = collection(db, "AddOptionalSubjects");
+
+
+export const getAddSubjectDatabase = async () => {
+    const subjectsRef = collection(db, "AddSubjects");
     try {
         const q = query(subjectsRef, orderBy("createdAt", "asc")); // Add the orderBy query here
 
         const querySnapshot = await getDocs(q);
-
-        const optionalSubjectData = [];
+        
+        const subjectData = [];
         
         querySnapshot.forEach((doc) => {
-            
+          
             const data = doc.data();
             const modifiedData = {
                 "id": doc.id,                
@@ -43,23 +54,22 @@ export const getOptionalSubjectDatabase = async () => {
                 "Subject Name": data.subjectName,
                 "Subject Total Marks Reduced": data.subjectTotalMarks,
             };
-            optionalSubjectData.push(modifiedData);
+            subjectData.push(modifiedData);
 
         });     
 
-        return optionalSubjectData; // Return the optionalSubjectData
+        return subjectData; // Return the subjectdata
     } catch (error) {
         console.error(error);
     }
 };
 
-export const updateOptionalSubjectDatabase = async (documentId, updatedSubjectData) => {
-    const subjectsRef = collection(db, "AddOptionalSubjects");
+export const updateSubjectInDatabase = async (documentId, updatedSubjectData) => {
+    const subjectsRef = collection(db, "AddSubjects");
     const subjectDocRef = doc(subjectsRef, documentId); // Use Id to reference the specific document
 
     try {
         await updateDoc(subjectDocRef, updatedSubjectData);
-        console.log("Document successfully updated!");
         return { status: true, message: "Document successfully updated" };
     } catch (error) {
         console.error("Error updating document:", error);
@@ -68,13 +78,12 @@ export const updateOptionalSubjectDatabase = async (documentId, updatedSubjectDa
 };
 
 
-export const deleteOptionalSubject = async (subjectId) => {
-    const subjectsRef = collection(db, "AddOptionalSubjects");
+export const deleteSubject = async (subjectId) => {
+    const subjectsRef = collection(db, "AddSubjects");
     const subjectDocRef = doc(subjectsRef, subjectId);
 
     try {
         await deleteDoc(subjectDocRef);
-        console.log("Document successfully deleted!");
         return { status: true, message: "Document successfully deleted" };
     } catch (error) {
         console.error("Error deleting document:", error);
@@ -82,9 +91,9 @@ export const deleteOptionalSubject = async (subjectId) => {
     }
 };
 
-export const getOptionalSubjectFromDatabase = async (subjectAutoGeneratedId) => {
+export const getSubjectDataFromDb = async (subjectAutoGeneratedId) => {
     try {
-      const subjectDocRef = doc(db, "AddOptionalSubjects", subjectAutoGeneratedId);
+      const subjectDocRef = doc(db, "AddSubjects", subjectAutoGeneratedId);
       const subjectDocSnapshot = await getDoc(subjectDocRef);
   
       if (subjectDocSnapshot.exists()) {
