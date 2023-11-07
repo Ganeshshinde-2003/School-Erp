@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import { addOptionalSubjectToDatabase, getOptionalSubjectDataFromDb, updateOptionalSubjectDatabase } from "../../api/ClassMaster/AddOptionalSubject";
+import "./AddOptionalSubject.css";
+
 
 const AddOrUpdateOptionalSubjectForm = ({
   isUpdateOn,
@@ -130,9 +132,11 @@ const AddOrUpdateOptionalSubjectForm = ({
       >
         &times;
       </span>
-      <h2 className="text-xl font-semibold mb-4 text-center">
+    <div className="heading">
+      <h2 className="text-xl font-semibold mb-4 text-center ">
         {isUpdateOn ? "Update Subject" : "Add Subject"}
       </h2>
+      </div>
 
       <form>
         <div className="mb-4">
@@ -181,7 +185,6 @@ const AddOrUpdateOptionalSubjectForm = ({
           </button>
         </div>
       </form>
-
       {confirmationMessage && (
         <div className="text-green-500 mt-4 text-center">
           {confirmationMessage}
