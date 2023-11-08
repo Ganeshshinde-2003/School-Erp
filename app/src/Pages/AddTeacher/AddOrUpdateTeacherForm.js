@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
-import { getSubjectDataFromDb, addSubjectToDatabase, updateSubjectInDatabase } from "../../api/ClassMaster/Addsubject";
-import "./AddSubjectForm.css";
+// import { addTeacherToDatabase, updateTeacherInDatabase, getTeacherDataFromDb } from "../../api/ClassMaster";
+import "./AddTeacherForm.css";
 
-const AddOrUpdateSubjectForm = ({
+const AddOrUpdateTeacherForm = ({
   isUpdateOn,
   isModalOpen,
   setIsModalOpen,
   DocId,
-  handleSubjectAdded,
-  handleSubjectUpdated,
+  handleTeacherAdded,
+  handleTeacherUpdated,
 }) => {
-  const [subjectData, setSubjectData] = useState({
-    subjectTotalMarks: 100,
-    subjectName: "",
-    subjectCode: "",
+  const [teacherData, setTeacherData] = useState({
+    teacherName: "",
+    teacherId: "",
+    teacherSubject: "",
   });
 
   const [error, setError] = useState(false);
@@ -23,83 +23,75 @@ const AddOrUpdateSubjectForm = ({
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
-      // Fetch subject data from Firebase when the modal is opened for update
-      getSubjectData(DocId);
+      // Fetch teacher data from Firebase when the modal is opened for update
+      getTeacherData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
 
-  const getSubjectData = async (DocId) => {
+  const getTeacherData = async (DocId) => {
     try {
-      const subject = await getSubjectDataFromDb(DocId);
+      const teacher = await getTeacherDataFromDb(DocId);
 
-      if (subject) {
-        setSubjectData(subject);
+      if (teacher) {
+        setTeacherData(teacher);
       }
     } catch (error) {
-      console.error("Error fetching subject data", error);
+      console.error("Error fetching teacher data", error);
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSubjectData({
-      ...subjectData,
+    setTeacherData({
+      ...teacherData,
       [name]: value,
     });
   };
 
   const handleUpdate = async () => {
     try {
-      const response = await updateSubjectInDatabase(DocId, subjectData);
+      const response = await updateTeacherInDatabase(DocId, teacherData);
 
       setConfirmationMessage(response.message);
 
-      setSubjectData({
-        subjectTotalMarks: 100,
-        subjectName: "",
-        subjectCode: "",
+      setTeacherData({
+        teacherName: "",
+        teacherId: "",
+        teacherSubject: "",
       });
 
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
-        handleSubjectUpdated();
+        handleTeacherUpdated();
       }, 2000); // Hide the message after 2 seconds
     } catch (error) {
-      console.error("Error updating subject data", error);
+      console.error("Error updating teacher data", error);
     }
   };
 
-
   const handleAdd = async () => {
-    if (
-      !subjectData.subjectCode ||
-      !subjectData.subjectName
-    ) {
+    if (!teacherData.teacherName || !teacherData.teacherId || !teacherData.teacherSubject) {
       setError(true);
     } else {
-
       try {
-        const response = await addSubjectToDatabase(subjectData);
+        const response = await addTeacherToDatabase(teacherData);
 
-        setSubjectData({
-          subjectTotalMarks: 100,
-          subjectName: "",
-          subjectCode: "",
+        setTeacherData({
+          teacherName: "",
+          teacherId: "",
+          teacherSubject: "",
         });
 
         // Show a confirmation message
         setConfirmationMessage(response.message);
-        
-
       } catch (error) {
-        console.error("Error updating subject data", error);
-
+        console.error("Error adding teacher data", error);
       }
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
-        handleSubjectAdded();
+        handleTeacherAdded();
       }, 2000); // Hide the message after 2 seconds
     }
   };
@@ -112,71 +104,69 @@ const AddOrUpdateSubjectForm = ({
         <Alert severity="error" style={{ marginBottom: "10px" }}>
           Fill all the fields
         </Alert>
-      )
-      }
+      )}
 
       <span
         className="close absolute top-0 right-0 m-2 text-gray-600 cursor-pointer"
         onClick={() => {
-          setSubjectData({
-            subjectTotalMarks: 100,
-            subjectName: "",
-            subjectCode: "",
+          setTeacherData({
+            teacherName: "",
+            teacherId: "",
+            teacherSubject: "",
           });
-          console.log("close modal");
-          setIsModalOpen(false)
+          setIsModalOpen(false);
         }}
       >
         &times;
       </span>
       <h2 className="text-xl font-semibold mb-4 text-center">
-        {isUpdateOn ? "Update Subject" : "Add Subject"}
+        {isUpdateOn ? "Update Teacher" : "Add Teacher"}
       </h2>
 
       <form>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Subject Code
+            Teacher Name
           </label>
           <input
             type="text"
-            name="subjectCode"
-            value={subjectData.subjectCode}
+            name="teacherName"
+            value={teacherData.teacherName}
             onChange={handleInputChange}
             className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Subject Name
+            Teacher ID
           </label>
           <input
             type="text"
-            name="subjectName"
-            value={subjectData.subjectName}
+            name="teacherId"
+            value={teacherData.teacherId}
             onChange={handleInputChange}
             className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-          Subject Total Marks
+            Teacher Subject
           </label>
           <input
             type="text"
-            name="subjectTotalMarks"
-            value={subjectData.subjectTotalMarks}
+            name="teacherSubject"
+            value={teacherData.teacherSubject}
             onChange={handleInputChange}
             className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
-        <div className="add-subject-btn">
+        <div className="add-teacher-btn">
           <button
             type="button"
             onClick={isUpdateOn ? handleUpdate : handleAdd}
             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {isUpdateOn ? "Update Subject" : "Add Subject"}
+            {isUpdateOn ? "Update Teacher" : "Add Teacher"}
           </button>
         </div>
       </form>
@@ -190,4 +180,4 @@ const AddOrUpdateSubjectForm = ({
   );
 };
 
-export default AddOrUpdateSubjectForm;
+export default AddOrUpdateTeacherForm;
