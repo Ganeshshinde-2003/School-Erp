@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
-// import { addTeacherToDatabase, updateTeacherInDatabase, getTeacherDataFromDb } from "../../api/ClassMaster";
+import { addTeacherToDatabase,  updateTeacherInDatabase, getTeacherDataFromDd } from "../../api/TeacherMaster/AddTeacher";
+
 import "./AddTeacherForm.css";
 
 const AddOrUpdateTeacherForm = ({
@@ -30,7 +31,7 @@ const AddOrUpdateTeacherForm = ({
 
   const getTeacherData = async (DocId) => {
     try {
-      const teacher = await getTeacherDataFromDb(DocId);
+      const teacher = await getTeacherDataFromDd(DocId);
 
       if (teacher) {
         setTeacherData(teacher);

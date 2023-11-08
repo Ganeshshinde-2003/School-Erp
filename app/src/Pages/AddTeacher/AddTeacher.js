@@ -4,7 +4,7 @@ import AddButton from "../../Components/AddButton";
 import "./AddTeacher.css";
 import AddOrUpdateTeacherForm from "./AddOrUpdateTeacherForm";
 import { Oval } from "react-loader-spinner";
-import { addTeacherToDatabase, deleteTeacher, getTeacherFromDatabase, updateTeacherInDatabase,teacherDatatest, getTeacherDataFromDd } from "../../api/TeacherMaster/AddTeacher";
+import {  deleteTeacher, getTeacherFromDatabase,  getTeacherDataFromDd } from "../../api/TeacherMaster/AddTeacher";
 
 const AddTeacher = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,79 +14,6 @@ const AddTeacher = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
-
-  const updatedTeacherData = {
-   
-    mobileNo: 8809330707,
-    classTeacher: ["Class A", "Class B","Class C"],
-    transportSlab: "car",
-
-    personalDetailsData: {
-        dob: new Date(2004, 3, 10),
-        fatherName: "David Sr.",
-        spouseName: "Bob",
-        sex: "female",
-        bloodGroup: "AB+",
-    },
-
-    };
-
-    const testTeacherData2 = {
-      teacherId: "th103",
-      designation: "Math Teacher",
-      emailId: "mathteacher@gmail.com",
-      firstName: "Alice",
-      lastName: "Johnson",
-      mobileNo: 9876543211,
-      classTeacher: ["Class A", "Class B"],
-      transportSlab: "car",
-  
-      personalDetailsData: {
-          dob: new Date(1985, 3, 10),
-          fatherName: "David Sr.",
-          motherName: "Susan",
-          spouseName: "Bob",
-          sex: "male",
-          cast: "Old Cast",
-          castCategory: "General",
-          bloodGroup: "A+",
-      },
-  
-      addressDetailsData: {
-          address: "123 Oak Avenue",
-          city: "Test City",
-          zipCode: "12345",
-          state: "Test State",
-          homeTelephoneNo: "9876234567",
-      },
-  
-      salaryDetailsData: {
-          basic: "xyzabc",
-          acNo: 9876543211,
-          lic: "abcxyz",
-          loan: "5000",
-          pfApplied: "ghi",
-          pfNo: 9876543211,
-          previousYearSalary: 123456,
-          salaryAmount: 220000,
-      },
-  
-      experienceDetailsData: {
-          completionYear: "2020",
-          joiningDate: new Date(2016, 4, 5),
-          serviceInYears: 6,
-          confirmationDate: new Date(2016, 8, 15),
-          experienceSummary: "Test job experience summary",
-          oldPFNo: "123456",
-          previousJob: "Test Job Title",
-          dateOfLeaving: new Date(2020, 9, 20),
-          dateOfConfirmation: new Date(2016, 10, 1),
-          lastJobSalary: 55000,
-          reasonForLeaving: "Testing purposes",
-      },
-  };
-  
-  
    
   const fetchData = () => {
     //calling api getTeacherData from database
@@ -117,11 +44,8 @@ const AddTeacher = () => {
       setTeacherUpdate(true)
       setDocId(documentId);
       console.log(docId);
-      const resonse = await getTeacherDataFromDd(docId);
-      console.log(resonse);
-      // updateTeacherInDatabase(documentId,updatedTeacherData)
+      setIsModalOpen(true);
       setDataChanged(true)
-      // setIsModalOpen(true);
       //calling the update api and handleUpdate
      
     } else if (actionType === 'delete') {
@@ -135,11 +59,9 @@ const AddTeacher = () => {
   // Function to open the modal
   const openModal = () => {
     console.log("Open modal");
-    addTeacherToDatabase(teacherDatatest)
-    setDataChanged(true)
-    // setDocId(null);
-    // setTeacherUpdate(false)
-    // setIsModalOpen(true);
+    setDocId(null);
+    setTeacherUpdate(false)
+    setIsModalOpen(true);
   };
 
   const handleTeacherAdded = () => {
