@@ -4,7 +4,7 @@ import AddButton from "../../Components/AddButton";
 import "./AddTeacher.css";
 import AddOrUpdateTeacherForm from "./AddOrUpdateTeacherForm";
 import { Oval } from "react-loader-spinner";
-import { addTeacherToDatabase, deleteTeacher, getTeacherFromDatabase } from "../../api/TeacherMaster/AddTeacher";
+import { addTeacherToDatabase, deleteTeacher, getTeacherFromDatabase, updateTeacherInDatabase,teacherDatatest, getTeacherDataFromDd } from "../../api/TeacherMaster/AddTeacher";
 
 const AddTeacher = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,56 +15,78 @@ const AddTeacher = () => {
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
 
-  const teacherDatatest = {
-    teacherId: "th101",
-    designation: "Classteacher",
-    emailId: "amar@gmail.com",
-    firstName: "Amar",
-    lastName: "Kumar",
-    mobileNo: 8809871234,
-    classTeacher: ["Class A", "Class B"],
-    transportSlab: "auto",
+  const updatedTeacherData = {
+   
+    mobileNo: 8809330707,
+    classTeacher: ["Class A", "Class B","Class C"],
+    transportSlab: "car",
+
     personalDetailsData: {
-        dob: new Date(2016, 0, 5),
-        fatherName: "xyz",
-        motherName: "abc",
-        spouseName: "sqrt",
-        sex: "male",
-        cast: "Some Cast",
-        castCategory: "General",
+        dob: new Date(2004, 3, 10),
+        fatherName: "David Sr.",
+        spouseName: "Bob",
+        sex: "female",
         bloodGroup: "AB+",
     },
-    addressDetailsData: {
-        address: "123 Main Street",
-        city: "Your City",
-        zipCode: "12345",
-        state: "Your State",
-        homeTelephoneNo: "9876543210",
-    },
-    salaryDetailsData: {
-        basic: "xyz",
-        acNo: 23456787695,
-        lic: "ghgg",
-        loan: "9000",
-        pfApplied: "abc",
-        pfNo: 32456789876,
-        previousYearSalary: 123457,
-        salaryAmount: 213456,
-    },
-    experienceDetailsData: {
-        completionYear: "2020",
-        joiningDate: new Date(2018, 3, 15),
-        serviceInYears: 3,
-        confirmationDate: new Date(2018, 6, 30),
-        experienceSummary: "Previous job experience summary",
-        oldPFNo: "456789",
-        previousJob: "Previous Job Title",
-        dateOfLeaving: new Date(2020, 11, 31),
-        dateOfConfirmation: new Date(2018, 7, 15),
-        lastJobSalary: 50000,
-        reasonForLeaving: "Reason for leaving previous job",
-    },
-};
+
+    };
+
+    const testTeacherData2 = {
+      teacherId: "th103",
+      designation: "Math Teacher",
+      emailId: "mathteacher@gmail.com",
+      firstName: "Alice",
+      lastName: "Johnson",
+      mobileNo: 9876543211,
+      classTeacher: ["Class A", "Class B"],
+      transportSlab: "car",
+  
+      personalDetailsData: {
+          dob: new Date(1985, 3, 10),
+          fatherName: "David Sr.",
+          motherName: "Susan",
+          spouseName: "Bob",
+          sex: "male",
+          cast: "Old Cast",
+          castCategory: "General",
+          bloodGroup: "A+",
+      },
+  
+      addressDetailsData: {
+          address: "123 Oak Avenue",
+          city: "Test City",
+          zipCode: "12345",
+          state: "Test State",
+          homeTelephoneNo: "9876234567",
+      },
+  
+      salaryDetailsData: {
+          basic: "xyzabc",
+          acNo: 9876543211,
+          lic: "abcxyz",
+          loan: "5000",
+          pfApplied: "ghi",
+          pfNo: 9876543211,
+          previousYearSalary: 123456,
+          salaryAmount: 220000,
+      },
+  
+      experienceDetailsData: {
+          completionYear: "2020",
+          joiningDate: new Date(2016, 4, 5),
+          serviceInYears: 6,
+          confirmationDate: new Date(2016, 8, 15),
+          experienceSummary: "Test job experience summary",
+          oldPFNo: "123456",
+          previousJob: "Test Job Title",
+          dateOfLeaving: new Date(2020, 9, 20),
+          dateOfConfirmation: new Date(2016, 10, 1),
+          lastJobSalary: 55000,
+          reasonForLeaving: "Testing purposes",
+      },
+  };
+  
+  
    
   const fetchData = () => {
     //calling api getTeacherData from database
@@ -95,7 +117,11 @@ const AddTeacher = () => {
       setTeacherUpdate(true)
       setDocId(documentId);
       console.log(docId);
-      setIsModalOpen(true);
+      const resonse = await getTeacherDataFromDd(docId);
+      console.log(resonse);
+      // updateTeacherInDatabase(documentId,updatedTeacherData)
+      setDataChanged(true)
+      // setIsModalOpen(true);
       //calling the update api and handleUpdate
      
     } else if (actionType === 'delete') {
@@ -110,6 +136,7 @@ const AddTeacher = () => {
   const openModal = () => {
     console.log("Open modal");
     addTeacherToDatabase(teacherDatatest)
+    setDataChanged(true)
     // setDocId(null);
     // setTeacherUpdate(false)
     // setIsModalOpen(true);
@@ -148,7 +175,7 @@ const AddTeacher = () => {
         ) : (
           <div className="add-optional-sub-table">
             <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-              Add Subjects
+              Add Teachers
             </h1>
             <DynamicTable data={teacherData} rowHeight={100} action={true} handleAction={handleAction} />
             <p className="h-16 text-center font-bold text-white flex items-center justify-center">
