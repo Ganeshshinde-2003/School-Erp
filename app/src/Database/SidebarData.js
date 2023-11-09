@@ -6,7 +6,7 @@ import * as RiIcons from "react-icons/ri";
 
 export const SidebarData = [
   {
-    title: "Home",
+    title: "Dashboard",
     path: "/",
   },
   {
@@ -63,7 +63,6 @@ export const SidebarData = [
         path: "/teacher-master/add-teacher",
         cName: "sub-nav",
       },
-
     ],
   },
   {

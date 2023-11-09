@@ -4,3 +4,11 @@
 .add-subject-btn button {
   width: fit-content;
 }
+.subject-form {
+  display: flex;
+  flex-direction: column !important;
+}
+.subject-form div {
+  flex-direction: row;
+  width: 100%;
+}

@@ -33,7 +33,7 @@ const AddSubject = [
 // import AddButton from "../../Components/AddButton";
 // import "./AddSubject.css";
 // import AddSubjectForm from "./AddSubjectForm";
-// import { deleteSubject, getSubjectDatabase, updateSubjectInDatabase } from "../../api/subject";
+// import { deleteSubject, getAddSubjectDatabase, updateSubjectInDatabase } from "../../api/subject";
 
 // import { Oval } from 'react-loader-spinner'
 
@@ -45,7 +45,7 @@ const AddSubject = [
   // const [dataChanged, setDataChanged] = useState(false);
 
   // useEffect(() => {
-  //   getSubjectDatabase()
+  //   getAddSubjectDatabase()
   //     .then((data) => {
   //       // const filteredData = data.map(({ id, ...rest }) => rest);
   //       setSubjectData(data);
@@ -61,7 +61,7 @@ const AddSubject = [
 
   // // useEffect(() => {
   // //   if (dataChanged) {
-  // //     getSubjectDatabase()
+  // //     getAddSubjectDatabase()
   // //       .then((data) => {
   // //         setSubjectData(data);
   // //         setIsLoading(false);

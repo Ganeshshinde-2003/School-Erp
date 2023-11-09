@@ -1,0 +1,6 @@
+.activeDiv {
+  background: #242424;
+}
+.activeDiv div span {
+  color: white;
+}

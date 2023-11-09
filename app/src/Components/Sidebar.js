@@ -16,6 +16,8 @@ const SidebarNav = styled.nav`
   z-index: 10;
   overflow: auto;
   width: 25rem;
+  border: none; /* Remove the border */
+  padding: 0; /* Remove padding */
 `;
 
 const SidebarWrap = styled.div`

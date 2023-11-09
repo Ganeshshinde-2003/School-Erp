@@ -1,27 +1,55 @@
-import React, { useState } from "react";
-import AddSubjectData from "../../Database/AddTeacher";
+import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import "./AddTeacher.css";
-import AddSubjectForm from "./AddTeacherForm";
+import AddOrUpdateTeacherForm from "./AddOrUpdateTeacherForm";
+import { Oval } from "react-loader-spinner";
+import {  deleteTeacher, getTeacherFromDatabase,  getTeacherDataFromDd } from "../../api/TeacherMaster/AddTeacher";
 
 const AddTeacher = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [subjectAdded, setSubjectAdded] = useState(false);
+  const [teacherUpdate, setTeacherUpdate] = useState(false);
+
+  const [teacherData, setTeacherData] = useState([]); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [dataChanged, setDataChanged] = useState(false);
+  const [docId, setDocId] = useState(null);
+   
+  const fetchData = () => {
+    //calling api getTeacherData from database
+    getTeacherFromDatabase()
+      .then((data) => {
+        setTeacherData(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchData(); // Fetch data initially
+  }, []);
+
+  if (dataChanged) {
+      fetchData(); // Refetch data when dataChanged is true
+      setDataChanged(false);
+    }
 
   const handleAction = async (actionType, documentId) => {
       
     if (actionType === 'edit') {
       console.log('edit ocument with ID:', documentId);
-      setSubjectUpdate(true)
+      setTeacherUpdate(true)
       setDocId(documentId);
       console.log(docId);
       setIsModalOpen(true);
-      
-
+      setDataChanged(true)
+      //calling the update api and handleUpdate
      
     } else if (actionType === 'delete') {
-      const response =await deleteSubject(documentId);
+      const response =await deleteTeacher(documentId);
       console.log('Delete document with ID:', documentId);
       if (response.status) {
         setDataChanged(true);
@@ -31,41 +59,64 @@ const AddTeacher = () => {
   // Function to open the modal
   const openModal = () => {
     console.log("Open modal");
+    setDocId(null);
+    setTeacherUpdate(false)
     setIsModalOpen(true);
   };
 
-  const handleSubjectAdded = () => {
-    setSubjectAdded(true);
-    setTimeout(() => {
-      setSubjectAdded(false);
-    }, 2000); // Hide the message after 2 seconds
+  const handleTeacherAdded = () => {
+   setDataChanged(true);
   };
+
+  const handleTeacherUpdated = () => {
+    setDocId(null);
+    setSubjectUpdate(false)
+    setDataChanged(true);
+};
+
 
   return (
     <div className="mt-4 w-full">
       <div className="mt-5 max-w-full">
         <div className="flex justify-around">
+         
+        {isLoading ? ( 
+          <Oval
+            height={80}
+            width={80}
+            color="#343dff"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel='oval-loading'
+            secondaryColor="#343fff"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
+
+          />
+        ) : (
           <div className="add-optional-sub-table">
             <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-              Add Subjects
+              Add Teachers
             </h1>
-            <DynamicTable data={AddSubjectData} rowHeight={100} action={true} handleAction={handleAction} />
+            <DynamicTable data={teacherData} rowHeight={100} action={true} handleAction={handleAction} />
             <p className="h-16 text-center font-bold text-white flex items-center justify-center">
               <AddButton buttonText={"Add subject"} onClickButton={openModal} />
             </p>
           </div>
-        </div>
+        )}
+
+
       </div>
-      <AddSubjectForm
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        handleSubjectAdded={handleSubjectAdded}
-      />
-      {subjectAdded && (
-        <div className="text-green-500 text-center mt-2">
-          Subject has been successfully added!
-        </div>
-      )}
+    </div>
+    <AddOrUpdateTeacherForm
+      isModalOpen={isModalOpen}
+      setIsModalOpen={setIsModalOpen}
+      handleTeacherAdded={handleTeacherAdded}
+      handleTeacherUpdated={handleTeacherUpdated}
+      DocId={docId}
+      isUpdateOn={teacherUpdate}
+    />
     </div>
   );
 };

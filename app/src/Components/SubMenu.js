@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import "./Sidebar.css";
 
 const SidebarLink = styled(Link)`
   display: flex;
@@ -14,44 +15,43 @@ const SidebarLink = styled(Link)`
   text-decoration: none;
   font-size: 18px;
   outline: none;
-
-  &:hover {
-    background: grey;
-    border-left: 4px solid #632ce4;
-    cursor: pointer;
-  }
 `;
 
 const SidebarLabel = styled.span`
-  margin-left: 16px;
+  padding: 5px 20px;
+  color: #9d9d9d;
 `;
 
 const DropdownLink = styled(Link)`
-  background: white;
-  color: black !important;
-  border-bottom: 1px solid grey;
+  background: #242424;
   height: 40px;
   padding-left: 3rem;
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: grey;
+  color: white;
   font-size: 18px;
-
-  &:hover {
-    background: grey;
-    cursor: pointer;
-  }
 `;
 
 const SubMenu = ({ item }) => {
   const [subnav, setSubnav] = useState(false);
+  const [active, setActive] = useState(false);
 
-  const showSubnav = () => setSubnav(!subnav);
+  const showSubnav = () => {
+    setSubnav(!subnav);
+    setActiveStatus();
+  };
+  const setActiveStatus = () => {
+    setActive(!active);
+  };
 
   return (
     <>
-      <SidebarLink to={item.path} onClick={item.subNav && showSubnav}>
+      <SidebarLink
+        to={item.path}
+        onClick={item.subNav && showSubnav}
+        className={active ? "activeDiv" : ""}
+      >
         <div>
           {item.icon}
           <SidebarLabel>{item.title}</SidebarLabel>

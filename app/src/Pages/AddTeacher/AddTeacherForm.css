@@ -4,3 +4,80 @@
 .add-subject-btn button {
   width: fit-content;
 }
+.addTeacher-header {
+  padding: 10px;
+}
+.addTeacher-form {
+  padding: 20px 40px;
+  width: 100%;
+}
+.addTeacher-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.addTeacher-main-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+.form-first div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.form-first label {
+  width: 200px;
+}
+.form-first {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.addTeacher-components {
+  display: flex;
+  flex-direction: column;
+}
+.components-name {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 40px;
+}
+.components-name div {
+  padding: 5px 30px;
+  background-color: #333333;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.active-component {
+  background-color: white !important;
+  color: black !important;
+  cursor: pointer;
+}
+.component-card {
+  border: 2px solid #333333;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 5px;
+}
+.hidden-card {
+  display: none;
+}
+.addTeacher-buttons {
+  padding: 0 40px;
+  display: flex;
+  gap: 30px;
+}
+.addTeacher-buttons button {
+  background-color: #333333;
+  color: white;
+  padding: 5px 30px;
+  border-radius: 10px;
+  border: none;
+}
