@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
-import { addTeacherToDatabase,  updateTeacherInDatabase, getTeacherDataFromDd } from "../../api/TeacherMaster/AddTeacher";
+import {
+  addTeacherToDatabase,
+  updateTeacherInDatabase,
+  getTeacherDataFromDd,
+} from "../../api/TeacherMaster/AddTeacher";
 
 import "./AddTeacherForm.css";
 
@@ -21,6 +25,7 @@ const AddOrUpdateTeacherForm = ({
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const [activeCom, setActiveCom] = useState(1);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
@@ -72,7 +77,11 @@ const AddOrUpdateTeacherForm = ({
   };
 
   const handleAdd = async () => {
-    if (!teacherData.teacherName || !teacherData.teacherId || !teacherData.teacherSubject) {
+    if (
+      !teacherData.teacherName ||
+      !teacherData.teacherId ||
+      !teacherData.teacherSubject
+    ) {
       setError(true);
     } else {
       try {
@@ -106,77 +115,518 @@ const AddOrUpdateTeacherForm = ({
           Fill all the fields
         </Alert>
       )}
-
-      <span
-        className="close absolute top-0 right-0 m-2 text-gray-600 cursor-pointer"
-        onClick={() => {
-          setTeacherData({
-            teacherName: "",
-            teacherId: "",
-            teacherSubject: "",
-          });
-          setIsModalOpen(false);
-        }}
-      >
-        &times;
-      </span>
-      <h2 className="text-xl font-semibold mb-4 text-center">
+      <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
         {isUpdateOn ? "Update Teacher" : "Add Teacher"}
       </h2>
 
-      <form>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Teacher Name
-          </label>
-          <input
-            type="text"
-            name="teacherName"
-            value={teacherData.teacherName}
-            onChange={handleInputChange}
-            className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Teacher ID
-          </label>
-          <input
-            type="text"
-            name="teacherId"
-            value={teacherData.teacherId}
-            onChange={handleInputChange}
-            className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Teacher Subject
-          </label>
-          <input
-            type="text"
-            name="teacherSubject"
-            value={teacherData.teacherSubject}
-            onChange={handleInputChange}
-            className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="add-teacher-btn">
-          <button
-            type="button"
-            onClick={isUpdateOn ? handleUpdate : handleAdd}
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            {isUpdateOn ? "Update Teacher" : "Add Teacher"}
-          </button>
-        </div>
-      </form>
+      <div className="addTeacher-form">
+        <form>
+          <div className="addTeacher-main-form">
+            <div className="form-first">
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  First Name*
+                </label>
+                <input
+                  type="text"
+                  name="subjectCode"
+                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  Last Name*
+                </label>
+                <input
+                  type="text"
+                  name="subjectCode"
+                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  Employee I’D*
+                </label>
+                <input
+                  type="text"
+                  name="subjectCode"
+                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  FTransport Slab*
+                </label>
+                <select
+                  name="transportType"
+                  className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="bus">--- Select ---</option>
+                  <option value="bus">Bus</option>
+                  <option value="car">Car</option>
+                  <option value="bike">Bike</option>
+                </select>
+              </div>
+            </div>
+            <div className="form-first">
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  Mobile No*
+                </label>
+                <input
+                  type="text"
+                  name="subjectCode"
+                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  Mail I’D*
+                </label>
+                <input
+                  type="text"
+                  name="subjectCode"
+                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  Designation*
+                </label>
+                <input
+                  type="text"
+                  name="subjectCode"
+                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  Class Teacher*
+                </label>
+                <select
+                  name="transportType"
+                  className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="bus">--- Select ---</option>
+                  <option value="bus">Class A</option>
+                  <option value="car">Class B</option>
+                  <option value="bike">Class C</option>
+                </select>
+              </div>
+            </div>
+            <div className="form-first">
+              <div>
+                <label
+                  htmlFor="fileInput"
+                  className="mt-1 p-2 w-half text-[20px] font-bold block h-[200px] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center"
+                  style={{ color: "#333333" }}
+                >
+                  Photo+
+                </label>
 
-      {confirmationMessage && (
-        <div className="text-green-500 mt-4 text-center">
-          {confirmationMessage}
-        </div>
-      )}
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  className="hidden"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="addTeacher-components">
+            <div className="components-name">
+              <div
+                onClick={() => setActiveCom(1)}
+                className={activeCom === 1 ? "active-component" : ""}
+              >
+                Personal Details*
+              </div>
+              <div
+                onClick={() => setActiveCom(2)}
+                className={activeCom === 2 ? "active-component" : ""}
+              >
+                Salary Details*
+              </div>
+              <div
+                onClick={() => setActiveCom(3)}
+                className={activeCom === 3 ? "active-component" : ""}
+              >
+                Address Details*
+              </div>
+              <div
+                onClick={() => setActiveCom(4)}
+                className={activeCom === 4 ? "active-component" : ""}
+              >
+                Experience Details*
+              </div>
+            </div>
+            <div className={activeCom === 1 ? "component-card" : "hidden-card"}>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Father Name*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Mother Name*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Spouse Name*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    DOB(DD/MM/YYYY)*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Sex*
+                  </label>
+                  <select
+                    name="transportType"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="bus">--- Select ---</option>
+                    <option value="bus">Male</option>
+                    <option value="car">Female</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Cast*
+                  </label>
+                  <select
+                    name="transportType"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="bus">--- Select ---</option>
+                    <option value="bus">Bus</option>
+                    <option value="car">Car</option>
+                    <option value="bike">Bike</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Cast Category*
+                  </label>
+                  <select
+                    name="transportType"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="bus">--- Select ---</option>
+                    <option value="bus">Bus</option>
+                    <option value="car">Car</option>
+                    <option value="bike">Bike</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Blood Group*
+                  </label>
+                  <select
+                    name="transportType"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="bus">--- Select ---</option>
+                    <option value="bus">Class A</option>
+                    <option value="car">Class B</option>
+                    <option value="bike">Class C</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className={activeCom === 2 ? "component-card" : "hidden-card"}>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Salary Amount*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    bank A/C No*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Basic
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Previous Year Salary
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    PF Applied*
+                  </label>
+                  <select
+                    name="transportType"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="bus">--- Select ---</option>
+                    <option value="bus">Male</option>
+                    <option value="car">Female</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    PF No*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    LIC
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Loan
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={activeCom === 3 ? "component-card" : "hidden-card"}>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Address
+                  </label>
+                  <textarea
+                    type="text"
+                    name="subjectCode"
+                    rows="3"
+                    cols="22"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    city
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    ZIP Code*
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    State
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Home Telephone
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={activeCom === 4 ? "component-card" : "hidden-card"}>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Completion year
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Service in Year
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Date Of Joining
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Date of Confirmation
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Experience summery
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Old PF No.
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Previous Job
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Date of Leaving
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Last Job Salary
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Reason For Leaving
+                  </label>
+                  <input
+                    type="text"
+                    name="subjectCode"
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="addTeacher-buttons">
+            <button>Add</button>
+            <button>Close</button>
+          </div>
+        </form>
+
+        {confirmationMessage && (
+          <div className="text-green-500 mt-4 text-center">
+            {confirmationMessage}
+          </div>
+        )}
+      </div>
     </Modal>
   );
 };
