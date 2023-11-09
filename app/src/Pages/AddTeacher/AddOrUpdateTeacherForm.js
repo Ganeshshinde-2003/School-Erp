@@ -13,11 +13,63 @@ const AddOrUpdateTeacherForm = ({
   handleTeacherAdded,
   handleTeacherUpdated,
 }) => {
-  const [teacherData, setTeacherData] = useState({
-    teacherName: "",
+   const inticalteacherData = {
     teacherId: "",
-    teacherSubject: "",
-  });
+    designation: "",
+    emailId: "",
+    firstName: "",
+    lastName: "",
+    mobileNo: "",
+    classTeacher: "",
+    transportSlab: "",
+
+    personalDetailsData: {
+        dob: new Date(),
+        fatherName: "",
+        motherName: "",
+        spouseName: "",
+        sex: "",
+        cast: "",
+        castCategory: "",
+        bloodGroup: "",
+    },
+
+    addressDetailsData: {
+        address: "",
+        city: "",
+        zipCode: "",
+        state: "",
+        homeTelephoneNo: "",
+    },
+
+    salaryDetailsData: {
+        basic: "",
+        acNo: "",
+        lic: "",
+        loan: "",
+        pfApplied: "",
+        pfNo: "",
+        previousYearSalary: "",
+        salaryAmount: "",
+    },
+
+    experienceDetailsData: {
+        completionYear: "",
+        joiningDate: new Date(),
+        serviceInYears: "",
+        confirmationDate: new Date(),
+        experienceSummary: "",
+        oldPFNo: "",
+        previousJob: "",
+        dateOfLeaving: new Date(),
+        dateOfConfirmation: new Date(),
+        lastJobSalary: "",
+        reasonForLeaving: "",
+    },
+};
+
+
+  const [teacherData, setTeacherData] = useState(inticalteacherData);
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
