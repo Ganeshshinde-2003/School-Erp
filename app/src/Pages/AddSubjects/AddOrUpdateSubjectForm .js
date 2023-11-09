@@ -17,18 +17,18 @@ const AddOrUpdateSubjectForm = ({
   handleSubjectAdded,
   handleSubjectUpdated,
 }) => {
-  const [subjectData, setSubjectData] = useState({
+  const inticalData = {
     subjectTotalMarks: 100,
     subjectName: "",
     subjectCode: "",
-  });
+  }
+  const [subjectData, setSubjectData] = useState(inticalData);
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
-      // Fetch subject data from Firebase when the modal is opened for update
       getSubjectData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
@@ -56,14 +56,10 @@ const AddOrUpdateSubjectForm = ({
   const handleUpdate = async () => {
     try {
       const response = await updateSubjectInDatabase(DocId, subjectData);
-
+      
       setConfirmationMessage(response.message);
 
-      setSubjectData({
-        subjectTotalMarks: 100,
-        subjectName: "",
-        subjectCode: "",
-      });
+      setSubjectData(inticalData);
 
       setTimeout(() => {
         setConfirmationMessage(null);
@@ -81,15 +77,12 @@ const AddOrUpdateSubjectForm = ({
     } else {
       try {
         const response = await addSubjectToDatabase(subjectData);
-
-        setSubjectData({
-          subjectTotalMarks: 100,
-          subjectName: "",
-          subjectCode: "",
-        });
-
         // Show a confirmation message
         setConfirmationMessage(response.message);
+
+
+        setSubjectData(inticalData);
+        
       } catch (error) {
         console.error("Error updating subject data", error);
       }
@@ -111,7 +104,9 @@ const AddOrUpdateSubjectForm = ({
         </Alert>
       )}
 
+
       <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
+
         {isUpdateOn ? "Update Subject" : "Add Subject"}
       </h2>
       <div className="addTeacher-form">
