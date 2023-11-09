@@ -12,18 +12,18 @@ const AddOrUpdateSubjectForm = ({
   handleSubjectAdded,
   handleSubjectUpdated,
 }) => {
-  const [subjectData, setSubjectData] = useState({
+  const inticalData = {
     subjectTotalMarks: 100,
     subjectName: "",
     subjectCode: "",
-  });
+  }
+  const [subjectData, setSubjectData] = useState(inticalData);
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
-      // Fetch subject data from Firebase when the modal is opened for update
       getSubjectData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
@@ -51,14 +51,10 @@ const AddOrUpdateSubjectForm = ({
   const handleUpdate = async () => {
     try {
       const response = await updateSubjectInDatabase(DocId, subjectData);
-
+      
       setConfirmationMessage(response.message);
 
-      setSubjectData({
-        subjectTotalMarks: 100,
-        subjectName: "",
-        subjectCode: "",
-      });
+      setSubjectData(inticalData);
 
       setTimeout(() => {
         setConfirmationMessage(null);
@@ -81,15 +77,10 @@ const AddOrUpdateSubjectForm = ({
 
       try {
         const response = await addSubjectToDatabase(subjectData);
-
-        setSubjectData({
-          subjectTotalMarks: 100,
-          subjectName: "",
-          subjectCode: "",
-        });
-
         // Show a confirmation message
         setConfirmationMessage(response.message);
+
+        setSubjectData(inticalData);
         
 
       } catch (error) {
@@ -118,11 +109,7 @@ const AddOrUpdateSubjectForm = ({
       <span
         className="close absolute top-0 right-0 m-2 text-gray-600 cursor-pointer"
         onClick={() => {
-          setSubjectData({
-            subjectTotalMarks: 100,
-            subjectName: "",
-            subjectCode: "",
-          });
+          setSubjectData(inticalData);
           console.log("close modal");
           setIsModalOpen(false)
         }}
