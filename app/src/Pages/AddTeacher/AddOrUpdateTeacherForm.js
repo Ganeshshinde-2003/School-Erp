@@ -6,7 +6,6 @@ import {
   updateTeacherInDatabase,
   getTeacherDataFromDd,
 } from "../../api/TeacherMaster/AddTeacher";
-
 import "./AddTeacherForm.css";
 
 const AddOrUpdateTeacherForm = ({
