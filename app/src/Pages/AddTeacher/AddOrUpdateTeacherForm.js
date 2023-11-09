@@ -27,7 +27,7 @@ const AddOrUpdateTeacherForm = ({
     transportSlab: "",
 
     personalDetailsData: {
-        dob: new Date(),
+        dob: "",
         fatherName: "",
         motherName: "",
         spouseName: "",
@@ -58,14 +58,14 @@ const AddOrUpdateTeacherForm = ({
 
     experienceDetailsData: {
         completionYear: "",
-        joiningDate: new Date(),
+        joiningDate: "",
         serviceInYears: "",
-        confirmationDate: new Date(),
+        confirmationDate: "",
         experienceSummary: "",
         oldPFNo: "",
         previousJob: "",
-        dateOfLeaving: new Date(),
-        dateOfConfirmation: new Date(),
+        dateOfLeaving: "",
+        dateOfConfirmation: "",
         lastJobSalary: "",
         reasonForLeaving: "",
     },
@@ -181,6 +181,10 @@ const AddOrUpdateTeacherForm = ({
                 <input
                   type="text"
                   name="subjectCode"
+                  value={teacherData.firstName}
+                  onChange={handleInputChange}
+                  required
+              
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
@@ -196,7 +200,7 @@ const AddOrUpdateTeacherForm = ({
               </div>
               <div>
                 <label className="block text-[18px] font-medium text-[#333333]">
-                  Employee I’D*
+                  Employee I'D*
                 </label>
                 <input
                   type="text"
