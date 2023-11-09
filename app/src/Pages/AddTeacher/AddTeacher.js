@@ -70,7 +70,7 @@ const AddTeacher = () => {
 
   const handleTeacherUpdated = () => {
     setDocId(null);
-    setSubjectUpdate(false)
+    setTeacherUpdate(false)
     setDataChanged(true);
 };
 
