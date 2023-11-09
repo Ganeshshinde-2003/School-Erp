@@ -160,6 +160,7 @@ export const updateTeacherInDatabase = async (documentId, updatedTeacherData) =>
 
         if (teacherDataChanged) {
             await updateDoc(teacherDocRef, updatedTeacherData);   
+            return { status: true, message: "Document successfully updated" };
         }
     }
     catch (error) {

@@ -2,168 +2,135 @@ import { db } from "../../config/firebase";
 import { getDocs,addDoc,doc,updateDoc,deleteDoc,collection,getDoc,serverTimestamp,query,orderBy,setDoc, } from "firebase/firestore";
 
 /**
- * Add a teacher to the database with subcollections.
- * @param {Object} teacherData - An object containing teacher data.
- * @param {string} teacherData.teacherId - The unique identifier for the teacher.
- * @param {string} teacherData.designation - The designation of the teacher.
- * @param {string} teacherData.emailId - The emailId of the teacher.
- * @param {string} teacherData.firstName - The first name of the teacher.
- * @param {string} teacherData.lastName - The last name of the teacher.
- * @param {number} teacherData.mobileNo - The mobile number of the teacher.
- * @param {array} teacherData.classTeacher - An array of class names associated with the teacher.
- * @param {string} teacherData.transportSlab - The transport slab information.
- * @param {map} teacherData.personalDetailsData - The transport slab information.
- * @param {map} teacherData.salaryDetailsData - The transport slab information.
- * @param {map} teacherData.addressDetailsData - The transport slab information.
- * @param {map} teacherData.experienceDetailsData - The transport slab information.
-
+ * Add a student to the database with subcollections.
+ * @param {Object} studentData - An object containing student data.
+ * @param {string} studentData.studentId - The unique identifier for the student.
+ * @param {string} studentData.firstName - The first name of the student.
+ * @param {string} studentData.lastName - The last name of the student.
+ * @param {number} studentData.mobileNo - The mobile number of the student.
+ * @param {string} studentData.transportSlab - The transport slab information.
+ * @param {Date} studentData.admissionDate - The admission date of the student.
+ * @param {string} studentData.joiningClass - The class in which the student is joining.
+ * @param {string} studentData.feeslab - The fee slab for the student.
+ * @param {Object} studentData.personalDetailsData - Personal details of the student.
+ * @param {Object} studentData.addressDetailsData - Address details of the student.
+ * @param {Object} studentData.takeAdmissionfees - Admission fees details for the student.
+ * @param {Object} studentData.demography - Demographic details of the student.
+ * @param {Object} studentData.studentHistory - Student's historical data.
+ * @returns {Object} An object with a status and message indicating the result.
  */
 
-export const studentDatatest = {
-    studentId: "th102", // Updated teacher ID
-    firstName: "Amar", // Updated first name
-    lastName: "kumar", // Updated last name
-    mobileNo: 9876543210, // Updated mobile number
-    transportSlab: "bus", // Updated transport slab
-    admissionDate:new Date(2008,8,7),
-    joiningClass:"6A",
-    feeslab:"78000",
+
+export const studentDataTest = {
+    studentId: "th103",
+    firstName: "Sara",
+    lastName: "Singh",
+    mobileNo: 9876543212,
+    transportSlab: "cycle",
+    admissionDate: new Date(2011, 2, 20),
+    joiningClass: "8C",
+    feeslab: "105000",
 
     personalDetailsData: {
-        gender: "female", // Updated gender
-        cast: "New Cast", // Updated cast
-        fatherName: "John Sr.", // Updated father's name
-        motherName: "Mary", // Updated mother's name
-        aadharNo:123456780912,
-        bloodGroup: "B-", // Updated blood group
-        guardianName:"father",
-        guardianNo:8292772484,
-        telephoneNo:9876543567,
-        dob: new Date(1990, 5, 15), // Updated date of birth
-        isSinglegirlchild:false,
-        emailId:"student12@gmail.com"
+        gender: "female",
+        cast: "Different Cast",
+        fatherName: "Rajesh Sharma",
+        motherName: "Sunita Sharma",
+        aadharNo: 987654321097,
+        bloodGroup: "O+",
+        guardianName: "father",
+        guardianNo: 8292772486,
+        telephoneNo: 9876543569,
+        dob: new Date(1996, 4, 25),
+        isSinglegirlchild: true,
+        emailId: "student14@gmail.com",
     },
 
     addressDetailsData: {
-        homeAddress: "456 Elm Street", // Updated address
-        city: "Another City", // Updated city
-        zipCode: "54321", // Updated ZIP code
-        state: "Another State", // Updated state
-        fatherMobileNo: "9876123456", // Updated home telephone number
+        homeAddress: "789 Oak Avenue",
+        city: "New City",
+        zipCode: "54321",
+        state: "New State",
+        fatherMobileNo: "9876123458",
     },
 
     takeAdmissionfees: {
-        admissonFeeStatus:false,
-        makeOfPayment: 1000,
-        payableAmount: 10000,
-        modeOfPayment:"cash",
-        chequeNo:"IDIBchhh727638792t",
-        upitransactionNo:"92673r7797t38798tguyt76",
-        otherUniqeNo:"other873678576ew"
-       
+        admissonFeeStatus: true,
+        makeOfPayment: 1500,
+        payableAmount: 12000,
+        modeOfPayment: "credit card",
+        chequeNo: "ICICIchhh727638792t",
+        upitransactionNo: "92673r7797t38798tguyt77",
+        otherUniqeNo: "other873678576ew2",
     },
 
-    experienceDetailsData: {
-        completionYear: "2019", // Updated completion year
-        joiningDate: new Date(2017, 2, 10), // Updated joining date
-        serviceInYears: 4, // Updated years of service
-        confirmationDate: new Date(2017, 6, 20), // Updated confirmation date
-        experienceSummary: "New job experience summary", // Updated experience summary
-        oldPFNo: "987654", // Updated old PF number
-        previousJob: "New Job Title", // Updated previous job title
-        dateOfLeaving: new Date(2019, 10, 15), // Updated date of leaving
-        dateOfConfirmation: new Date(2017, 8, 1), // Updated date of confirmation
-        lastJobSalary: 60000, // Updated last job salary
-        reasonForLeaving: "Personal reasons", // Updated reason for leaving
+    demography: {
+        religion: "Christian",
+        cast: "Another Cast",
+        fatherOccupation: "Engineer",
+        motherOccupation: "Teacher",
+        parentIncome: 120000,
+        motherTongue: "English",
+        birthplace: "Mumbai",
+        nationality: "Indian",
+    },
+
+    studentHistory: {
+        previousSchoolName: "ABC School",
+        PreviousschoolTCNo: "TC987654",
+        previousClassPercentage: "92%",
+        importantDocsTaken: true,
     },
 };
 
-export const addTeacherToDatabase = async (teacherData) => {
 
-    const teacherRef = collection(db, "AddTeachers");
+export const addStudentDirectlyToDatabase = async (studentData) => {
+    const studentRef = collection(db, 'AddStudentsDirectly');
     try {
-        const teacherDoc = await addDoc(teacherRef, {
-            teacherId: teacherData.teacherId,
-            designation: teacherData.designation,
-            emailId: teacherData.emailId,
-            firstName: teacherData.firstName,
-            lastName: teacherData.lastName,
-            mobileNo: teacherData.mobileNo,
-            classTeacher: teacherData.classTeacher,
-            transportSlab: teacherData.transportSlab,
-            personalDetails: teacherData?.personalDetailsData,
-            addressDetails:teacherData?.addressDetailsData,
-            salaryDetails: teacherData?.salaryDetailsData,
-            experienceDetails: teacherData?.experienceDetailsData,
+        const studentDoc = await addDoc(studentRef, {
+            studentId: studentData.studentId,
+            firstName: studentData.firstName,
+            lastName: studentData.lastName,
+            mobileNo: studentData.mobileNo,
+            transportSlab: studentData.transportSlab,
+            admissionDate: studentData.admissionDate,
+            joiningClass: studentData.joiningClass,
+            feeslab: studentData.feeslab,
+            personalDetails: studentData?.personalDetailsData,
+            addressDetails: studentData?.addressDetailsData,
+            takeAdmissionfees: studentData?.takeAdmissionfees,
+            demography: studentData?.demography,
+            studentHistory: studentData?.studentHistory,
             createdAt: serverTimestamp(),
         });
 
-        console.log("data added succfully");
+        console.log('Data added successfully');
         return {
             status: true,
-            message: "Teacher and subcollections added successfully",
+            message: 'Student and subcollections added successfully',
         };
-    } catch (error) {
-        console.log(error);
-        return {
-            status: false,
-            message: "Error adding teacher and subcollections",
-        };
-    }
-};
-
-export const getTeacherFromDatabase = async () => {
-    const teacherRef = collection(db, "AddTeachers");
-
-    try {
-        const q = query(teacherRef, orderBy("createdAt", "asc"));
-        const querySnapshot = await getDocs(q);
-
-        const teacherData = [];
-
-        querySnapshot.forEach(async (doc) => {
-            const data = doc.data();
-            if (data.classTeacher) {
-                data.classTeacher = data.classTeacher.join(", "); // Join the array with a comma and space
-            }
-
-            const modifiedTeacherData = {
-                id: doc.id,
-                Name: data.firstName + " " + data.lastName,
-                "Mobile No": data.mobileNo,
-                Email: data.emailId,
-                Salary: data.salaryDetails?.salaryAmount,
-                "Class Teacher": data.classTeacher || [],
-                "Classes Assigned": ["4A, ", "6B, ", "5C"],
-                "Employee Id": data.teacherId,
-                
-            };
-
-            teacherData.push(modifiedTeacherData);
-        });
-
-        return teacherData;
     } catch (error) {
         console.error(error);
+        return {
+            status: false,
+            message: 'Error adding student and subcollections',
+        };
     }
 };
 
-export const updateTeacherInDatabase = async (documentId, updatedTeacherData) => {
+export const updateStudentDirectlyToDatabase = async (documentId, updatedStudentData) => {
 
-    const teacherDocRef = doc(db, "AddTeachers", documentId);
+    const studentDocRef = doc(db, "AddStudentsDirectly", documentId);
 
     try {
-        const teacherDocSnapshot = await getDoc(teacherDocRef);
-        const existingData = teacherDocSnapshot.data();
+        const studentDocSnapshot = await getDoc(studentDocRef);
+        const existingData = studentDocSnapshot.data();
         
-        const teacherDataChanged = JSON.stringify(existingData) !== JSON.stringify(updatedTeacherData);
-        console.log("frontend data",updatedTeacherData);
-        console.log("backend data",existingData);
-        console.log("checking for changes", teacherDataChanged);
+        const studentDataChanged = JSON.stringify(existingData) !== JSON.stringify(updatedStudentData);
         
-
-        if (teacherDataChanged) {
-            await updateDoc(teacherDocRef, updatedTeacherData);   
+        if (studentDataChanged) {
+            await updateDoc(studentDocRef, updatedStudentData);  
+            return { status: true, message: "Document successfully updated" }; 
         }
     }
     catch (error) {
@@ -172,12 +139,12 @@ export const updateTeacherInDatabase = async (documentId, updatedTeacherData) =>
     }
 };
 
-export const deleteTeacher = async (teacheId) => {
-    const teachersRef = collection(db, "AddTeachers");
-    const teacherDocRef = doc(teachersRef, teacheId);
+export const deleteStudent = async (docId) => {
+    const studentRef = collection(db, "AddStudentsDirectly");
+    const studentDocRef = doc(studentRef, docId);
 
     try {
-        await deleteDoc(teacherDocRef);
+        await deleteDoc(studentDocRef);
         console.log("Document successfully deleted!");
         return { status: true, message: "Document successfully deleted" };
     } catch (error) {
@@ -186,14 +153,14 @@ export const deleteTeacher = async (teacheId) => {
     }
 };
 
-export const getTeacherDataFromDd = async (DocId) => {
+export const getStudentDataFromDd = async (DocId) => {
     try {
-      const teacherDocRef = doc(db, "AddTeachers", DocId);
-      const teacherDocSnapshot = await getDoc(teacherDocRef);
+      const studentDocRef = doc(db, "AddStudentsDirectly", DocId);
+      const studentDocSnapshot = await getDoc(studentDocRef);
 
-      if (teacherDocSnapshot.exists()) {
-        console.log(teacherDocSnapshot.data())
-        return teacherDocSnapshot.data();
+      if (studentDocSnapshot.exists()) {
+        console.log(studentDocSnapshot.data())
+        return studentDocSnapshot.data();
       } else {
         return null;
       }
