@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
-import { addOptionalSubjectToDatabase, getOptionalSubjectDataFromDb, updateOptionalSubjectDatabase } from "../../api/ClassMaster/AddOptionalSubject";
+import {
+  addOptionalSubjectToDatabase,
+  getOptionalSubjectDataFromDb,
+  updateOptionalSubjectDatabase,
+} from "../../api/ClassMaster/AddOptionalSubject";
 import "./AddOptionalSubject.css";
-
+import "../AddTeacher/AddTeacherForm.css";
 
 const AddOrUpdateOptionalSubjectForm = ({
   isUpdateOn,
@@ -71,15 +75,10 @@ const AddOrUpdateOptionalSubjectForm = ({
     }
   };
 
-
   const handleAdd = async () => {
-    if (
-      !subjectData.subjectCode ||
-      !subjectData.subjectName
-    ) {
+    if (!subjectData.subjectCode || !subjectData.subjectName) {
       setError(true);
     } else {
-
       try {
         const response = await addOptionalSubjectToDatabase(subjectData);
 
@@ -93,10 +92,8 @@ const AddOrUpdateOptionalSubjectForm = ({
         if (response.status) {
           setConfirmationMessage(response.message);
         }
-
       } catch (error) {
         console.error("Error updating subject data", error);
-
       }
       setTimeout(() => {
         setConfirmationMessage(null);
@@ -114,77 +111,77 @@ const AddOrUpdateOptionalSubjectForm = ({
         <Alert severity="error" style={{ marginBottom: "10px" }}>
           Fill all the fields
         </Alert>
-      )
-      }
+      )}
 
-      <span
-        className="close absolute top-0 right-0 m-2 text-gray-600 cursor-pointer"
-        onClick={() => {
-          setSubjectData({
-            subjectTotalMarks: 100,
-            subjectName: "",
-            subjectCode: "",
-          });
-          console.log("close modal");
-          // isUpdateOn(false)
-          setIsModalOpen(false)
-        }}
-      >
-        &times;
-      </span>
-    <div className="heading">
-      <h2 className="text-xl font-semibold mb-4 text-center ">
+      <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
+        {" "}
         {isUpdateOn ? "Update Subject" : "Add Subject"}
       </h2>
+      <div className="addTeacher-form">
+        <form>
+          <div className="addTeacher-main-form subject-form">
+            <div className="form-first">
+              <label className="block text-sm font-medium text-gray-700">
+                Subject Code
+              </label>
+              <input
+                type="text"
+                name="subjectCode"
+                value={subjectData.subjectCode}
+                onChange={handleInputChange}
+                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div className="form-first">
+              <label className="block text-sm font-medium text-gray-700">
+                Subject Name
+              </label>
+              <input
+                type="text"
+                name="subjectName"
+                value={subjectData.subjectName}
+                onChange={handleInputChange}
+                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div className="form-first">
+              <label className="block text-sm font-medium text-gray-700">
+                Subject Total Marks
+              </label>
+              <input
+                type="text"
+                name="subjectTotalMarks"
+                value={subjectData.subjectTotalMarks}
+                onChange={handleInputChange}
+                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          </div>
+          <div className="add-subject-btn addTeacher-buttons">
+            <button
+              type="button"
+              onClick={isUpdateOn ? handleUpdate : handleAdd}
+              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
+            >
+              {isUpdateOn ? "Update" : "Add"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setSubjectData({
+                  subjectTotalMarks: 100,
+                  subjectName: "",
+                  subjectCode: "",
+                });
+                setIsModalOpen(false);
+              }}
+              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
+            >
+              Close
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Subject Code
-          </label>
-          <input
-            type="text"
-            name="subjectCode"
-            value={subjectData.subjectCode}
-            onChange={handleInputChange}
-            className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Subject Name
-          </label>
-          <input
-            type="text"
-            name="subjectName"
-            value={subjectData.subjectName}
-            onChange={handleInputChange}
-            className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Subject Total Marks
-          </label>
-          <input
-            type="text"
-            name="subjectTotalMarks"
-            value={subjectData.subjectTotalMarks}
-            onChange={handleInputChange}
-            className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="add-subject-btn">
-          <button
-            type="button"
-            onClick={isUpdateOn ? handleUpdate : handleAdd}
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            {isUpdateOn ? "Update Subject" : "Add Subject"}
-          </button>
-        </div>
-      </form>
       {confirmationMessage && (
         <div className="text-green-500 mt-4 text-center">
           {confirmationMessage}
