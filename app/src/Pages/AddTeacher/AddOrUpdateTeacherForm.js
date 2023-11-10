@@ -80,6 +80,7 @@ const AddOrUpdateTeacherForm = ({
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       // Fetch teacher data from Firebase when the modal is opened for update
+
       getTeacherData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
