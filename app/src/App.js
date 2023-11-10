@@ -11,7 +11,6 @@ import AddStudent from "./Pages/AddStudents/AddStudent.js";
 import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
 import PendingRequest from "./Pages/PendingRequest/PendingReauest.js";
 import AddDriver from "./Pages/AddDriver/AddDriver.js";
-import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
@@ -57,10 +56,6 @@ const App = () => {
               <Route 
               path="/student-master/pending_request"
               element={<AddStudent />}
-              />
-              <Route 
-              path="/student-master/add-student-Application"
-              element={<AddStudentPage/>}
               />
               <Route 
               path="/student-master/pending-request"
