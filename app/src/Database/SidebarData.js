@@ -83,7 +83,7 @@ export const SidebarData = [
       },
       {
         title: "Add Driver",
-        path: "/teacher-master/add-teacher",
+        path: "/transport-master/add-driver",
         cName: "sub-nav",
       },
       {
