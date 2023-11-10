@@ -109,6 +109,7 @@ export const addTeacherToDatabase = async (teacherData) => {
     return {
       status: true,
       message: "Teacher and subcollections added successfully",
+      docId: teacherDoc.id,
     };
   } catch (error) {
     console.log(error);
