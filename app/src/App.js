@@ -9,7 +9,7 @@ import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 import AddTeacher  from "./Pages/AddTeacher/AddTeacher.js";
 import AddStudent from "./Pages/AddStudents/AddStudent.js";
 import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
-
+import PendingRequest from "./Pages/PendingRequest/PendingReauest.js";
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
 
@@ -49,8 +49,8 @@ const App = () => {
               element={<AddStudentPage/>}
               />
               <Route 
-              path="/student-master/pending_request"
-              element={<AddStudent />}
+              path="/student-master/pending-request"
+              element={<PendingRequest />}
               />
             
           </Routes>
