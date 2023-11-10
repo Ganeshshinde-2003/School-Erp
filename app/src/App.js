@@ -8,7 +8,7 @@ import Sidebar from "./Components/Sidebar";
 import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 import AddTeacher  from "./Pages/AddTeacher/AddTeacher.js";
 import AddStudent from "./Pages/AddStudents/AddStudent.js";
-import AddStudentPage from "./Pages/AddStudentApplication/AddStuddentApplication.js"
+import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
