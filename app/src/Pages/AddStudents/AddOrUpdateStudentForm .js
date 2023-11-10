@@ -4,11 +4,72 @@ import Alert from "@mui/material/Alert";
 import "./AddStudentForm.css";
 import "../AddTeacher/AddTeacherForm.css";
 import {
-  addStudentToDatabase,
-  updateStudentInDatabase,
-  getStudentDatabase,
-  getStudentFromDatabase,
-} from "../../api/student";
+  addStudentDirectlyToDatabase,
+  updateStudentDirectlyToDatabase,
+} from "../../api/StudentMaster/AddStudentDirectly";
+const initialStudentData = {
+  studentId: "",
+  firstName: "",
+  lastName: "",
+  mobileNo: null,
+  transportSlab: "",
+  admissionDate: null,
+  joiningClass: "",
+  feeslab: "",
+
+  personalDetails: {
+    gender: "",
+    cast: "",
+    fatherName: "",
+    motherName: "",
+    aadharNo: null,
+    bloodGroup: "",
+    guardianName: "",
+    guardianNo: null,
+    telephoneNo: null,
+    dob: null,
+    isSinglegirlchild: false,
+    emailId: "",
+  },
+
+  addressDetails: {
+    homeAddress: "",
+    city: "",
+    zipCode: "",
+    state: "",
+    fatherMobileNo: "",
+  },
+
+  takeAdmissionfees: {
+    admissonFeeStatus: false,
+    makeOfPayment: null,
+    payableAmount: null,
+    modeOfPayment: "",
+    chequeNo: "",
+    upitransactionNo: "",
+    otherUniqeNo: "",
+  },
+
+  demography: {
+    religion: "",
+    cast: "",
+    fatherOccupation: "",
+    motherOccupation: "",
+    parentIncome: null,
+    motherTongue: "",
+    birthplace: "",
+    nationality: "",
+  },
+
+  studentHistory: {
+    previousSchoolName: "",
+    PreviousschoolTCNo: "",
+    previousClassPercentage: "",
+    importantDocsTaken: false,
+  },
+
+  optionalSubjects: [],
+};
 
 const AddOrUpdateStudentForm = ({
   isUpdateOn,
@@ -18,23 +79,12 @@ const AddOrUpdateStudentForm = ({
   handleSubjectAdded,
   handleSubjectUpdated,
 }) => {
-  const [studentData, setStudentData] = useState({
-    Attendance_percent: "",
-    Attended: "",
-    Class: "",
-    ClassId: "",
-    Division: "",
-    Name: "",
-    RollNo: "",
-    // TotalClasses:"",
-    // absent:"",
-    // password:"",
-    subjects: [],
-  });
-
+  const [studentData, setStudentData] = useState(initialStudentData);
+  const subjects = ["Hindi", "Sanskrit", "German", "French"];
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
+  const [docIdforUpdateStudent, setDocIdforUpdateStudent] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
@@ -62,6 +112,70 @@ const AddOrUpdateStudentForm = ({
       [name]: value,
     });
   };
+  const handleInputChange1 = (e) => {
+    const { name, value } = e.target;
+    setStudentData({
+      ...studentData,
+      personalDetails: {
+        ...studentData.personalDetails,
+        [name]: value,
+      },
+    });
+  };
+  const handleInputChange2 = (e) => {
+    const { name, value, type, checked } = e.target;
+    setStudentData((prevStudentData) => ({
+      ...prevStudentData,
+      takeAdmissionfees: {
+        ...prevStudentData.takeAdmissionfees,
+        [name]: type === "checkbox" ? checked : value,
+      },
+    }));
+  };
+  const handleInputChange3 = (e) => {
+    const { name, value } = e.target;
+    setStudentData({
+      ...studentData,
+      addressDetails: {
+        ...studentData.addressDetails,
+        [name]: value,
+      },
+    });
+  };
+  const handleInputChange4 = (e) => {
+    const { name, value } = e.target;
+    setStudentData({
+      ...studentData,
+      demography: {
+        ...studentData.demography,
+        [name]: value,
+      },
+    });
+  };
+  const handleInputChange5 = (e) => {
+    const { name, checked } = e.target;
+
+    setStudentData((prevStudentData) => ({
+      ...prevStudentData,
+      optionalSubjects: checked
+        ? [...prevStudentData.optionalSubjects, name]
+        : prevStudentData.optionalSubjects.filter(
+            (subject) => subject !== name
+          ),
+    }));
+  };
+  const handleInputChange6 = (e) => {
+    console;
+    const { name, value, type, checked } = e.target;
+
+    setStudentData((prevStudentData) => ({
+      ...prevStudentData,
+      studentHistory: {
+        ...prevStudentData.studentHistory,
+        [name]: type === "checkbox" ? checked : value,
+      },
+    }));
+  };
 
   const handleUpdate = async () => {
     try {
@@ -80,39 +194,34 @@ const AddOrUpdateStudentForm = ({
   };
 
   const handleAdd = async () => {
-    if (!studentData.Class || !studentData.ClassId || !studentData.Attended) {
-      setError(true);
-    } else {
-      try {
-        const response = await addStudentToDatabase(studentData);
-
-        setStudentData({
-          Attendance_percent: "",
-          Attended: "",
-          Class: "",
-          ClassId: "",
-          Division: "",
-          Name: "",
-          RollNo: "",
-          TotalClasses: "",
-          absent: "",
-          password: "",
-          subjects: [],
-        });
-
-        // Show a confirmation message
-        if (response.status) {
-          setConfirmationMessage(response.message);
-        }
-      } catch (error) {
-        console.error("Error updating subject data", error);
+    try {
+      let response;
+      if (activeCom === 1) {
+        response = await addStudentDirectlyToDatabase(studentData);
+        setDocIdforUpdateStudent(response.docId);
+      } else {
+        response = await updateStudentDirectlyToDatabase(
+          docIdforUpdateStudent,
+          studentData
+        );
       }
-      setTimeout(() => {
-        setConfirmationMessage(null);
+
+      if (activeCom > 6) {
+        setStudentData(initialStudentData);
+      }
+      setConfirmationMessage(response.message);
+      alert(response.message);
+      setActiveCom(activeCom + 1);
+    } catch (error) {
+      console.error("Error updating subject data", error);
+    }
+    setTimeout(() => {
+      setConfirmationMessage(null);
+      if (activeCom > 6) {
         setIsModalOpen(false);
         handleSubjectAdded();
-      }, 2000); // Hide the message after 2 seconds
-    }
+      }
+    }, 2000); // Hide the message after 2 seconds
   };
 
   if (!isModalOpen) return null;
@@ -139,6 +248,8 @@ const AddOrUpdateStudentForm = ({
                 <input
                   type="text"
                   name="firstName"
+                  value={studentData.firstName}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -150,6 +261,8 @@ const AddOrUpdateStudentForm = ({
                 <input
                   type="text"
                   name="lastName"
+                  value={studentData.lastName}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -160,7 +273,9 @@ const AddOrUpdateStudentForm = ({
                 </label>
                 <input
                   type="text"
-                  name="teacherId"
+                  name="studentId"
+                  value={studentData.studentId}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -171,6 +286,8 @@ const AddOrUpdateStudentForm = ({
                 </label>
                 <select
                   name="transportSlab"
+                  value={studentData.transportSlab}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -189,6 +306,8 @@ const AddOrUpdateStudentForm = ({
                 <input
                   type="text"
                   name="mobileNo"
+                  value={studentData.mobileNo}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -200,7 +319,9 @@ const AddOrUpdateStudentForm = ({
                 <input
                   type="text"
                   placeholder="(DD/MM/YYYY)"
-                  name="emailId"
+                  name="admissionDate"
+                  value={studentData.admissionDate}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -210,7 +331,9 @@ const AddOrUpdateStudentForm = ({
                   Joning Class*
                 </label>
                 <select
-                  name="classTeacher"
+                  name="joiningClass"
+                  value={studentData.joiningClass}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -225,7 +348,9 @@ const AddOrUpdateStudentForm = ({
                   Fee Slab*
                 </label>
                 <select
-                  name="classTeacher"
+                  name="feeslab"
+                  value={studentData.feeslab}
+                  onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -302,7 +427,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="completionYear"
+                    name="gender"
+                    value={studentData.personalDetails.gender}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -313,7 +440,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="serviceInYears"
+                    name="cast"
+                    value={studentData.personalDetails.cast}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -324,7 +453,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="joiningDate"
+                    name="fatherName"
+                    value={studentData.personalDetails.fatherName}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -335,7 +466,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="dateOfConfirmation"
+                    name="motherName"
+                    value={studentData.personalDetails.motherName}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -346,7 +479,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="experienceSummary"
+                    name="aadharNo"
+                    value={studentData.personalDetails.aadharNo}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -357,7 +492,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="experienceSummary"
+                    name="bloodGroup"
+                    value={studentData.personalDetails.bloodGroup}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -370,7 +507,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="oldPFNo"
+                    name="guardianName"
+                    value={studentData.personalDetails.guardianName}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -381,7 +520,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="previousJob"
+                    name="guardianNo"
+                    value={studentData.personalDetails.guardianNo}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -392,7 +533,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="dateOfLeaving"
+                    name="telephoneNo"
+                    value={studentData.personalDetails.telephoneNo}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -403,7 +546,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="lastJobSalary"
+                    name="dob"
+                    value={studentData.personalDetails.dob}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -414,7 +559,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="reasonForLeaving"
+                    name="isSinglegirlchild"
+                    value={studentData.personalDetails.isSinglegirlchild}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -425,7 +572,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="reasonForLeaving"
+                    name="emailId"
+                    value={studentData.personalDetails.emailId}
+                    onChange={handleInputChange1}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -440,9 +589,11 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="checkbox"
-                    name="basic"
+                    name="admissonFeeStatus"
+                    checked={studentData.takeAdmissionfees.admissonFeeStatus}
+                    onChange={handleInputChange2}
                     required
-                    className="mt-1 p-2 w-8 h-8 block w-half "
+                    className="mt-1 p-2 w-8 h-8 block w-half"
                   />
                 </div>
                 <div>
@@ -451,7 +602,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="previousYearSalary"
+                    name="modeOfPayment"
+                    value={studentData.takeAdmissionfees.modeOfPayment}
+                    onChange={handleInputChange2}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -465,7 +618,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="pfNo"
+                    name="chequeNo"
+                    value={studentData.takeAdmissionfees.chequeNo}
+                    onChange={handleInputChange2}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -476,8 +631,10 @@ const AddOrUpdateStudentForm = ({
                     (if UPI)
                   </label>
                   <input
-                    type="text"
-                    name="lic"
+                    type="number"
+                    name="upitransactionNo"
+                    value={studentData.takeAdmissionfees.upitransactionNo}
+                    onChange={handleInputChange2}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -488,14 +645,17 @@ const AddOrUpdateStudentForm = ({
                     (of other payments)
                   </label>
                   <input
-                    type="text"
-                    name="loan"
+                    type="number"
+                    name="otherUniqeNo"
+                    value={studentData.takeAdmissionfees.otherUniqeNo}
+                    onChange={handleInputChange2}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
             </div>
+
             <div className={activeCom === 3 ? "component-card" : "hidden-card"}>
               <div className="form-first">
                 <div>
@@ -504,7 +664,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="fatherName"
+                    name="homeAddress"
+                    value={studentData.addressDetails.homeAddress}
+                    onChange={handleInputChange3}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -515,7 +677,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="motherName"
+                    name="state"
+                    value={studentData.addressDetails.state}
+                    onChange={handleInputChange3}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -526,7 +690,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="spouseName"
+                    name="fatherMobileNo"
+                    value={studentData.addressDetails.fatherMobileNo}
+                    onChange={handleInputChange3}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -537,7 +703,22 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="dob"
+                    name="city"
+                    value={studentData.addressDetails.city}
+                    onChange={handleInputChange3}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    ZIP Code
+                  </label>
+                  <input
+                    type="number"
+                    name="zipCode"
+                    value={studentData.addressDetails.zipCode}
+                    onChange={handleInputChange3}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -552,7 +733,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="completionYear"
+                    name="religion"
+                    value={studentData.demography.religion}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -563,7 +746,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="serviceInYears"
+                    name="cast"
+                    value={studentData.demography.cast}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -574,7 +759,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="joiningDate"
+                    name="fatherOccupation"
+                    value={studentData.demography.fatherOccupation}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -585,7 +772,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="dateOfConfirmation"
+                    name="motherOccupation"
+                    value={studentData.demography.motherOccupation}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -596,7 +785,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="experienceSummary"
+                    name="parentIncome"
+                    value={studentData.demography.parentIncome}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -609,7 +800,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="oldPFNo"
+                    name="motherTongue"
+                    value={studentData.demography.motherTongue}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -620,7 +813,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="previousJob"
+                    name="birthplace"
+                    value={studentData.demography.birthplace}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -631,7 +826,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="dateOfLeaving"
+                    name="nationality"
+                    value={studentData.demography.nationality}
+                    onChange={handleInputChange4}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -640,50 +837,20 @@ const AddOrUpdateStudentForm = ({
             </div>
             <div className={activeCom === 5 ? "component-card" : "hidden-card"}>
               <div className="form-first">
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Hindi
-                  </label>
-                  <input
-                    type="checkbox"
-                    name="basic"
-                    required
-                    className="mt-1 p-2 w-8 h-8 block w-half "
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Sanskrit
-                  </label>
-                  <input
-                    type="checkbox"
-                    name="basic"
-                    required
-                    className="mt-1 p-2 w-8 h-8 block w-half "
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    German
-                  </label>
-                  <input
-                    type="checkbox"
-                    name="basic"
-                    required
-                    className="mt-1 p-2 w-8 h-8 block w-half "
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    French
-                  </label>
-                  <input
-                    type="checkbox"
-                    name="basic"
-                    required
-                    className="mt-1 p-2 w-8 h-8 block w-half "
-                  />
-                </div>
+                {subjects.map((subject) => (
+                  <div key={subject}>
+                    <label className="block text-[18px] font-medium text-[#333333]">
+                      {subject}
+                    </label>
+                    <input
+                      type="checkbox"
+                      name={subject}
+                      checked={studentData.optionalSubjects.includes(subject)}
+                      onChange={handleInputChange5}
+                      className="mt-1 p-2 w-8 h-8 block w-half "
+                    />
+                  </div>
+                ))}
               </div>
             </div>
             <div className={activeCom === 6 ? "component-card" : "hidden-card"}>
@@ -694,8 +861,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="fatherName"
-                    required
+                    name="previousSchoolName"
+                    value={studentData.studentHistory.previousSchoolName}
+                    onChange={handleInputChange6}
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -705,7 +873,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="motherName"
+                    name="PreviousschoolTCNo"
+                    value={studentData.studentHistory.PreviousschoolTCNo}
+                    onChange={handleInputChange6}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -716,7 +886,9 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="text"
-                    name="spouseName"
+                    name="previousClassPercentage"
+                    value={studentData.studentHistory.previousClassPercentage}
+                    onChange={handleInputChange6}
                     required
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -727,9 +899,11 @@ const AddOrUpdateStudentForm = ({
                   </label>
                   <input
                     type="checkbox"
-                    name="basic"
+                    name="importantDocsTaken"
+                    checked={studentData.studentHistory.importantDocsTaken}
+                    onChange={handleInputChange6}
                     required
-                    className="mt-1 p-2 w-8 h-8 block w-half "
+                    className="mt-1 p-2 w-8 h-8 block w-half"
                   />
                 </div>
               </div>
@@ -742,7 +916,7 @@ const AddOrUpdateStudentForm = ({
             <button
               type="button"
               onClick={() => {
-                setTeacherData(inticalteacherData);
+                setStudentData(inticalteacherData);
                 setIsModalOpen(false);
               }}
               className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
