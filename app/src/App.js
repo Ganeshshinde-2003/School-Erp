@@ -9,6 +9,8 @@ import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 import AddTeacher from "./Pages/AddTeacher/AddTeacher.js";
 import AddStudent from "./Pages/AddStudents/AddStudent.js";
 import AddDriver from "./Pages/AddDriver/AddDriver.js";
+import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
+
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
 
@@ -45,6 +47,15 @@ const App = () => {
               path="/transport-master/add-driver"
               element={<AddDriver />}
             />
+              />
+              <Route 
+              path="/student-master/add-student-Application"
+              element={<AddStudentPage/>}
+              />
+              <Route 
+              path="/student-master/pending_request"
+              element={<AddStudent />}
+              />
           </Routes>
         </div>
       </div>
