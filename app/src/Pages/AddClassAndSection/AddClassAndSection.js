@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import { Oval } from 'react-loader-spinner';
-import AddOrUpdateSubjectForm from "../AddSubjects/AddOrUpdateSubjectForm "; 
 import { addClassAndSectionsToDatabase, deleteClassAndSectionsData, getClassAndSectionsDatabase } from "../../api/ClassMaster/AddClassAndSection";
+import AddOrUpdateClassAndSectionForm from "./AddOrUpdateClassAndSectionForm ";
 
 const AddClassAndSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,11 +66,10 @@ const AddClassAndSubject = () => {
 
 // Function to open the modal
 const openModal = () => {
-  addClassAndSectionsToDatabase(data)
-// console.log("Open modal");
-// setDocId(null);
-// setSubjectUpdate(false)
-// setIsModalOpen(true);
+console.log("Open modal");
+setDocId(null);
+setSubjectUpdate(false)
+setIsModalOpen(true);
 };
 
 const handleSubjectAdded = () => {
@@ -118,7 +117,7 @@ return (
 
     </div>
   </div>
-  <AddOrUpdateSubjectForm
+  <AddOrUpdateClassAndSectionForm
     isModalOpen={isModalOpen}
     setIsModalOpen={setIsModalOpen}
     handleSubjectAdded={handleSubjectAdded}
