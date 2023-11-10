@@ -8,6 +8,8 @@ import Sidebar from "./Components/Sidebar";
 import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 import AddTeacher  from "./Pages/AddTeacher/AddTeacher.js";
 import AddStudent from "./Pages/AddStudents/AddStudent.js";
+import AddStudentPage from "./Pages/AddStudentApplication/AddStuddentApplication.js"
+
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
 
@@ -40,6 +42,14 @@ const App = () => {
               />
             <Route 
               path="/student-master/add-student"
+              element={<AddStudent />}
+              />
+              <Route 
+              path="/student-master/add-student-Application"
+              element={<AddStudentPage/>}
+              />
+              <Route 
+              path="/student-master/pending_request"
               element={<AddStudent />}
               />
             

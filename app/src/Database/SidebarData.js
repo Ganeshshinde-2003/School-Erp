@@ -55,12 +55,12 @@ export const SidebarData = [
       },
       {
         title: "Add Student Application",
-        path: "/teacher-master/add-teacher",
+        path: "/student-master/add-student-Application",
         cName: "sub-nav",
       },
       {
-        title: "Peding Requests",
-        path: "/teacher-master/add-teacher",
+        title: "Pending Requests",
+        path: "/student-master/pending-request",
         cName: "sub-nav",
       },
     ],
