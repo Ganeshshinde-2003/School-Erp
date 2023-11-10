@@ -76,10 +76,12 @@ const AddOrUpdateTeacherForm = ({
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
+  const [docIdforUpdate, setDocIdforUpdate] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       // Fetch teacher data from Firebase when the modal is opened for update
+
       getTeacherData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
@@ -163,22 +165,32 @@ const AddOrUpdateTeacherForm = ({
   };
 
   const handleAdd = async () => {
-    console.log(teacherData);
+    // console.log(teacherData);
     try {
-      const response = await addTeacherToDatabase(teacherData);
+      let response;
+      if (activeCom === 1) {
+        response = await addTeacherToDatabase(teacherData);
+        setDocIdforUpdate(response.docId);
+      } else {
+        response = await updateTeacherInDatabase(docIdforUpdate, teacherData);
+      }
 
-      setTeacherData(inticalteacherData);
-
+      if (activeCom > 5) {
+        setTeacherData(inticalteacherData);
+      }
       // Show a confirmation message
       setConfirmationMessage(response.message);
       alert(response.message);
+      setActiveCom(activeCom + 1);
     } catch (error) {
       console.error("Error adding teacher data", error);
     }
     setTimeout(() => {
       setConfirmationMessage(null);
-      setIsModalOpen(false);
-      handleTeacherAdded();
+      if (activeCom > 5) {
+        setIsModalOpen(false);
+        handleTeacherAdded();
+      }
     }, 2000); // Hide the message after 2 seconds
   };
 
@@ -249,7 +261,7 @@ const AddOrUpdateTeacherForm = ({
                   required
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
-                  <option value="bus">--- Select ---</option>
+                  <option value="">--- Select ---</option>
                   <option value="bus">Bus</option>
                   <option value="car">Car</option>
                   <option value="bike">Bike</option>
@@ -307,7 +319,7 @@ const AddOrUpdateTeacherForm = ({
                   required
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
-                  <option value="bus">--- Select ---</option>
+                  <option value="">--- Select ---</option>
                   <option value="bus">Class A</option>
                   <option value="car">Class B</option>
                   <option value="bike">Class C</option>
@@ -358,6 +370,12 @@ const AddOrUpdateTeacherForm = ({
                 className={activeCom === 4 ? "active-component" : ""}
               >
                 Experience Details*
+              </div>
+              <div
+                onClick={() => setActiveCom(5)}
+                className={activeCom === 5 ? "active-component" : ""}
+              >
+                Assign Classes*
               </div>
             </div>
             <div className={activeCom === 1 ? "component-card" : "hidden-card"}>
@@ -553,8 +571,8 @@ const AddOrUpdateTeacherForm = ({
                     className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="bus">--- Select ---</option>
-                    <option value="bus">Male</option>
-                    <option value="car">Female</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                   </select>
                 </div>
                 <div>
@@ -807,10 +825,146 @@ const AddOrUpdateTeacherForm = ({
                 </div>
               </div>
             </div>
+            <div className={activeCom === 5 ? "component-card" : "hidden-card"}>
+              {/* <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Completion year
+                  </label>
+                  <input
+                    type="text"
+                    name="completionYear"
+                    value={teacherData.experienceDetails.completionYear}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Service in Year
+                  </label>
+                  <input
+                    type="text"
+                    name="serviceInYears"
+                    value={teacherData.experienceDetails.serviceInYears}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Date Of Joining
+                  </label>
+                  <input
+                    type="text"
+                    name="joiningDate"
+                    value={teacherData.experienceDetails.joiningDate}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Date of Confirmation
+                  </label>
+                  <input
+                    type="text"
+                    name="dateOfConfirmation"
+                    value={teacherData.experienceDetails.dateOfConfirmation}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Experience summery
+                  </label>
+                  <input
+                    type="text"
+                    name="experienceSummary"
+                    value={teacherData.experienceDetails.experienceSummary}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="form-first">
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Old PF No.
+                  </label>
+                  <input
+                    type="text"
+                    name="oldPFNo"
+                    value={teacherData.experienceDetails.oldPFNo}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Previous Job
+                  </label>
+                  <input
+                    type="text"
+                    name="previousJob"
+                    value={teacherData.experienceDetails.previousJob}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Date of Leaving
+                  </label>
+                  <input
+                    type="text"
+                    name="dateOfLeaving"
+                    value={teacherData.experienceDetails.dateOfLeaving}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Last Job Salary
+                  </label>
+                  <input
+                    type="text"
+                    name="lastJobSalary"
+                    value={teacherData.experienceDetails.lastJobSalary}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[18px] font-medium text-[#333333]">
+                    Reason For Leaving
+                  </label>
+                  <input
+                    type="text"
+                    name="reasonForLeaving"
+                    value={teacherData.experienceDetails.reasonForLeaving}
+                    onChange={handleInputChange4}
+                    required
+                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div> */}
+            </div>
           </div>
           <div className="addTeacher-buttons">
             <button onClick={isUpdateOn ? handleUpdate : handleAdd}>
-              {isUpdateOn ? "Update" : "Add"}
+              {isUpdateOn ? "Update" : "Save & Continue"}
             </button>
             <button
               type="button"
