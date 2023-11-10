@@ -205,14 +205,6 @@ const AddStudentForm =  ({
           <button type="submit" className="bg-green-500 text-white px-4 py-2 mr-2" >
             Add Student
           </button>
-          <button
-              type="button"
-              onClick={() => {
-                setIsModalOpen(false);
-              }}
-              className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
-            >
-            </button>
             </div>
 
           </form>
