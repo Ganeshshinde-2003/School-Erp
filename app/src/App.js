@@ -8,6 +8,8 @@ import Sidebar from "./Components/Sidebar";
 import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 import AddTeacher from "./Pages/AddTeacher/AddTeacher.js";
 import AddStudent from "./Pages/AddStudents/AddStudent.js";
+import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
+import PendingRequest from "./Pages/PendingRequest/PendingReauest.js";
 import AddDriver from "./Pages/AddDriver/AddDriver.js";
 import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
 
@@ -56,6 +58,15 @@ const App = () => {
               path="/student-master/pending_request"
               element={<AddStudent />}
               />
+              <Route 
+              path="/student-master/add-student-Application"
+              element={<AddStudentPage/>}
+              />
+              <Route 
+              path="/student-master/pending-request"
+              element={<PendingRequest />}
+              />
+           
           </Routes>
         </div>
       </div>
