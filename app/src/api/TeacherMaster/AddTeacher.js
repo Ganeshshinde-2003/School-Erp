@@ -135,12 +135,12 @@ export const getTeacherFromDatabase = async () => {
       const modifiedTeacherData = {
         id: doc.id,
         Name: data.firstName + " " + data.lastName,
-        "Mobile No": data.mobileNo,
+        "Mobile No": data?.mobileNo || 0,
         Email: data.emailId,
-        Salary: data.salaryDetails?.salaryAmount,
+        Salary: data.salaryDetails?.salaryAmount || 0,
         "Class Teacher": data.classTeacher || [],
         "Classes Assigned": ["4A, ", "6B, ", "5C"],
-        "Employee Id": data.teacherId,
+        "Employee Id": data?.teacherId,
       };
 
       teacherData.push(modifiedTeacherData);
@@ -164,7 +164,6 @@ export const updateTeacherInDatabase = async (
 
     const teacherDataChanged =
       JSON.stringify(existingData) !== JSON.stringify(updatedTeacherData);
-    console.log("frontend data", updatedTeacherData);
     console.log("backend data", existingData);
     console.log("checking for changes", teacherDataChanged);
 
