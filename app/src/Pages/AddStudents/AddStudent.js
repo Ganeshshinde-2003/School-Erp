@@ -88,7 +88,7 @@ const AddStudent = () => {
         </p>
       </div>
       <AddOrUpdateStudentForm
-        isModalOpen={isModalOpen}
+        isModalOpen={isModalOpen} 
         setIsModalOpen={setIsModalOpen}
         handleSubjectAdded={handleSubjectAdded}
         handleSubjectUpdated={handleSubjectUpdated}
