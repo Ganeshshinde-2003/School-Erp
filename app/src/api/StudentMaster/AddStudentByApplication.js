@@ -126,7 +126,6 @@ export const getStudentDataFromDd = async (DocId) => {
               "Joining Class": data.joiningClass,
               "Payment Mode": data.paymentmode,
               "Transaction No.": data.upitransactionNo,
-              "Approve/disapprove":  data.isPending,
             };
       
             studentData.push(modifiedStudentData);

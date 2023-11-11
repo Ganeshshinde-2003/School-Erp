@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
-import "../AddStudents/AddStudentForm.css";
 import "../AddTeacher/AddTeacherForm.css";
 
 import {

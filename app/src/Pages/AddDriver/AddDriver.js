@@ -101,6 +101,7 @@ const AddDriver = () => {
                 rowHeight={100}
                 action={true}
                 handleAction={handleAction}
+                ispanding={false}
               />
               <p className="h-16 text-center font-bold text-white flex items-center justify-center">
                 <AddButton

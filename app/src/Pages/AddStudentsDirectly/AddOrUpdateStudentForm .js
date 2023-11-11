@@ -896,12 +896,12 @@ const AddOrUpdateStudentForm = ({
           <div className="addTeacher-buttons">
             <button  type="button"
               onClick={isUpdateOn ? handleUpdate : handleAdd}>
-              {isUpdateOn ? "Update" : "Save & Continue"}
+              {isUpdateOn ? "Update" : "Add"}
             </button>
             <button
               type="button"
               onClick={() => {
-                setStudentData(inticalteacherData);
+                setStudentData(initialStudentData);
                 setIsModalOpen(false);
               }}
               className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
