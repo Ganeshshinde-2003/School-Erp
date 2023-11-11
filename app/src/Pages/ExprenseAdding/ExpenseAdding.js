@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
-import "./AddSubject.css";
-import {
-  getSubjectDataFromDb,
-  deleteSubject,
-  getAddSubjectDatabase,
-  updateSubjectInDatabase,
-} from "../../api/ClassMaster/Addsubject";
 import { Oval } from "react-loader-spinner";
-import AddOrUpdateSubjectForm from "./AddOrUpdateSubjectForm ";
+import AddOrUpdateExpenseForm from "./AddOrUpdateExpenseFrom";
+import {
+  deleteExpenseData,
+  getExpenseDataFromDatabase,
+} from "../../api/ExpenseAdding/AddExpense";
 
 const AddSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [subjectUpdate, setSubjectUpdate] = useState(false);
+  const [expenseUpdate, setexpenseUpdate] = useState(false);
 
-  const [subjectData, setSubjectData] = useState([]);
+  const [expenseData, setexpenseData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
 
   const fetchData = () => {
-    getAddSubjectDatabase()
+    getExpenseDataFromDatabase()
       .then((data) => {
-        setSubjectData(data);
+        setexpenseData(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -44,12 +41,12 @@ const AddSubject = () => {
   const handleAction = async (actionType, documentId) => {
     if (actionType === "edit") {
       console.log("edit ocument with ID:", documentId);
-      setSubjectUpdate(true);
+      setexpenseUpdate(true);
       setDocId(documentId);
       console.log(docId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteSubject(documentId);
+      const response = await deleteExpenseData(documentId);
       console.log("Delete document with ID:", documentId);
       if (response.status) {
         setDataChanged(true);
@@ -61,17 +58,17 @@ const AddSubject = () => {
   const openModal = () => {
     console.log("Open modal");
     setDocId(null);
-    setSubjectUpdate(false);
+    setexpenseUpdate(false);
     setIsModalOpen(true);
   };
 
-  const handleSubjectAdded = () => {
+  const handleExpenseAdded = () => {
     setDataChanged(true);
   };
 
-  const handleSubjectUpdated = () => {
+  const handleExpenseUpdated = () => {
     setDocId(null);
-    setSubjectUpdate(false);
+    setexpenseUpdate(false);
     setDataChanged(true);
   };
 
@@ -95,17 +92,17 @@ const AddSubject = () => {
           ) : (
             <div className="add-optional-sub-table">
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-                Add Subjects
+                Add Expense
               </h1>
               <DynamicTable
-                data={subjectData}
+                data={expenseData}
                 rowHeight={100}
                 action={true}
                 handleAction={handleAction}
               />
               <p className="h-16 text-center font-bold text-white flex items-center justify-center">
                 <AddButton
-                  buttonText={"Add subject"}
+                  buttonText={"Add Expense"}
                   onClickButton={openModal}
                 />
               </p>
@@ -113,13 +110,13 @@ const AddSubject = () => {
           )}
         </div>
       </div>
-      <AddOrUpdateSubjectForm
+      <AddOrUpdateExpenseForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleSubjectAdded={handleSubjectAdded}
-        handleSubjectUpdated={handleSubjectUpdated}
+        handleExpenseAdded={handleExpenseAdded}
+        handleExpenseUpdated={handleExpenseUpdated}
         DocId={docId}
-        isUpdateOn={subjectUpdate}
+        isUpdateOn={expenseUpdate}
       />
     </div>
   );

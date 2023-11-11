@@ -8,9 +8,11 @@ import Sidebar from "./Components/Sidebar";
 import AddSubjects from "./Pages/AddSubjects/AddSubjects";
 import AddTeacher from "./Pages/AddTeacher/AddTeacher.js";
 import AddStudent from "./Pages/AddStudents/AddStudent.js";
-import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js"
+import AddStudentPage from "./Pages/AddStudentApplication/AddStudentApplication.js";
 import PendingRequest from "./Pages/PendingRequest/PendingReauest.js";
 import AddDriver from "./Pages/AddDriver/AddDriver.js";
+import LocateDriver from "./Pages/LocateDriver/LocateDriver.js";
+import ExpenseAdding from "./Pages/ExprenseAdding/ExpenseAdding.js";
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
@@ -48,20 +50,26 @@ const App = () => {
               path="/transport-master/add-driver"
               element={<AddDriver />}
             />
-              />
-              <Route 
+            <Route
+              path="/transport-master/locate-driver"
+              element={<LocateDriver />}
+            />
+            <Route
               path="/student-master/add-student-Application"
-              element={<AddStudentPage/>}
-              />
-              <Route 
+              element={<AddStudentPage />}
+            />
+            <Route
               path="/student-master/pending_request"
               element={<AddStudent />}
-              />
-              <Route 
+            />
+            <Route
               path="/student-master/pending-request"
               element={<PendingRequest />}
-              />
-           
+            />
+            <Route
+              path="/expense-adding/add-expense"
+              element={<ExpenseAdding />}
+            />
           </Routes>
         </div>
       </div>

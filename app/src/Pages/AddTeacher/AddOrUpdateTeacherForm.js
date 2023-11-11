@@ -175,8 +175,8 @@ const AddOrUpdateTeacherForm = ({
     }
     setTimeout(() => {
       setConfirmationMessage(null);
-        setIsModalOpen(false);
-        handleTeacherAdded();
+      setIsModalOpen(false);
+      handleTeacherAdded();
     }, 2000);
   };
 
@@ -407,15 +407,15 @@ const AddOrUpdateTeacherForm = ({
                 </div>
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    DOB(DD/MM/YYYY)*
+                    DOB*
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="dob"
                     value={teacherData.personalDetails.dob}
                     onChange={handleInputChange1}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -949,7 +949,10 @@ const AddOrUpdateTeacherForm = ({
             </div>
           </div>
           <div className="addTeacher-buttons">
-            <button type="button" onClick={isUpdateOn ? handleUpdate : handleAdd}>
+            <button
+              type="button"
+              onClick={isUpdateOn ? handleUpdate : handleAdd}
+            >
               {isUpdateOn ? "Update" : "Save & Continue"}
             </button>
             <button

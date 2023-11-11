@@ -317,13 +317,12 @@ const AddOrUpdateStudentForm = ({
                   Add Date*
                 </label>
                 <input
-                  type="text"
-                  placeholder="(DD/MM/YYYY)"
+                  type="date"
                   name="admissionDate"
                   value={studentData.admissionDate}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
               <div>

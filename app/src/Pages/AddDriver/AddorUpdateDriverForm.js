@@ -6,68 +6,21 @@ import {
   addStudentDirectlyToDatabase,
   updateStudentDirectlyToDatabase,
 } from "../../api/StudentMaster/AddStudentDirectly";
-const initialStudentData = {
-  studentId: "",
+import {
+  addDriverDataToDb,
+  getSpecificDriverDataFromDb,
+  updateDriverDataToDatabase,
+} from "../../api/TransportMaster/AddDriver";
+const initialDriverData = {
   firstName: "",
   lastName: "",
-  mobileNo: null,
-  transportSlab: "",
-  admissionDate: null,
-  joiningClass: "",
-  feeslab: "",
-
-  personalDetails: {
-    gender: "",
-    cast: "",
-    fatherName: "",
-    motherName: "",
-    aadharNo: null,
-    bloodGroup: "",
-    guardianName: "",
-    guardianNo: null,
-    telephoneNo: null,
-    dob: null,
-    isSinglegirlchild: false,
-    emailId: "",
-  },
-
-  addressDetails: {
-    homeAddress: "",
-    city: "",
-    zipCode: "",
-    state: "",
-    fatherMobileNo: "",
-  },
-
-  takeAdmissionfees: {
-    admissonFeeStatus: false,
-    makeOfPayment: null,
-    payableAmount: null,
-    modeOfPayment: "",
-    chequeNo: "",
-    upitransactionNo: "",
-    otherUniqeNo: "",
-  },
-
-  demography: {
-    religion: "",
-    cast: "",
-    fatherOccupation: "",
-    motherOccupation: "",
-    parentIncome: null,
-    motherTongue: "",
-    birthplace: "",
-    nationality: "",
-  },
-
-  studentHistory: {
-    previousSchoolName: "",
-    PreviousschoolTCNo: "",
-    previousClassPercentage: "",
-    importantDocsTaken: false,
-  },
-
-  optionalSubjects: [],
+  dob: "",
+  driverVehicle: "",
+  driverId: 0,
+  mobileNo: "",
+  driverSalary: 0,
+  bloodGroup: "",
+  bankAccountNumber: "",
 };
 
 const AddOrUpdateDriverForm = ({
@@ -75,11 +28,10 @@ const AddOrUpdateDriverForm = ({
   isModalOpen,
   setIsModalOpen,
   DocId,
-  handleSubjectAdded,
-  handleSubjectUpdated,
+  handleDriverAdded,
+  handleDriverUpdated,
 }) => {
-  const [studentData, setStudentData] = useState(initialStudentData);
-  const subjects = ["Hindi", "Sanskrit", "German", "French"];
+  const [driverData, setDriverData] = useState(initialDriverData);
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
@@ -88,16 +40,16 @@ const AddOrUpdateDriverForm = ({
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       // Fetch subject data from Firebase when the modal is opened for update
-      getStudentData(DocId);
+      getDriverData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
 
-  const getStudentData = async (DocId) => {
+  const getDriverData = async (DocId) => {
     try {
-      const subject = await getStudentFromDatabase(DocId);
+      const subject = await getSpecificDriverDataFromDb(DocId);
 
       if (subject) {
-        setStudentData(subject);
+        setDriverData(subject);
       }
     } catch (error) {
       console.error("Error fetching subject data", error);
@@ -106,86 +58,22 @@ const AddOrUpdateDriverForm = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setStudentData({
-      ...studentData,
+    setDriverData({
+      ...driverData,
       [name]: value,
     });
-  };
-  const handleInputChange1 = (e) => {
-    const { name, value } = e.target;
-    setStudentData({
-      ...studentData,
-      personalDetails: {
-        ...studentData.personalDetails,
-        [name]: value,
-      },
-    });
-  };
-  const handleInputChange2 = (e) => {
-    const { name, value, type, checked } = e.target;
-    setStudentData((prevStudentData) => ({
-      ...prevStudentData,
-      takeAdmissionfees: {
-        ...prevStudentData.takeAdmissionfees,
-        [name]: type === "checkbox" ? checked : value,
-      },
-    }));
-  };
-  const handleInputChange3 = (e) => {
-    const { name, value } = e.target;
-    setStudentData({
-      ...studentData,
-      addressDetails: {
-        ...studentData.addressDetails,
-        [name]: value,
-      },
-    });
-  };
-  const handleInputChange4 = (e) => {
-    const { name, value } = e.target;
-    setStudentData({
-      ...studentData,
-      demography: {
-        ...studentData.demography,
-        [name]: value,
-      },
-    });
-  };
-  const handleInputChange5 = (e) => {
-    const { name, checked } = e.target;
-
-    setStudentData((prevStudentData) => ({
-      ...prevStudentData,
-      optionalSubjects: checked
-        ? [...prevStudentData.optionalSubjects, name]
-        : prevStudentData.optionalSubjects.filter(
-            (subject) => subject !== name
-          ),
-    }));
-  };
-  const handleInputChange6 = (e) => {
-    console;
-    const { name, value, type, checked } = e.target;
-
-    setStudentData((prevStudentData) => ({
-      ...prevStudentData,
-      studentHistory: {
-        ...prevStudentData.studentHistory,
-        [name]: type === "checkbox" ? checked : value,
-      },
-    }));
   };
 
   const handleUpdate = async () => {
     try {
-      const response = await updateStudentInDatabase(DocId, studentData);
+      const response = await updateDriverDataToDatabase(DocId, driverData);
 
       setConfirmationMessage(response.message);
-
+      setDriverData(initialDriverData);
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
-        handleSubjectUpdated();
+        handleDriverUpdated();
       }, 2000); // Hide the message after 2 seconds
     } catch (error) {
       console.error("Error updating subject data", error);
@@ -194,32 +82,18 @@ const AddOrUpdateDriverForm = ({
 
   const handleAdd = async () => {
     try {
-      let response;
-      if (activeCom === 1) {
-        response = await addStudentDirectlyToDatabase(studentData);
-        setDocIdforUpdateStudent(response.docId);
-      } else {
-        response = await updateStudentDirectlyToDatabase(
-          docIdforUpdateStudent,
-          studentData
-        );
-      }
+      const response = await addDriverDataToDb(driverData);
 
-      if (activeCom > 6) {
-        setStudentData(initialStudentData);
-      }
       setConfirmationMessage(response.message);
       alert(response.message);
-      setActiveCom(activeCom + 1);
+      setDriverData(initialDriverData);
     } catch (error) {
       console.error("Error updating subject data", error);
     }
     setTimeout(() => {
       setConfirmationMessage(null);
-      if (activeCom > 6) {
-        setIsModalOpen(false);
-        handleSubjectAdded();
-      }
+      setIsModalOpen(false);
+      handleDriverAdded();
     }, 2000); // Hide the message after 2 seconds
   };
 
@@ -247,7 +121,7 @@ const AddOrUpdateDriverForm = ({
                 <input
                   type="text"
                   name="firstName"
-                  value={studentData.firstName}
+                  value={driverData.firstName}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -260,7 +134,7 @@ const AddOrUpdateDriverForm = ({
                 <input
                   type="text"
                   name="lastName"
-                  value={studentData.lastName}
+                  value={driverData.lastName}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -272,8 +146,8 @@ const AddOrUpdateDriverForm = ({
                 </label>
                 <input
                   type="text"
-                  name="studentId"
-                  value={studentData.studentId}
+                  name="driverId"
+                  value={driverData.driverId}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -284,8 +158,8 @@ const AddOrUpdateDriverForm = ({
                   Allot Vehicle*
                 </label>
                 <select
-                  name="transportSlab"
-                  value={studentData.transportSlab}
+                  name="driverVehicle"
+                  value={driverData.driverVehicle}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -302,8 +176,8 @@ const AddOrUpdateDriverForm = ({
                 </label>
                 <input
                   type="text"
-                  name="mobileNo"
-                  value={studentData.mobileNo}
+                  name="bankAccountNumber"
+                  value={driverData.bankAccountNumber}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -318,7 +192,7 @@ const AddOrUpdateDriverForm = ({
                 <input
                   type="text"
                   name="mobileNo"
-                  value={studentData.mobileNo}
+                  value={driverData.mobileNo}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -330,8 +204,8 @@ const AddOrUpdateDriverForm = ({
                 </label>
                 <input
                   type="text"
-                  name="admissionDate"
-                  value={studentData.admissionDate}
+                  name="bloodGroup"
+                  value={driverData.bloodGroup}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -343,8 +217,8 @@ const AddOrUpdateDriverForm = ({
                 </label>
                 <input
                   type="text"
-                  name="admissionDate"
-                  value={studentData.admissionDate}
+                  name="driverSalary"
+                  value={driverData.driverSalary}
                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -355,13 +229,12 @@ const AddOrUpdateDriverForm = ({
                   Date of Birth*
                 </label>
                 <input
-                  type="text"
-                  name="admissionDate"
-                  placeholder="DD/MM/YYYY"
-                  value={studentData.admissionDate}
+                  type="date"
+                  name="dob"
+                  value={driverData.dob}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -385,13 +258,16 @@ const AddOrUpdateDriverForm = ({
             </div>
           </div>
           <div className="addTeacher-buttons">
-            <button onClick={isUpdateOn ? handleUpdate : handleAdd}>
+            <button
+              type="button"
+              onClick={isUpdateOn ? handleUpdate : handleAdd}
+            >
               {isUpdateOn ? "Update" : "Add"}
             </button>
             <button
               type="button"
               onClick={() => {
-                setStudentData(inticalteacherData);
+                setDriverData(initialDriverData);
                 setIsModalOpen(false);
               }}
               className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
