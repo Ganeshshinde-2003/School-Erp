@@ -88,7 +88,7 @@ export const SidebarData = [
       },
       {
         title: "Locate driver or bus",
-        path: "/teacher-master/add-teacher",
+        path: "/transport-master/locate-driver",
         cName: "sub-nav",
       },
     ],
@@ -230,8 +230,8 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: "Add driver",
-        path: "/teacher-master/add-teacher",
+        title: "Add Expense",
+        path: "/expense-adding/add-expense",
         cName: "sub-nav",
       },
     ],

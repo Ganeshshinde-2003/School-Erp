@@ -33,15 +33,14 @@ export const addClassAndSectionsToDatabase = async (classData) => {
     }
 
     await addDoc(classAndSectionsRef, {
-    className,
-    noOfSections,
-    nameOfSections, //will auto generate when wants use we can use
-    subjects: classData.subjects,
-    optionalSubjects: classData.optionalSubjects,
-    createdAt: serverTimestamp(),
-
+      className,
+      noOfSections,
+      nameOfSections, //will auto generate when wants use we can use
+      subjects: classData.subjects,
+      optionalSubjects: classData.optionalSubjects,
+      createdAt: serverTimestamp(),
     });
-    
+
     console.log("Document successfully written!");
     return { status: true, message: "Document successfully added" };
   } catch (error) {
@@ -62,14 +61,14 @@ export const getClassAndSectionsDatabase = async () => {
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       if (data.subjects || data.optionalSubjects) {
-        data.optionalSubjects = data.optionalSubjects.join(', ')
-        data.subjects = data.subjects.join(', '); // Join the array with a comma and space
-    }
+        data.optionalSubjects = data.optionalSubjects.join(", ");
+        data.subjects = data.subjects.join(", "); // Join the array with a comma and space
+      }
       const modifiedData = {
         id: doc.id,
         "Class Name": data.className,
         "No Of Sections": data.noOfSections,
-        "Subjects": data.subjects || [],
+        Subjects: data.subjects || [],
         "Optional Subjects": data.optionalSubjects || [],
       };
       classAndSectionsData.push(modifiedData);
@@ -81,7 +80,10 @@ export const getClassAndSectionsDatabase = async () => {
   }
 };
 
-export const updateClassAndSectionsDatabase = async (documentId, updatedClassData) => {
+export const updateClassAndSectionsDatabase = async (
+  documentId,
+  updatedClassData
+) => {
   const classAndSectionsRef = collection(db, "AddClassAndSections");
   const classDocRef = doc(classAndSectionsRef, documentId); // Use Id to reference the specific document
 
