@@ -282,7 +282,7 @@ const AddOrUpdateStudentForm = ({
               </div>
               <div>
                 <label className="block text-[18px] font-medium text-[#333333]">
-                  Transport Slab*
+                                    Transport Slab*
                 </label>
                 <select
                   name="transportSlab"
