@@ -34,8 +34,7 @@ const PendingRequest = () => {
       ) : (
         <DynamicTable
           data={studentData}
-          rowHeight={40} // Adjust the row height as needed
-          action={true} // Set to true if you want to display action buttons
+          rowHeight={40} 
           handleAction={handleAction}
         />
       )}

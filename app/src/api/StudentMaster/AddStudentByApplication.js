@@ -114,17 +114,19 @@ export const getStudentDataFromDd = async (DocId) => {
 
         for (const doc of querySnapshot.docs) {
             const data = doc.data();
-      
+            if(data.isPending){
+                data.isPending ="Approve  disapprove"
+            }
             // Modify the student data as needed
             const modifiedStudentData = {
               id: doc.id,
               Name: data.firstName + " " + data.lastName,
-              mobileNo: data.mobileNo,
-              applicationNo: data.applicationNo,
-              joiningClass: data.joiningClass,
-              paymentmode: data.paymentmode,
-              upitransactionNo: data.upitransactionNo,
-              isPending: data.isPending,
+              "Mobile No.": data.mobileNo,
+              "Application No.": data.applicationNo,
+              "Joining Class": data.joiningClass,
+              "Payment Mode": data.paymentmode,
+              "Transaction No.": data.upitransactionNo,
+              "Approve/disapprove":  data.isPending,
             };
       
             studentData.push(modifiedStudentData);

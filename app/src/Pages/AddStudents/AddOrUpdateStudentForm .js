@@ -5,6 +5,7 @@ import "./AddStudentForm.css";
 import "../AddTeacher/AddTeacherForm.css";
 import {
   addStudentDirectlyToDatabase,
+  getStudentDataFromDd,
   updateStudentDirectlyToDatabase,
 } from "../../api/StudentMaster/AddStudentDirectly";
 const initialStudentData = {
@@ -76,15 +77,14 @@ const AddOrUpdateStudentForm = ({
   isModalOpen,
   setIsModalOpen,
   DocId,
-  handleSubjectAdded,
-  handleSubjectUpdated,
+  handleStudentAdded,
+  handleStudentUpdated,
 }) => {
   const [studentData, setStudentData] = useState(initialStudentData);
   const subjects = ["Hindi", "Sanskrit", "German", "French"];
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
-  const [docIdforUpdateStudent, setDocIdforUpdateStudent] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
@@ -95,7 +95,7 @@ const AddOrUpdateStudentForm = ({
 
   const getStudentData = async (DocId) => {
     try {
-      const subject = await getStudentFromDatabase(DocId);
+      const subject = await getStudentDataFromDd(DocId);
 
       if (subject) {
         setStudentData(subject);
@@ -179,14 +179,14 @@ const AddOrUpdateStudentForm = ({
 
   const handleUpdate = async () => {
     try {
-      const response = await updateStudentInDatabase(DocId, studentData);
+      const response = await updateStudentDirectlyToDatabase(DocId, studentData);
 
       setConfirmationMessage(response.message);
 
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
-        handleSubjectUpdated();
+        handleStudentUpdated();
       }, 2000); // Hide the message after 2 seconds
     } catch (error) {
       console.error("Error updating subject data", error);
@@ -195,32 +195,17 @@ const AddOrUpdateStudentForm = ({
 
   const handleAdd = async () => {
     try {
-      let response;
-      if (activeCom === 1) {
-        response = await addStudentDirectlyToDatabase(studentData);
-        setDocIdforUpdateStudent(response.docId);
-      } else {
-        response = await updateStudentDirectlyToDatabase(
-          docIdforUpdateStudent,
-          studentData
-        );
+        const response = await addStudentDirectlyToDatabase(studentData);
+        setConfirmationMessage(response.message);
+         setStudentData(initialStudentData);
       }
-
-      if (activeCom > 6) {
-        setStudentData(initialStudentData);
-      }
-      setConfirmationMessage(response.message);
-      alert(response.message);
-      setActiveCom(activeCom + 1);
-    } catch (error) {
+       catch (error) {
       console.error("Error updating subject data", error);
     }
     setTimeout(() => {
       setConfirmationMessage(null);
-      if (activeCom > 6) {
         setIsModalOpen(false);
-        handleSubjectAdded();
-      }
+        handleStudentAdded();
     }, 2000); // Hide the message after 2 seconds
   };
 
@@ -909,7 +894,8 @@ const AddOrUpdateStudentForm = ({
             </div>
           </div>
           <div className="addTeacher-buttons">
-            <button onClick={isUpdateOn ? handleUpdate : handleAdd}>
+            <button  type="button"
+              onClick={isUpdateOn ? handleUpdate : handleAdd}>
               {isUpdateOn ? "Update" : "Save & Continue"}
             </button>
             <button
