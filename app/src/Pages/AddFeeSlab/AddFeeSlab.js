@@ -96,7 +96,7 @@ const AddFeeSlab = () => {
           ) : (
             <div className="add-optional-sub-table">
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-                Add Holidays
+                Add Fee Slabs
               </h1>
               <DynamicTable
                 data={feeSlabData}

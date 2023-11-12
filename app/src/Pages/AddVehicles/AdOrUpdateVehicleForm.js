@@ -173,7 +173,7 @@ const AddVehicleForm = ({
                 </label>
                 <div className="flex flex-wrap">
                   {stopsList.map((stop) => (
-                    <div key={stop} className="mr-4 mb-4">
+                    <div key={stop} className="mr-4">
                       <Checkbox
                         checked={vehicleData.stops.includes(stop)}
                         onChange={() => handleCheckboxChange(stop)}

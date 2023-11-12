@@ -11,13 +11,13 @@ const Navbar = () => {
       </div>
       <div>
         <input
-          className="text-center	"
+          className="text-center px-2 py-1 rounded-md"
           type="text"
           placeholder="Search Student"
         />
       </div>
-      <div className="flex mr-4 justify-around items-center">
-        <select name="date" id="date">
+      <div className="flex mr-4 justify-around items-center gap-5">
+        <select name="date" id="date" className="px-2 py-1 rounded-md">
           <option value="2023-2024">2023-2024</option>
           <option value="2022-2023">2022-2023</option>
         </select>
