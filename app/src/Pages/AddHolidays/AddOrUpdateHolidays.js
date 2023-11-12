@@ -2,43 +2,48 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import {
-  getSubjectDataFromDb,
+  getexpenseDataFromDb,
   addSubjectToDatabase,
   updateSubjectInDatabase,
 } from "../../api/ClassMaster/Addsubject";
-import "./AddSubjectForm.css";
 import "../AddTeacher/AddTeacherForm.css";
+import {
+  addExpenseDataToDb,
+  getExpenseDataFromDatabase,
+  getSpecificExpenseDataFromDb,
+  updateExpenseDataToDatabase,
+} from "../../api/ExpenseAdding/AddExpense";
 
-const AddOrUpdateSubjectForm = ({
+const AddOrUpdateHolidayForm = ({
   isUpdateOn,
   isModalOpen,
   setIsModalOpen,
   DocId,
-  handleSubjectAdded,
-  handleSubjectUpdated,
+  handleExpenseAdded,
+  handleExpenseUpdated,
 }) => {
   const inticalData = {
-    subjectTotalMarks: 100,
-    subjectName: "",
-    subjectCode: "",
+    expenseName: "",
+    amount: 0,
+    description: "",
   };
-  const [subjectData, setSubjectData] = useState(inticalData);
+  const [expenseData, setExpenseData] = useState(inticalData);
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
-      getSubjectData(DocId);
+      getexpenseData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
 
-  const getSubjectData = async (DocId) => {
+  const getexpenseData = async (DocId) => {
     try {
-      const subject = await getSubjectDataFromDb(DocId);
+      const subject = await getSpecificExpenseDataFromDb(DocId);
 
       if (subject) {
-        setSubjectData(subject);
+        setExpenseData(subject);
       }
     } catch (error) {
       console.error("Error fetching subject data", error);
@@ -47,24 +52,24 @@ const AddOrUpdateSubjectForm = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSubjectData({
-      ...subjectData,
+    setExpenseData({
+      ...expenseData,
       [name]: value,
     });
   };
 
   const handleUpdate = async () => {
     try {
-      const response = await updateSubjectInDatabase(DocId, subjectData);
+      const response = await updateExpenseDataToDatabase(DocId, expenseData);
 
       setConfirmationMessage(response.message);
 
-      setSubjectData(inticalData);
+      setExpenseData(inticalData);
 
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
-        handleSubjectUpdated();
+        handleExpenseUpdated();
       }, 2000);
     } catch (error) {
       console.error("Error updating subject data", error);
@@ -72,24 +77,20 @@ const AddOrUpdateSubjectForm = ({
   };
 
   const handleAdd = async () => {
-    if (!subjectData.subjectCode || !subjectData.subjectName) {
-      setError(true);
-    } else {
-      try {
-        const response = await addSubjectToDatabase(subjectData);
-        // Show a confirmation message
-        setConfirmationMessage(response.message);
+    try {
+      const response = await addExpenseDataToDb(expenseData);
+      // Show a confirmation message
+      setConfirmationMessage(response.message);
 
-        setSubjectData(inticalData);
-      } catch (error) {
-        console.error("Error updating subject data", error);
-      }
-      setTimeout(() => {
-        setConfirmationMessage(null);
-        setIsModalOpen(false);
-        handleSubjectAdded();
-      }, 2000); // Hide the message after 2 seconds
+      setExpenseData(inticalData);
+    } catch (error) {
+      console.error("Error updating subject data", error);
     }
+    setTimeout(() => {
+      setConfirmationMessage(null);
+      setIsModalOpen(false);
+      handleExpenseAdded();
+    }, 2000); // Hide the message after 2 seconds
   };
 
   if (!isModalOpen) return null;
@@ -103,51 +104,59 @@ const AddOrUpdateSubjectForm = ({
       )}
 
       <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
-        {isUpdateOn ? "Update Subject" : "Add Subject"}
+        {isUpdateOn ? "Update Holidays/Event" : "Add Event/Holidays"}
       </h2>
       <div className="addTeacher-form">
         <form>
           <div className="addTeacher-main-form subject-form">
             <div className="form-first">
               <label className="block text-sm font-medium text-gray-700">
-                Subject Code
+                Event Name*
               </label>
               <input
                 type="text"
-                name="subjectCode"
-                value={subjectData.subjectCode}
+                name="expenseName"
+                value={expenseData.expenseName}
                 onChange={handleInputChange}
                 className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div className="form-first">
               <label className="block text-sm font-medium text-gray-700">
-                Subject Name
+                Holiday?*
               </label>
               <select
                 type="text"
                 name="subjectName"
-                value={subjectData.subjectName}
-                onChange={handleInputChange}
                 className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value="">--- Select ---</option>
-                <option value="Pysics">Pysics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Biology">Biology</option>
-                <option value="Maths">Maths</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
               </select>
             </div>
             <div className="form-first">
               <label className="block text-sm font-medium text-gray-700">
-                Subject Total Marks
+                Start Date*
               </label>
               <input
-                type="number"
-                name="subjectTotalMarks"
-                value={subjectData.subjectTotalMarks}
+                type="date"
+                name="amount"
+                value={expenseData.amount}
                 onChange={handleInputChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 p-2 block w-[100%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div className="form-first">
+              <label className="block text-sm font-medium text-gray-700">
+                End Date*
+              </label>
+              <input
+                type="date"
+                name="amount"
+                value={expenseData.amount}
+                onChange={handleInputChange}
+                className="mt-1 p-2 block w-[100%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
           </div>
@@ -162,11 +171,7 @@ const AddOrUpdateSubjectForm = ({
             <button
               type="button"
               onClick={() => {
-                setSubjectData({
-                  subjectTotalMarks: 100,
-                  subjectName: "",
-                  subjectCode: "",
-                });
+                setExpenseData(inticalData);
                 setIsModalOpen(false);
               }}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
@@ -186,4 +191,4 @@ const AddOrUpdateSubjectForm = ({
   );
 };
 
-export default AddOrUpdateSubjectForm;
+export default AddOrUpdateHolidayForm;

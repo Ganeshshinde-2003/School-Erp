@@ -149,7 +149,7 @@ const AddOrUpdateOptionalSubjectForm = ({
                 Subject Total Marks
               </label>
               <input
-                type="text"
+                type="number"
                 name="subjectTotalMarks"
                 value={subjectData.subjectTotalMarks}
                 onChange={handleInputChange}
