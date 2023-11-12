@@ -18,8 +18,6 @@ import AddHoliday from "./Pages/AddHolidays/AddHoliday.js";
 import AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
 import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
 import AddNoticePage from "./Pages/AddNotice/AddNotice.js";
-import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
-import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
 import AddVehicle from "./Pages/AddVehicles/AddOrUpdateVehicle.js";
 
 
