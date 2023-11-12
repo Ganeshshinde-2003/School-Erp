@@ -5,7 +5,8 @@ import {
   addVehicleDataToDb,
   updateVehicleDataToDatabase,
   getSpecificVehicleDataFromDb,
-}from "../../api/TransportMaster/AddVehicle";
+  getVehicleDataFromDatabase,
+} from "../../api/TransportMaster/AddVehicle";
 import Checkbox from "@mui/material/Checkbox";
 
 const initialVehicleData = {
@@ -26,15 +27,26 @@ const AddVehicleForm = ({
   const [vehicleData, setVehicleData] = useState(initialVehicleData);
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
-
-  const stopsList = ["MG road", "St. John", "YourOtherStops"];
+  const [stopsList, setStopsList] = useState([]);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       // Fetch vehicle data from Firebase when the modal is opened for update
       getVehicleData(DocId);
     }
+
+    // Fetch stops data from the API
+    fetchStopsData();
   }, [isModalOpen, isUpdateOn]);
+
+  const fetchStopsData = async () => {
+    try {
+      const stopsData = await getVehicleDataFromDatabase();
+      setStopsList(stopsData.map((item) => item.stops).flat());
+    } catch (error) {
+      console.error("Error fetching stops data", error);
+    }
+  };
 
   const getVehicleData = async (DocId) => {
     try {
@@ -159,9 +171,9 @@ const AddVehicleForm = ({
                 <label className="block text-[18px] font-medium text-[#333333]">
                   Stops*
                 </label>
-                <div className="flex items-center">
+                <div className="flex flex-wrap">
                   {stopsList.map((stop) => (
-                    <div key={stop} className="mr-4">
+                    <div key={stop} className="mr-4 mb-4">
                       <Checkbox
                         checked={vehicleData.stops.includes(stop)}
                         onChange={() => handleCheckboxChange(stop)}
@@ -187,7 +199,7 @@ const AddVehicleForm = ({
                 setVehicleData(initialVehicleData);
                 setIsModalOpen(false);
               }}
-              className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
+              className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
             >
               Close
             </button>
