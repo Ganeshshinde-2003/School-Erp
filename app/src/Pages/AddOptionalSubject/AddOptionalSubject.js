@@ -82,7 +82,6 @@ const handleSubjectUpdated = () => {
 
   return (
     <div className="mt-4 w-full">
-      <h1 className="text-center"> Add Optional Subjects</h1>
       <div className="mt-5 max-w- min-w-full">
         <div className="flex justify-around">
           {isLoading ? ( // Display the loader while data is loading
