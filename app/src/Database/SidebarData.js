@@ -78,7 +78,7 @@ export const SidebarData = [
       },
       {
         title: "Add Vehicles",
-        path: "/teacher-master/add-teacher",
+        path: "transport-master/add-vehciles",
         cName: "sub-nav",
       },
       {

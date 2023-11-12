@@ -15,9 +15,9 @@ import LocateDriver from "./Pages/LocateDriver/LocateDriver.js";
 import ExpenseAdding from "./Pages/ExprenseAdding/ExpenseAdding.js";
 import AddHoliday from "./Pages/AddHolidays/AddHoliday.js";
 import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
-
 import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
-import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
+import AddVehicle from "./Pages/AddVehicles/AddOrUpdateVehicle.js";
+
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
@@ -76,7 +76,7 @@ const App = () => {
               element={<AddHoliday />}
             />
             <Route
-              path="transport-master/add-stops-fees/"
+              path="transport-master/add-stops-fees"
               element={<AddStop />}
             />
             <Route
@@ -88,10 +88,15 @@ const App = () => {
               element={<AddFeeSlab />}
             />
             <Route
+              path="transport-master/add-vehciles"
+              element={<AddVehicle/>}
+            />
+            <Route
               path="/fee-structures/add-fee-structures"
               element={<ExpenseAdding />}
             />
           </Routes>
+          
           
         </div>
       </div>
