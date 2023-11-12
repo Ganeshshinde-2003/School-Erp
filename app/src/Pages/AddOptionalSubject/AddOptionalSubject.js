@@ -102,9 +102,9 @@ const handleSubjectUpdated = () => {
           ) : (
             <div className="add-optional-sub-table">
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-                Add Subjects
+              Add Optional Subjects
               </h1>
-              <DynamicTable data={subjectData} rowHeight={100} action={true} handleAction={handleAction} />
+              <DynamicTable data={subjectData} rowHeight={100} action={true} handleAction={handleAction} ispanding={false}/>
               <p className="h-16 text-center font-bold text-white flex items-center justify-center">
                 <AddButton buttonText={"Add subject"} onClickButton={openModal} />
               </p>

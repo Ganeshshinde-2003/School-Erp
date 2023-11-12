@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import DynamicTable from "../../Components/DynamicTable.js";
-import { deleteStudent, getApplicantStudentFromDatabase } from "../../api/StudentMaster/AddStudentByApplication.js"; // Replace with the correct path
 import { Oval } from "react-loader-spinner";
-import AddButton from "../../Components/AddButton.js";
+import DynamicTable from "../../Components/DynamicTable";
+import { getLocateDataFromDatabase } from "../../api/TransportMaster/LocateDriverOrBus";
 
-const PendingRequest = () => {
-  const [studentData, setStudentData] = useState([]);
+const LocateDriver = () => {
+  const [driverData, setDriverData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
 
   const fetchData = () => {
-    getApplicantStudentFromDatabase()
+    getLocateDataFromDatabase()
       .then((data) => {
-        setStudentData(data);
+        setDriverData(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -29,24 +28,6 @@ const PendingRequest = () => {
     fetchData(); // Refetch data when dataChanged is true
     setDataChanged(false);
   }
-
-  const handleAction =async (actionType, documentId) => {
-    console.log(`Action: ${actionType}, Document ID: ${documentId}`);
-    if (actionType === "approve") {
-      // setSubjectUpdate(true);
-      // setDocId(documentId);
-      // console.log(docId);
-      // setIsModalOpen(true);
-    } 
-    else if (actionType === "disapprove") {
-      const response = await deleteStudent(documentId);
-      console.log("Delete document with ID:", documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
-    }
-
-  };
 
   return (
     <div className="mt-4 w-full">
@@ -68,21 +49,14 @@ const PendingRequest = () => {
           ) : (
             <div className="add-optional-sub-table">
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-              Pending Admission Requests
+                Add Driver
               </h1>
               <DynamicTable
-                data={studentData}
+                data={driverData}
                 rowHeight={100}
                 action={false}
-                ispanding={true}
-                handleAction={handleAction}
+                ispanding={false}
               />
-              <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-                <AddButton
-                  buttonText={"Add students"}
-                  // onClickButton={openModal}
-                />
-              </p>
             </div>
           )}
         </div>
@@ -91,4 +65,4 @@ const PendingRequest = () => {
   );
 };
 
-export default  PendingRequest;
+export default LocateDriver;

@@ -13,7 +13,6 @@ import AddOrUpdateStudentForm from "./AddOrUpdateStudentForm ";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [studentAdded, setstudentAdded] = useState(false);
   const [studentUpdate, setStudentUpdate] = useState(false);
 
   const [studentData, setStudentData] = useState([]);
@@ -49,6 +48,7 @@ const AddStudent = () => {
       setDocId(documentId);
       console.log(docId);
       setIsModalOpen(true);
+    
     } else if (actionType === "delete") {
       const response = await deleteStudentFromDatabase(documentId);
       console.log("Delete document with ID:", documentId);
@@ -64,20 +64,16 @@ const AddStudent = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubjectAdded = () => {
-    setstudentAdded(true);
-    setTimeout(() => {
-      setstudentAdded(false);
+  const handleStudentAdded = () => {
       setDataChanged(true);
-    }, 2000); // Hide the message after 2 seconds
   };
 
-  const handleSubjectUpdated = () => {
+  const handleStudentUpdated = () => {
     setStudentUpdate(true);
     setTimeout(() => {
       setStudentUpdate(false);
       setDataChanged(true);
-    }, 2000); // Hide the message after 2 seconds
+    }, 2000);
   };
 
   return (
@@ -88,18 +84,13 @@ const AddStudent = () => {
         </p>
       </div>
       <AddOrUpdateStudentForm
-        isModalOpen={isModalOpen}
+        isModalOpen={isModalOpen} 
         setIsModalOpen={setIsModalOpen}
-        handleSubjectAdded={handleSubjectAdded}
-        handleSubjectUpdated={handleSubjectUpdated}
+        handleStudentAdded={handleStudentAdded}
+        handleStudentUpdated={handleStudentUpdated}
         DocId={docId}
         isUpdateOn={studentUpdate}
       />
-      {/* {studentAdded && (
-        <div className="text-green-500 text-center mt-2">
-          Subject has been successfully added!
-        </div>
-      )} */}
     </div>
   );
 };

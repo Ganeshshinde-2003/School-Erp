@@ -167,31 +167,17 @@ const AddOrUpdateTeacherForm = ({
   const handleAdd = async () => {
     // console.log(teacherData);
     try {
-      let response;
-      if (activeCom === 1) {
-        response = await addTeacherToDatabase(teacherData);
-        setDocIdforUpdate(response.docId);
-      } else {
-        response = await updateTeacherInDatabase(docIdforUpdate, teacherData);
-      }
-
-      if (activeCom > 5) {
-        setTeacherData(inticalteacherData);
-      }
-      // Show a confirmation message
+      const response = await addTeacherToDatabase(teacherData);
+      setTeacherData(inticalteacherData);
       setConfirmationMessage(response.message);
-      alert(response.message);
-      setActiveCom(activeCom + 1);
     } catch (error) {
       console.error("Error adding teacher data", error);
     }
     setTimeout(() => {
       setConfirmationMessage(null);
-      if (activeCom > 5) {
-        setIsModalOpen(false);
-        handleTeacherAdded();
-      }
-    }, 2000); // Hide the message after 2 seconds
+      setIsModalOpen(false);
+      handleTeacherAdded();
+    }, 2000);
   };
 
   if (!isModalOpen) return null;
@@ -421,15 +407,15 @@ const AddOrUpdateTeacherForm = ({
                 </div>
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    DOB(DD/MM/YYYY)*
+                    DOB*
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="dob"
                     value={teacherData.personalDetails.dob}
                     onChange={handleInputChange1}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -963,7 +949,10 @@ const AddOrUpdateTeacherForm = ({
             </div>
           </div>
           <div className="addTeacher-buttons">
-            <button onClick={isUpdateOn ? handleUpdate : handleAdd}>
+            <button
+              type="button"
+              onClick={isUpdateOn ? handleUpdate : handleAdd}
+            >
               {isUpdateOn ? "Update" : "Save & Continue"}
             </button>
             <button
