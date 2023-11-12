@@ -58,7 +58,7 @@ export const getHolidayAndEventsData = async () => {
     }
 };
 
-export const deleteSubject = async (subjectId) => {
+export const deleteHoliday = async (subjectId) => {
     const HolidayRef = collection(db, "AddHolidayAndEvents");
     const subjectDocRef = doc(HolidayRef, subjectId);
 

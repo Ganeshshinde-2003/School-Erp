@@ -192,7 +192,7 @@ export const SidebarData = [
     subNav: [
       {
         title: "Add driver",
-        path: "/teacher-master/add-teacher",
+        path: "/hodidays-master/add-holiday",
         cName: "sub-nav",
       },
     ],

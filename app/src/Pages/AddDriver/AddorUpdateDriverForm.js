@@ -175,7 +175,7 @@ const AddOrUpdateDriverForm = ({
                   Bank Account No*
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="bankAccountNumber"
                   value={driverData.bankAccountNumber}
                   onChange={handleInputChange}
@@ -190,7 +190,7 @@ const AddOrUpdateDriverForm = ({
                   Mobile No*
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="mobileNo"
                   value={driverData.mobileNo}
                   onChange={handleInputChange}
@@ -216,7 +216,7 @@ const AddOrUpdateDriverForm = ({
                   Salary*
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="driverSalary"
                   value={driverData.driverSalary}
                   onChange={handleInputChange}

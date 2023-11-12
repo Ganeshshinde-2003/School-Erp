@@ -29,7 +29,7 @@ const initialStudentData = {
     guardianNo: null,
     telephoneNo: null,
     dob: null,
-    isSinglegirlchild: false,
+    isSinglegirlchild: null,
     emailId: "",
   },
 
@@ -289,7 +289,7 @@ const AddOrUpdateStudentForm = ({
                   Mobile No*
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="mobileNo"
                   value={studentData.mobileNo}
                   onChange={handleInputChange}
@@ -409,14 +409,17 @@ const AddOrUpdateStudentForm = ({
                   <label className="block text-[18px] font-medium text-[#333333]">
                     Gender*
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="gender"
                     value={studentData.personalDetails.gender}
                     onChange={handleInputChange1}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">--- Select ---</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
@@ -462,7 +465,7 @@ const AddOrUpdateStudentForm = ({
                     Aadhar No*
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="aadharNo"
                     value={studentData.personalDetails.aadharNo}
                     onChange={handleInputChange1}
@@ -503,7 +506,7 @@ const AddOrUpdateStudentForm = ({
                     Guardian No.*
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="guardianNo"
                     value={studentData.personalDetails.guardianNo}
                     onChange={handleInputChange1}
@@ -516,7 +519,7 @@ const AddOrUpdateStudentForm = ({
                     TC No.
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="telephoneNo"
                     value={studentData.personalDetails.telephoneNo}
                     onChange={handleInputChange1}
@@ -529,12 +532,12 @@ const AddOrUpdateStudentForm = ({
                     Date of Birth
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="dob"
                     value={studentData.personalDetails.dob}
                     onChange={handleInputChange1}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
                 <div>
@@ -555,7 +558,7 @@ const AddOrUpdateStudentForm = ({
                     Email id
                   </label>
                   <input
-                    type="text"
+                    type="email"
                     name="emailId"
                     value={studentData.personalDetails.emailId}
                     onChange={handleInputChange1}
@@ -673,7 +676,7 @@ const AddOrUpdateStudentForm = ({
                     Father’s No.
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="fatherMobileNo"
                     value={studentData.addressDetails.fatherMobileNo}
                     onChange={handleInputChange3}
@@ -742,7 +745,7 @@ const AddOrUpdateStudentForm = ({
                     Father’s Occupation
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="fatherOccupation"
                     value={studentData.demography.fatherOccupation}
                     onChange={handleInputChange4}
@@ -755,7 +758,7 @@ const AddOrUpdateStudentForm = ({
                     Mother’s Occupation
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="motherOccupation"
                     value={studentData.demography.motherOccupation}
                     onChange={handleInputChange4}
@@ -768,7 +771,7 @@ const AddOrUpdateStudentForm = ({
                     Parents income
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="parentIncome"
                     value={studentData.demography.parentIncome}
                     onChange={handleInputChange4}
@@ -856,7 +859,7 @@ const AddOrUpdateStudentForm = ({
                     Previous school TC No.
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="PreviousschoolTCNo"
                     value={studentData.studentHistory.PreviousschoolTCNo}
                     onChange={handleInputChange6}
@@ -869,7 +872,7 @@ const AddOrUpdateStudentForm = ({
                     Previous class Percentage
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="previousClassPercentage"
                     value={studentData.studentHistory.previousClassPercentage}
                     onChange={handleInputChange6}
