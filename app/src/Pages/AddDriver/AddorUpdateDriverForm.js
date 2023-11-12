@@ -3,10 +3,6 @@ import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "../AddTeacher/AddTeacherForm.css";
 import {
-  addStudentDirectlyToDatabase,
-  updateStudentDirectlyToDatabase,
-} from "../../api/StudentMaster/AddStudentDirectly";
-import {
   addDriverDataToDb,
   getSpecificDriverDataFromDb,
   updateDriverDataToDatabase,
@@ -34,8 +30,6 @@ const AddOrUpdateDriverForm = ({
   const [driverData, setDriverData] = useState(initialDriverData);
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
-  const [activeCom, setActiveCom] = useState(1);
-  const [docIdforUpdateStudent, setDocIdforUpdateStudent] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {

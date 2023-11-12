@@ -14,6 +14,7 @@ import AddDriver from "./Pages/AddDriver/AddDriver.js";
 import LocateDriver from "./Pages/LocateDriver/LocateDriver.js";
 import ExpenseAdding from "./Pages/ExprenseAdding/ExpenseAdding.js";
 import AddHoliday from "./Pages/AddHolidays/AddHoliday.js";
+import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
@@ -73,6 +74,14 @@ const App = () => {
             />
             <Route
               path="/expense-adding/add-expense"
+              element={<ExpenseAdding />}
+            />
+            <Route
+              path="/fee-structures/add-fee-slab"
+              element={<AddFeeSlab />}
+            />
+            <Route
+              path="/fee-structures/add-fee-structures"
               element={<ExpenseAdding />}
             />
           </Routes>
