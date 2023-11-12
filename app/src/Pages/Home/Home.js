@@ -38,19 +38,29 @@ const Home = () => {
   });
 
   return (
-    <div className="mt-5 flex flex-col w-full	items-center">
+    <div className="mt-5 mb-5 flex flex-col w-full	items-center">
       <div className="flex justify-around w-full">
         <div className="birthdays-table">
           <h1 className="h-8 text-center font-bold text-white flex items-center justify-center">
             Today's Birthday's
           </h1>
-          <DynamicTable data={Birthdays} rowHeight={8} action={false} ispanding={false} />
+          <DynamicTable
+            data={Birthdays}
+            rowHeight={8}
+            action={false}
+            ispanding={false}
+          />
         </div>
         <div className="attendance-table">
           <h1 className="h-8 text-center font-bold text-white	flex items-center justify-center">
             Attendance Count
           </h1>
-          <DynamicTable data={Attendance} rowHeight={8} action={false} ispanding={false} />
+          <DynamicTable
+            data={Attendance}
+            rowHeight={8}
+            action={false}
+            ispanding={false}
+          />
         </div>
       </div>
       <div className="w-3/4">
@@ -62,14 +72,18 @@ const Home = () => {
           <h1 className="h-8 text-center font-bold text-white flex items-center justify-center">
             Monthly Expense
           </h1>
-          <DynamicTable data={expense} rowHeight={8} action={false} ispanding={false}/>
+          <DynamicTable
+            data={expense}
+            rowHeight={8}
+            action={false}
+            ispanding={false}
+          />
         </div>
         <div className="w-1/4	">
           <PieGraph data={expenseData} />
         </div>
         <div className="fees">
-          <div className="flex items-center justify-center border "> 
-
+          <div className="flex items-center justify-center border ">
             <div className="text-center font-bold bg-[rgba(181, 181, 181, 1)] px-4">
               <h2>Total Fees</h2>
               <h2>Collected</h2>
