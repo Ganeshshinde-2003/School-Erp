@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "../AddTeacher/AddTeacherForm.css";
+import "./AddStudentApplication.css";
+
 
 import {
     addStudentByApplicationToDatabase,
@@ -32,7 +34,9 @@ const AddStudentForm =  ({
     const [activeCom, setActiveCom] = useState(1);
   
     
-    
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
   
     const handleChange = (e) => {
         setFormData({
@@ -77,56 +81,61 @@ const AddStudentForm =  ({
         <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
           Add Application
         </h2>
-        <div className="addTeacher-form">
-        <form onSubmit={handleSubmit} className="flex">
-        <div className="addTeacher-main-form">
-            <div className="flex-1 mr-4">
+        <div className="addTeacher-form ">
+        <form onSubmit={handleSubmit}>
+          <div>
+        <div className="addStudentApplication-form">
+            <div>
           <label>
-            First Name:
+            First Name* 
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
+              className="stduentapplicationform_input"
             />
           </label>
           <br></br>
           <br></br>
           <label>
-            Last Name:
+            Last Name*
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
+              className="stduentapplicationform_input"
             />
             </label>
             <br></br>
             <br></br>
             <label>
-            Mobile Number:
+            Mobile No*
             <input
               type="text"
               name="mobileNo"
               value={formData.mobileNo}
               onChange={handleChange}
+              className="stduentapplicationform_input"
             />
           </label>
           <br></br>
           <br></br>
           <label>
-             Date of Birth:
+             Date of Birth*
             <input
                 type="date"
                 name="dob"
                 value={formData.dob}
                 onChange={handleChange}
+                className="stduentapplicationform_input"
             />
             </label>
             <br></br>
             <br></br>
             <label>
-                Application Number:
+                Application Number*
                 <input
                 type="text"
                 name="applicationNo"
@@ -137,62 +146,67 @@ const AddStudentForm =  ({
                 <br></br>
                 <br></br>
                 <label>
-                    Adhar Number:
+                    Adhar Number*
                     <input
                     type="text"
                     name="aadharNo"
                     value={formData.aadharNo}
                     onChange={handleChange}
+                    className="stduentapplicationform_input"
                     />
                 </label>
             </div>
-                <div>
+                <div className="studentapplicationform-flex2">
                     <label>
-                        Joining Class:
+                        Joining Class*
                         <input
                         type="text"
                         name="joiningClass"
                         value={formData.joiningClass}
                         onChange={handleChange}
+                        className="ml-11"
                         />
                     </label>
                     <br></br>
                     <br></br>
-                    <label>
-                        TC No:
+                    <label className="">
+                        TC No*
                         <input
                         type="text"
                         name="previousschoolTCNo"
                         value={formData.previousschoolTCNo}
                         onChange={handleChange}
+                        className="Tcno-from"
                         />
                     </label>
                     <br></br>
                     <br></br>
                     <label>
-                    Application Fees Collected:
+                    Application Fees*
                     <input
                     type="text"
                     name="applicationFees"
                     value={formData.applicationFees}
                     onChange={handleChange}
+                    className="ml-6"
                     />
                 </label>
                 <br></br>
                 <br></br>
                 <label>
-                    Payment Mode:
+                    Payment Mode*
                     <input
                     type="text"
                     name="paymentmode"
                     value={formData.paymentmode}
                     onChange={handleChange}
+                    className="ml-10"
                     />
                     </label>
                     <br></br>
                     <br></br>
                     <label>
-                        UPI Transaction No. (if UPI):
+                        UPI Transaction(No)*
                         <input
                         type="text"
                         name="upitransactionNo"
@@ -201,9 +215,14 @@ const AddStudentForm =  ({
                         />
                     </label>
           </div>
-          <button type="submit" className="bg-green-500 text-white px-4 py-2 mr-2" >
+          </div>
+          <br></br>
+          <button type="submit" className="bg-gray-800 text-white px-4 py-2 mr-2  rounded">
             Add Student
           </button>
+          <button onClick={closeModal} className="bg-gray-800 text-white px-4 py-2 rounded">
+          Close Modal
+        </button>
             </div>
 
           </form>

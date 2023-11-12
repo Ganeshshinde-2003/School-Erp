@@ -73,7 +73,7 @@ export const SidebarData = [
     subNav: [
       {
         title: "Add Stops with fees",
-        path: "/teacher-master/add-teacher",
+        path: "transport-master/add-stops-fees/",
         cName: "sub-nav",
       },
       {
