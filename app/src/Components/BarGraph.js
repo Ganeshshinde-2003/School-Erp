@@ -7,7 +7,7 @@ const BarGraph = ({ data }) => {
     datasets: [
       {
         ...data.datasets[0],
-        backgroundColor: "#E2007B", // Set your desired color here
+        backgroundColor: "#E2007B",
       },
     ],
   };
