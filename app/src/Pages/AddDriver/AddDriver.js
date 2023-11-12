@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
-import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
-import "./AddStudent.css";
-import {
-  getStudentDatabase,
-  addStudentToDatabase,
-  updateStudentInDatabase,
-  deleteStudentFromDatabase,
-} from "../../api/student";
-import { Oval } from "react-loader-spinner";
-import AddOrUpdateStudentForm from "./AddOrUpdateStudentForm ";
+import { getStudentDatabase } from "../../api/student";
+import AddOrUpdateDriverForm from "./AddorUpdateDriverForm";
 
-const AddStudent = () => {
+const AddDriver = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [studentAdded, setstudentAdded] = useState(false);
   const [studentUpdate, setStudentUpdate] = useState(false);
@@ -41,23 +33,6 @@ const AddStudent = () => {
     fetchData(); // Refetch data when dataChanged is true
     setDataChanged(false);
   }
-
-  const handleAction = async (actionType, documentId) => {
-    if (actionType === "edit") {
-      console.log("edit ocument with ID:", documentId);
-      setStudentUpdate(true);
-      setDocId(documentId);
-      console.log(docId);
-      setIsModalOpen(true);
-    } else if (actionType === "delete") {
-      const response = await deleteStudentFromDatabase(documentId);
-      console.log("Delete document with ID:", documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
-    }
-  };
-
   // Function to open the modal
   const openModal = () => {
     console.log("Open modal");
@@ -79,7 +54,6 @@ const AddStudent = () => {
       setDataChanged(true);
     }, 2000); // Hide the message after 2 seconds
   };
-
   return (
     <div className="mt-4 w-full flex items-center justify-center">
       <div className="mt-5 max-w-full">
@@ -87,7 +61,7 @@ const AddStudent = () => {
           <AddButton buttonText={"Add subject"} onClickButton={openModal} />
         </p>
       </div>
-      <AddOrUpdateStudentForm
+      <AddOrUpdateDriverForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         handleSubjectAdded={handleSubjectAdded}
@@ -95,13 +69,8 @@ const AddStudent = () => {
         DocId={docId}
         isUpdateOn={studentUpdate}
       />
-      {/* {studentAdded && (
-        <div className="text-green-500 text-center mt-2">
-          Subject has been successfully added!
-        </div>
-      )} */}
     </div>
   );
 };
 
-export default AddStudent;
+export default AddDriver;
