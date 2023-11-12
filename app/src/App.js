@@ -14,10 +14,9 @@ import AddDriver from "./Pages/AddDriver/AddDriver.js";
 import LocateDriver from "./Pages/LocateDriver/LocateDriver.js";
 import ExpenseAdding from "./Pages/ExprenseAdding/ExpenseAdding.js";
 import AddHoliday from "./Pages/AddHolidays/AddHoliday.js";
-import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
-
+import AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
 import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
-import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
+import AddNoticePage from "./Pages/AddNotice/AddNotice.js";
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
@@ -91,8 +90,11 @@ const App = () => {
               path="/fee-structures/add-fee-structures"
               element={<ExpenseAdding />}
             />
+            <Route
+              path="/send-notice/add-notices"
+              element={<AddNoticePage />}
+            />
           </Routes>
-          
         </div>
       </div>
     </BrowserRouter>
