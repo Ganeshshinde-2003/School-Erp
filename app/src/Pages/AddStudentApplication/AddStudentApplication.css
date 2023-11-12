@@ -1,0 +1,14 @@
+.addStudentApplication-form{
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    align-items: center;
+}
+.stduentapplicationform_input{
+    margin-left: 10%;
+}
+.Tcno-from{
+    margin-left: 100px;
+}
+
+
