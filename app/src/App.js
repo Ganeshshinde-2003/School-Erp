@@ -14,6 +14,7 @@ import AddDriver from "./Pages/AddDriver/AddDriver.js";
 import LocateDriver from "./Pages/LocateDriver/LocateDriver.js";
 import ExpenseAdding from "./Pages/ExprenseAdding/ExpenseAdding.js";
 import AddHoliday from "./Pages/AddHolidays/AddHoliday.js";
+import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
 
 import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
 import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
