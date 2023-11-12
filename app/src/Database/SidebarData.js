@@ -126,8 +126,13 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: "Add driver",
-        path: "/teacher-master/add-teacher",
+        title: "Add Fee Slabs",
+        path: "/fee-structures/add-fee-slab",
+        cName: "sub-nav",
+      },
+      {
+        title: "Add Fee Structures",
+        path: "/fee-structures/add-fee-structures",
         cName: "sub-nav",
       },
     ],
@@ -191,7 +196,7 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: "Add driver",
+        title: "Add Events/Holidays",
         path: "/hodidays-master/add-holiday",
         cName: "sub-nav",
       },

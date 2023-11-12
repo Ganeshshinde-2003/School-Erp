@@ -14,7 +14,7 @@ import {
 
 export const testFeeSlabData = {
   slabName: "Topers",
-  applicableClasses: ["1", "2", "3","4","5","6","7","8",],
+  applicableClasses: ["1", "2", "3", "4", "5", "6", "7", "8"],
   slabId: "002",
   requirements: "Above 95% marks",
 };
@@ -45,7 +45,10 @@ export const addFeeSlabToDb = async (feeSlabData) => {
   }
 };
 
-export const updateFeeSlabToDatabase = async (documentId, updatedFeeSlabData) => {
+export const updateFeeSlabToDatabase = async (
+  documentId,
+  updatedFeeSlabData
+) => {
   const feeSlabDocRef = doc(db, "AddFeeSlab", documentId);
 
   try {
@@ -96,7 +99,6 @@ export const getSpecificFeeSlabDataFromDb = async (docId) => {
     throw error;
   }
 };
-
 export const getFeeSlabDataFromDatabase = async () => {
   const feeSlabRef = collection(db, "AddFeeSlab");
 
@@ -109,10 +111,12 @@ export const getFeeSlabDataFromDatabase = async () => {
     for (const doc of querySnapshot.docs) {
       const data = doc.data();
 
+      const applicableClassesString = data.applicableClasses.join(", ");
+
       const modifiedFeeSlabData = {
         id: doc.id,
         slabName: data.slabName,
-        applicableClasses: data.applicableClasses,
+        applicableClasses: applicableClassesString,
         slabId: data.slabId,
         requirements: data.requirements,
       };

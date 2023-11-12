@@ -83,3 +83,34 @@
   border-radius: 10px;
   border: none;
 }
+.form-select div {
+  width: 100px !important;
+}
+.second-form {
+  align-items: flex-start !important;
+  gap: 0 !important;
+}
+.select-form-container {
+  align-items: center !important;
+}
+.text-area {
+  align-items: start !important;
+}
+.checkbox-container {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.checkbox-select {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 20px;
+  padding-right: 40px;
+}
+.checbox-many {
+  width: auto !important;
+  gap: 0 !important;
+}
+.checbox-many label {
+  width: 50px !important;
+}
