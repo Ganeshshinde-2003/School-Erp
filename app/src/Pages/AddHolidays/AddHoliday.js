@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
-import {
-  getStudentDatabase,
-  addStudentToDatabase,
-  updateStudentInDatabase,
-  deleteStudentFromDatabase,
-} from "../../api/student";
 import { Oval } from "react-loader-spinner";
 import AddOrUpdateHolidayForm from "./AddOrUpdateHolidays";
+import {
+  deleteHoliday,
+  getHolidayAndEventsData,
+} from "../../api/AddHoliday/AddHoliday";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [studentAdded, setstudentAdded] = useState(false);
-  const [studentUpdate, setStudentUpdate] = useState(false);
+  const [holidayUpdate, setHolidayUpdate] = useState(false);
 
-  const [studentData, setStudentData] = useState([]);
+  const [holidayData, setHolidayData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
 
   const fetchData = () => {
-    getStudentDatabase()
+    getHolidayAndEventsData()
       .then((data) => {
-        setStudentData(data);
+        setHolidayData(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -44,12 +41,12 @@ const AddStudent = () => {
   const handleAction = async (actionType, documentId) => {
     if (actionType === "edit") {
       console.log("edit ocument with ID:", documentId);
-      setStudentUpdate(true);
+      setHolidayUpdate(true);
       setDocId(documentId);
       console.log(docId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteStudentFromDatabase(documentId);
+      const response = await deleteHoliday(documentId);
       console.log("Delete document with ID:", documentId);
       if (response.status) {
         setDataChanged(true);
@@ -63,42 +60,65 @@ const AddStudent = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubjectAdded = () => {
-    setstudentAdded(true);
-    setTimeout(() => {
-      setstudentAdded(false);
-      setDataChanged(true);
-    }, 2000); // Hide the message after 2 seconds
+  const handleHolidayAdded = () => {
+    setDataChanged(true);
   };
 
-  const handleSubjectUpdated = () => {
-    setStudentUpdate(true);
+  const handleHolidayUpdated = () => {
+    setHolidayUpdate(true);
     setTimeout(() => {
-      setStudentUpdate(false);
+      setHolidayUpdate(false);
       setDataChanged(true);
     }, 2000); // Hide the message after 2 seconds
   };
 
   return (
-    <div className="mt-4 w-full flex items-center justify-center">
+    <div className="mt-4 w-full">
       <div className="mt-5 max-w-full">
-        <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-          <AddButton buttonText={"Add subject"} onClickButton={openModal} />
-        </p>
+        <div className="flex justify-around">
+          {isLoading ? (
+            <Oval
+              height={80}
+              width={80}
+              color="#343dff"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+              ariaLabel="oval-loading"
+              secondaryColor="#343fff"
+              strokeWidth={2}
+              strokeWidthSecondary={2}
+            />
+          ) : (
+            <div className="add-optional-sub-table">
+              <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
+                Add Holidays
+              </h1>
+              <DynamicTable
+                data={holidayData}
+                rowHeight={100}
+                action={true}
+                ispanding={false}
+                handleAction={handleAction}
+              />
+              <p className="h-16 text-center font-bold text-white flex items-center justify-center">
+                <AddButton
+                  buttonText={"Add Holiday"}
+                  onClickButton={openModal}
+                />
+              </p>
+            </div>
+          )}
+        </div>
       </div>
       <AddOrUpdateHolidayForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleSubjectAdded={handleSubjectAdded}
-        handleSubjectUpdated={handleSubjectUpdated}
+        handleHolidayAdded={handleHolidayAdded}
+        handleHolidayUpdated={handleHolidayUpdated}
         DocId={docId}
-        isUpdateOn={studentUpdate}
+        isUpdateOn={holidayUpdate}
       />
-      {/* {studentAdded && (
-        <div className="text-green-500 text-center mt-2">
-          Subject has been successfully added!
-        </div>
-      )} */}
     </div>
   );
 };
