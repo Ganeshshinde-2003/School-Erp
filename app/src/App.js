@@ -13,6 +13,7 @@ import PendingRequest from "./Pages/PendingRequest/PendingReauest.js";
 import AddDriver from "./Pages/AddDriver/AddDriver.js";
 import LocateDriver from "./Pages/LocateDriver/LocateDriver.js";
 import ExpenseAdding from "./Pages/ExprenseAdding/ExpenseAdding.js";
+import AddHoliday from "./Pages/AddHolidays/AddHoliday.js";
 import  AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
 
 // import {db} from "./config/firebase";
@@ -66,6 +67,10 @@ const App = () => {
             <Route
               path="/student-master/pending-request"
               element={<PendingRequest />}
+            />
+            <Route
+              path="/hodidays-master/add-holiday"
+              element={<AddHoliday />}
             />
             <Route
               path="transport-master/add-stops-fees/"

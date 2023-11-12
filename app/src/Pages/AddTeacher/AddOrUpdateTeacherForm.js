@@ -238,7 +238,7 @@ const AddOrUpdateTeacherForm = ({
               </div>
               <div>
                 <label className="block text-[18px] font-medium text-[#333333]">
-                  FTransport Slab*
+                  Transport Slab*
                 </label>
                 <select
                   name="transportSlab"
@@ -260,7 +260,7 @@ const AddOrUpdateTeacherForm = ({
                   Mobile No*
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="mobileNo"
                   value={teacherData.mobileNo}
                   onChange={handleInputChange}
@@ -273,7 +273,7 @@ const AddOrUpdateTeacherForm = ({
                   Mail I’D*
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   name="emailId"
                   value={teacherData.emailId}
                   onChange={handleInputChange}
@@ -496,7 +496,7 @@ const AddOrUpdateTeacherForm = ({
                     Salary Amount*
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="salaryAmount"
                     value={teacherData.salaryDetails.salaryAmount}
                     onChange={handleInputChange2}
@@ -509,7 +509,7 @@ const AddOrUpdateTeacherForm = ({
                     bank A/C No*
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="acNo"
                     value={teacherData.salaryDetails.acNo}
                     onChange={handleInputChange2}
@@ -535,7 +535,7 @@ const AddOrUpdateTeacherForm = ({
                     Previous Year Salary
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="previousYearSalary"
                     value={teacherData.salaryDetails.previousYearSalary}
                     onChange={handleInputChange2}
@@ -566,7 +566,7 @@ const AddOrUpdateTeacherForm = ({
                     PF No*
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="pfNo"
                     value={teacherData.salaryDetails.pfNo}
                     onChange={handleInputChange2}
@@ -639,7 +639,7 @@ const AddOrUpdateTeacherForm = ({
                     ZIP Code*
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="zipCode"
                     value={teacherData.addressDetails.zipCode}
                     onChange={handleInputChange3}
@@ -665,7 +665,7 @@ const AddOrUpdateTeacherForm = ({
                     Home Telephone
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="homeTelephoneNo"
                     value={teacherData.addressDetails.homeTelephoneNo}
                     onChange={handleInputChange3}
@@ -682,7 +682,7 @@ const AddOrUpdateTeacherForm = ({
                     Completion year
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="completionYear"
                     value={teacherData.experienceDetails.completionYear}
                     onChange={handleInputChange4}
@@ -695,7 +695,7 @@ const AddOrUpdateTeacherForm = ({
                     Service in Year
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="serviceInYears"
                     value={teacherData.experienceDetails.serviceInYears}
                     onChange={handleInputChange4}
@@ -708,12 +708,12 @@ const AddOrUpdateTeacherForm = ({
                     Date Of Joining
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="joiningDate"
                     value={teacherData.experienceDetails.joiningDate}
                     onChange={handleInputChange4}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
                 <div>
@@ -721,12 +721,12 @@ const AddOrUpdateTeacherForm = ({
                     Date of Confirmation
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="dateOfConfirmation"
                     value={teacherData.experienceDetails.dateOfConfirmation}
                     onChange={handleInputChange4}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
                 <div>
@@ -749,7 +749,7 @@ const AddOrUpdateTeacherForm = ({
                     Old PF No.
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="oldPFNo"
                     value={teacherData.experienceDetails.oldPFNo}
                     onChange={handleInputChange4}
@@ -775,12 +775,12 @@ const AddOrUpdateTeacherForm = ({
                     Date of Leaving
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="dateOfLeaving"
                     value={teacherData.experienceDetails.dateOfLeaving}
                     onChange={handleInputChange4}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
                 <div>
@@ -788,7 +788,7 @@ const AddOrUpdateTeacherForm = ({
                     Last Job Salary
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="lastJobSalary"
                     value={teacherData.experienceDetails.lastJobSalary}
                     onChange={handleInputChange4}

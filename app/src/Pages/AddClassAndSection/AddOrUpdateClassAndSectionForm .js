@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "../AddTeacher/AddTeacherForm.css";
-import { addClassAndSectionsToDatabase, getClassAndSectionsDataFromDb, updateClassAndSectionsDatabase } from "../../api/ClassMaster/AddClassAndSection";
+import {
+  addClassAndSectionsToDatabase,
+  getClassAndSectionsDataFromDb,
+  updateClassAndSectionsDatabase,
+} from "../../api/ClassMaster/AddClassAndSection";
 
 const AddOrUpdateClassAndSectionForm = ({
   isUpdateOn,
@@ -16,7 +20,7 @@ const AddOrUpdateClassAndSectionForm = ({
     subjectTotalMarks: 100,
     subjectName: "",
     subjectCode: "",
-  }
+  };
   const [classAndSectionData, setClassAndSectionData] = useState(inticalData);
 
   const [error, setError] = useState(false);
@@ -50,8 +54,11 @@ const AddOrUpdateClassAndSectionForm = ({
 
   const handleUpdate = async () => {
     try {
-      const response = await updateClassAndSectionsDatabase(DocId, classAndSectionData);
-      
+      const response = await updateClassAndSectionsDatabase(
+        DocId,
+        classAndSectionData
+      );
+
       setConfirmationMessage(response.message);
 
       setClassAndSectionData(inticalData);
@@ -71,13 +78,13 @@ const AddOrUpdateClassAndSectionForm = ({
       setError(true);
     } else {
       try {
-        const response = await addClassAndSectionsToDatabase(classAndSectionData);
+        const response = await addClassAndSectionsToDatabase(
+          classAndSectionData
+        );
         // Show a confirmation message
         setConfirmationMessage(response.message);
 
-
         setClassAndSectionData(inticalData);
-        
       } catch (error) {
         console.error("Error updating subject data", error);
       }
@@ -99,9 +106,7 @@ const AddOrUpdateClassAndSectionForm = ({
         </Alert>
       )}
 
-
       <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
-
         {isUpdateOn ? "Update Subject" : "Add Subject"}
       </h2>
       <div className="addTeacher-form">
@@ -149,7 +154,7 @@ const AddOrUpdateClassAndSectionForm = ({
                 Subject Total Marks
               </label>
               <input
-                type="text"
+                type="number"
                 name="subjectTotalMarks"
                 value={classAndSectionData.subjectTotalMarks}
                 onChange={handleInputChange}
