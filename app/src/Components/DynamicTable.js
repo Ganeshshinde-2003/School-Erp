@@ -5,7 +5,7 @@ import { ImCross } from "react-icons/im";
 import "./DynamicTable.css";
 import AddButton from "./AddButton";
 
-const DynamicTable = ({ data, rowHeight, action, handleAction, locate }) => {
+const DynamicTable = ({ data, rowHeight, action, handleAction, ispanding }) => {
   if (!data || data.length === 0) {
     return <div>No data to display</div>;
   }
@@ -47,6 +47,13 @@ const DynamicTable = ({ data, rowHeight, action, handleAction, locate }) => {
               Edit/Delete
             </th>
           )}
+          {ispanding && (
+            <th
+              className={`h-[${rowHeight}px] py-2 px-4 text-center bg-gray-200 border border-gray-300`}
+            >
+              Approve/disapprove
+            </th>
+          )}
         </tr>
       </thead>
       <tbody>
@@ -78,6 +85,28 @@ const DynamicTable = ({ data, rowHeight, action, handleAction, locate }) => {
                     className="w-5 h-5 cursor-pointer text-white mr-1 rounded-full bg-red-500 p-1"
                   />
                 </div>
+              </td>
+            )}
+            {ispanding && (
+              <td
+                className={`h-[${rowHeight}px] py-2 px-4 border border-gray-300 text-center`}
+              >
+                <div className="flex items-center justify-around">
+                  <button
+                    onClick={() => handleAction("approve", row.id)}
+                    className="cursor-pointer text-white font-semibold rounded bg-green-500 px-3 py-1 mr-2"
+                  >
+                    Approve
+                  </button>
+
+                  <button
+                    onClick={() => handleAction("disapprove", row.id)}
+                    className="cursor-pointer text-white font-semibold rounded bg-red-500 px-3 py-1 mr-1"
+                  >
+                    Disapprove
+                  </button>
+                </div>
+
               </td>
             )}
           </tr>

@@ -98,6 +98,7 @@ const AddSubject = () => {
                 data={expenseData}
                 rowHeight={100}
                 action={true}
+                ispanding={false}
                 handleAction={handleAction}
               />
               <p className="h-16 text-center font-bold text-white flex items-center justify-center">

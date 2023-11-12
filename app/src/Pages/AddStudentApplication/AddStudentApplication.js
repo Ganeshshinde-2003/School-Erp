@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddButton from "../../Components/AddButton";
 import AddStudentForm from "./AddStudentApplicationForm";
-import "../../Pages/AddStudents/AddStudent.css";
+import "../../Pages/AddStudentsDirectly/AddStudent.css";
 
 import {
   addStudentByApplicationToDatabase,

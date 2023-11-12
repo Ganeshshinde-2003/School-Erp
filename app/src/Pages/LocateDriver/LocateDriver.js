@@ -55,7 +55,7 @@ const LocateDriver = () => {
                 data={driverData}
                 rowHeight={100}
                 action={false}
-                locate={true}
+                ispanding={false}
               />
             </div>
           )}

@@ -44,13 +44,13 @@ const Home = () => {
           <h1 className="h-8 text-center font-bold text-white flex items-center justify-center">
             Today's Birthday's
           </h1>
-          <DynamicTable data={Birthdays} rowHeight={8} action={false} />
+          <DynamicTable data={Birthdays} rowHeight={8} action={false} ispanding={false} />
         </div>
         <div className="attendance-table">
           <h1 className="h-8 text-center font-bold text-white	flex items-center justify-center">
             Attendance Count
           </h1>
-          <DynamicTable data={Attendance} rowHeight={8} action={false} />
+          <DynamicTable data={Attendance} rowHeight={8} action={false} ispanding={false} />
         </div>
       </div>
       <div className="w-3/4">
@@ -62,7 +62,7 @@ const Home = () => {
           <h1 className="h-8 text-center font-bold text-white flex items-center justify-center">
             Monthly Expense
           </h1>
-          <DynamicTable data={expense} rowHeight={8} action={false} />
+          <DynamicTable data={expense} rowHeight={8} action={false} ispanding={false}/>
         </div>
         <div className="w-1/4	">
           <PieGraph data={expenseData} />
