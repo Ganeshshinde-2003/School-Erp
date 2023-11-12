@@ -198,3 +198,15 @@ const AddOrUpdateClassAndSectionForm = ({
 };
 
 export default AddOrUpdateClassAndSectionForm;
+
+
+// import { getSubjectsNameFromDb } from "../../api/ClassMaster/Addsubject";
+
+// const [subjectsName,setSubjectsName]=useState(null)
+// async() => {
+//   await getSubjectsNameFromDb()
+//    .then((data) => {
+//     setSubjectsName(data);
+//     console.log("response",subjectsName);
+
+//   })

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
+import AlertComponent from "../../Components/AlertComponent"
 import AddButton from "../../Components/AddButton";
 import "./AddSubject.css";
 import {
@@ -14,11 +15,13 @@ import AddOrUpdateSubjectForm from "./AddOrUpdateSubjectForm ";
 const AddSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subjectUpdate, setSubjectUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [subjectData, setSubjectData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
+  const [isDelete,setIsDelete]=useState(false);
 
   const fetchData = () => {
     getAddSubjectDatabase()
@@ -41,6 +44,12 @@ const AddSubject = () => {
     setDataChanged(false);
   }
 
+  const closeDeleteAlert = () => {
+    setDocId(null);
+    setShowDeleteAlert(false);
+
+  };
+
   const handleAction = async (actionType, documentId) => {
     if (actionType === "edit") {
       console.log("edit ocument with ID:", documentId);
@@ -49,15 +58,22 @@ const AddSubject = () => {
       console.log(docId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteSubject(documentId);
-      console.log("Delete document with ID:", documentId);
-      if (response.status) {
-        setDataChanged(true);
+      setShowDeleteAlert(true);
+      setDocId(documentId);
       }
     }
   };
 
-  // Function to open the modal
+  const handleDelete = async ()=>{
+    console.log("handle delete");
+    const response = await deleteSubject(documentId);
+    console.log("Delete document with ID:", documentId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+
   const openModal = () => {
     console.log("Open modal");
     setDocId(null);
@@ -74,6 +90,8 @@ const AddSubject = () => {
     setSubjectUpdate(false);
     setDataChanged(true);
   };
+
+
 
   return (
     <div className="mt-4 w-full">
@@ -122,6 +140,10 @@ const AddSubject = () => {
         DocId={docId}
         isUpdateOn={subjectUpdate}
       />
+      {showDeleteAlert && (
+        <AlertComponent onConfirm={handleDelete} onCancel={closeDeleteAlert} />
+      )}
+
     </div>
   );
 };

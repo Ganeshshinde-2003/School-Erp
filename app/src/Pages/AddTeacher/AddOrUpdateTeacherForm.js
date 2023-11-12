@@ -482,9 +482,12 @@ const AddOrUpdateTeacherForm = ({
                     className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="">--- Select ---</option>
-                    <option value="bus">Class A</option>
-                    <option value="car">Class B</option>
-                    <option value="bike">Class C</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B+">B-</option>
+                    <option value="B+">AB+</option>
+
                   </select>
                 </div>
               </div>

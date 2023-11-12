@@ -105,3 +105,21 @@ export const getOptionalSubjectDataFromDb = async (DocId) => {
   };
 
   
+  export const getOptionalSubjectsName = async () => {
+    const optionalSubjectsRef = collection(db, "AddOptionalSubjects");
+    try {
+        const querySnapshot = await getDocs(optionalSubjectsRef);
+
+        const optionalSubjectData = [];
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            
+            subjectData.push(data.subjectName);
+        });
+
+        return optionalSubjectData; 
+    } catch (error) {
+        console.error(error);
+    }
+}; 

@@ -108,3 +108,22 @@ export const getSubjectDataFromDb = async (DocId) => {
   };
 
   
+
+  export const getSubjectsNameFromDb = async () => {
+    const subjectsRef = collection(db, "AddSubjects");
+    try {
+        const querySnapshot = await getDocs(subjectsRef);
+
+        const subjectData = [];
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            
+            subjectData.push(data.subjectName);
+        });
+
+        return subjectData; 
+    } catch (error) {
+        console.error(error);
+    }
+};
