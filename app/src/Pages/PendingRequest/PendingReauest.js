@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable.js";
-import { deleteStudent, getApplicantStudentFromDatabase } from "../../api/StudentMaster/AddStudentByApplication.js"; // Replace with the correct path
+import { deleteStudent, getApplicantStudentDataFromDd, getApplicantStudentFromDatabase } from "../../api/StudentMaster/AddStudentByApplication.js"; // Replace with the correct path
 import { Oval } from "react-loader-spinner";
 import AddButton from "../../Components/AddButton.js";
 import { useNavigate } from 'react-router-dom';
 
 import AlertComponent from "../../Components/AlertComponent.js";
+import { addStudentDirectlyToDatabase } from "../../api/StudentMaster/AddStudentDirectly.js";
+import AddOrUpdateStudentForm from "../AddStudentsDirectly/AddOrUpdateStudentForm .js";
 
 const PendingRequest = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [studentData, setStudentData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [docId, setDocId] = useState(null);
+  const [docId, setDocId] = useState("");
   const [alertmsg,setAlertmsg] = useState(false);
   const navigate = useNavigate();
 
@@ -48,12 +51,9 @@ const PendingRequest = () => {
     if (actionType === "approve") {
       setAlertmsg(false);
       setShowDeleteAlert(true);
-      
-      // setSubjectUpdate(true);
-      // setDocId(documentId);
-      // console.log(docId);
-      // setIsModalOpen(true);
-      navigate('/student-master/add-student');
+      setDocId(documentId);
+     
+      // navigate('/student-master/add-student');
 
     } 
     else if (actionType === "disapprove") {
@@ -66,14 +66,71 @@ const PendingRequest = () => {
   }
 
   const onConfirm = async ()=>{
-    console.log("handle delete");
-    const response = await deleteStudent(docId);
+    if(alertmsg){
+      const response = await deleteStudent(docId);
       console.log("Delete document with ID:", docId);
       if (response.status) {
         setDocId(null);
         setDataChanged(true);
       }
-}
+    }
+    else {
+      console.log("Approved document with ID:", docId);
+      const response = await getApplicantStudentDataFromDd(docId);
+      console.log(response);
+    
+      const { firstName, lastName, mobileNo, joiningClass,dob,aadharNo,previousschoolTCNo} = response;
+    
+      const studentDataObject = {
+        firstName,
+        lastName,
+        mobileNo,
+        joiningClass,
+      
+        personalDetails: {
+          dob,
+          aadharNo,
+        },
+      
+        addressDetails: {
+        },
+      
+        takeAdmissionfees: {
+        },
+       
+        demography: {
+        },
+      
+        studentHistory: {
+          previousschoolTCNo,
+        },
+        optionalSubjects:[]
+      };
+      console.log("studentObject",studentDataObject);
+      const deleted = await deleteStudent(docId);
+      console.log("Delete document:", deleted);
+
+      const res = await addStudentDirectlyToDatabase(studentDataObject);
+      console.log(res.docId);
+      setDocId(res?.docId);
+      setIsModalOpen(true);
+      setDataChanged(true);
+
+      // navigate('/student-master/add-student');
+    }
+    setShowDeleteAlert(false);
+  }
+
+  const handleStudentUpdated=()=>{
+    setDocId(null);
+    console.log(" document updated with ID:");
+    setDataChanged(true);
+  }
+
+  const handleStudentAdded=()=>{
+    console.log(" document added with ID:");
+    setDataChanged(true);
+  }
 
   return (
     <div className="mt-4 w-full">
@@ -121,6 +178,15 @@ const PendingRequest = () => {
         cnfBttonText={alertmsg?"Disapprove":"Approve"}
         />
       )}
+
+      <AddOrUpdateStudentForm
+        isModalOpen={isModalOpen} 
+        setIsModalOpen={setIsModalOpen}
+        handleStudentAdded={handleStudentAdded}
+        handleStudentUpdated={handleStudentUpdated}
+        DocId={docId}
+        isUpdateOn={true}
+      />
     </div>
   );
 };

@@ -115,7 +115,7 @@ export const getOptionalSubjectDataFromDb = async (DocId) => {
         querySnapshot.forEach((doc) => {
             const data = doc.data();
             
-            subjectData.push(data.subjectName);
+            optionalSubjectData.push(data.subjectName);
         });
 
         return optionalSubjectData; 

@@ -2,45 +2,16 @@ import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import "./AddStudent.css";
-import {
-  getStudentDatabase,
-  addStudentToDatabase,
-  updateStudentInDatabase,
-  deleteStudentFromDatabase,
-} from "../../api/student";
 import { Oval } from "react-loader-spinner";
 import AddOrUpdateStudentForm from "./AddOrUpdateStudentForm ";
+import { studentDataTest, updateStudentDirectlyToDatabase } from "../../api/StudentMaster/AddStudentDirectly";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [studentUpdate, setStudentUpdate] = useState(false);
-
-  const [studentData, setStudentData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
 
-  const fetchData = () => {
-    getStudentDatabase()
-      .then((data) => {
-        setStudentData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    fetchData(); // Fetch data initially
-  }, []);
-
-  if (dataChanged) {
-    fetchData(); // Refetch data when dataChanged is true
-    setDataChanged(false);
-  }
-
+ 
   const handleAction = async (actionType, documentId) => {
     if (actionType === "edit") {
       console.log("edit ocument with ID:", documentId);
@@ -50,7 +21,7 @@ const AddStudent = () => {
       setIsModalOpen(true);
     
     } else if (actionType === "delete") {
-      const response = await deleteStudentFromDatabase(documentId);
+      const response = await (documentId);
       console.log("Delete document with ID:", documentId);
       if (response.status) {
         setDataChanged(true);
@@ -58,22 +29,18 @@ const AddStudent = () => {
     }
   };
 
-  // Function to open the modal
-  const openModal = () => {
+  const openModal = async() => {
     console.log("Open modal");
     setIsModalOpen(true);
   };
-
+  
   const handleStudentAdded = () => {
       setDataChanged(true);
   };
 
   const handleStudentUpdated = () => {
-    setStudentUpdate(true);
-    setTimeout(() => {
-      setStudentUpdate(false);
-      setDataChanged(true);
-    }, 2000);
+    setStudentUpdate(false);
+    setDataChanged(true);
   };
 
   return (
@@ -96,3 +63,4 @@ const AddStudent = () => {
 };
 
 export default AddStudent;
+

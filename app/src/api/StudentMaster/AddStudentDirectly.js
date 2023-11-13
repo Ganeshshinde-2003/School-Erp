@@ -34,30 +34,24 @@ import {
 
 export const studentDataTest = {
   studentId: "th103",
-  firstName: "Sara",
+  firstName: "Sara ali",
   lastName: "Singh",
-  mobileNo: 9876543212,
   transportSlab: "cycle",
   admissionDate: new Date(2011, 2, 20),
   joiningClass: "8C",
   feeslab: "105000",
 
-  personalDetailsData: {
+  personalDetails: {
     gender: "female",
     cast: "Different Cast",
     fatherName: "Rajesh Sharma",
-    motherName: "Sunita Sharma",
-    aadharNo: 987654321097,
-    bloodGroup: "O+",
-    guardianName: "father",
-    guardianNo: 8292772486,
     telephoneNo: 9876543569,
     dob: new Date(1996, 4, 25),
     isSinglegirlchild: true,
     emailId: "student14@gmail.com",
   },
 
-  addressDetailsData: {
+  addressDetails: {
     homeAddress: "789 Oak Avenue",
     city: "New City",
     zipCode: "54321",
@@ -74,7 +68,7 @@ export const studentDataTest = {
     upitransactionNo: "92673r7797t38798tguyt77",
     otherUniqeNo: "other873678576ew2",
   },
-
+ 
   demography: {
     religion: "Christian",
     cast: "Another Cast",
@@ -92,20 +86,20 @@ export const studentDataTest = {
     previousClassPercentage: "92%",
     importantDocsTaken: true,
   },
+  optionalSubjects:["ghgj","jhgjk"]
 };
 
 export const addStudentDirectlyToDatabase = async (studentData) => {
   const studentRef = collection(db, "AddStudentsDirectly");
   try {
     const studentDoc = await addDoc(studentRef, {
-      studentId: studentData.studentId,
       firstName: studentData.firstName,
       lastName: studentData.lastName,
-      mobileNo: studentData.mobileNo,
-      transportSlab: studentData.transportSlab,
-      admissionDate: studentData.admissionDate,
-      joiningClass: studentData.joiningClass,
-      feeslab: studentData.feeslab,
+      mobileNo: studentData.mobileNo || 0,
+      transportSlab: studentData.transportSlab || "Bus",
+      admissionDate: studentData.admissionDate ||  "",
+      joiningClass: studentData.joiningClass || "1",
+      feeslab: studentData?.feeslab || 0,
       personalDetails: studentData?.personalDetails,
       addressDetails: studentData?.addressDetails,
       takeAdmissionfees: studentData?.takeAdmissionfees,
@@ -118,14 +112,14 @@ export const addStudentDirectlyToDatabase = async (studentData) => {
     console.log("Data added successfully");
     return {
       status: true,
-      message: "Student and subcollections added successfully",
+      message: "Student added in db successfully",
       docId: studentDoc.id,
     };
   } catch (error) {
     console.error(error);
     return {
       status: false,
-      message: "Error adding student and subcollections",
+      message: "Error adding student in db",
     };
   }
 };

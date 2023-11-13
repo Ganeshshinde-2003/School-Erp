@@ -86,7 +86,7 @@ export const deleteStudent = async (docId) => {
     }
 };
 
-export const getStudentDataFromDd = async (DocId) => {
+export const getApplicantStudentDataFromDd = async (DocId) => {
     try {
       const studentDocRef = doc(db, "AddStudentByApplication", DocId);
       const studentDocSnapshot = await getDoc(studentDocRef);

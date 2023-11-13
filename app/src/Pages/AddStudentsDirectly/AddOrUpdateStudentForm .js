@@ -8,6 +8,7 @@ import {
   getStudentDataFromDd,
   updateStudentDirectlyToDatabase,
 } from "../../api/StudentMaster/AddStudentDirectly";
+import { getOptionalSubjectsName } from "../../api/ClassMaster/AddOptionalSubject";
 const initialStudentData = {
   studentId: "",
   firstName: "",
@@ -81,16 +82,19 @@ const AddOrUpdateStudentForm = ({
   handleStudentUpdated,
 }) => {
   const [studentData, setStudentData] = useState(initialStudentData);
-  const subjects = ["Hindi", "Sanskrit", "German", "French"];
+  const [optionalSubjectsName,setOptionalSubjectsName]=useState([]);
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
 
+
+  
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       // Fetch subject data from Firebase when the modal is opened for update
       getStudentData(DocId);
     }
+    getOptionalSubjects();
   }, [isModalOpen, isUpdateOn]);
 
   const getStudentData = async (DocId) => {
@@ -104,6 +108,17 @@ const AddOrUpdateStudentForm = ({
       console.error("Error fetching subject data", error);
     }
   };
+
+
+  const getOptionalSubjects = async() => {
+    await getOptionalSubjectsName()
+     .then((data) => {
+      setOptionalSubjectsName(data);
+      console.log("response",optionalSubjectsName);
+  
+    })
+  } 
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -187,7 +202,7 @@ const AddOrUpdateStudentForm = ({
         setConfirmationMessage(null);
         setIsModalOpen(false);
         handleStudentUpdated();
-      }, 2000); // Hide the message after 2 seconds
+      }, 2000); 
     } catch (error) {
       console.error("Error updating subject data", error);
     }
@@ -449,7 +464,7 @@ const AddOrUpdateStudentForm = ({
                 </div>
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    Mother’s Name*
+                    Mother's Name*
                   </label>
                   <input
                     type="text"
@@ -824,7 +839,7 @@ const AddOrUpdateStudentForm = ({
             </div>
             <div className={activeCom === 5 ? "component-card" : "hidden-card"}>
               <div className="form-first">
-                {subjects.map((subject) => (
+                {optionalSubjectsName?.map((subject) => (
                   <div key={subject}>
                     <label className="block text-[18px] font-medium text-[#333333]">
                       {subject}
@@ -897,7 +912,8 @@ const AddOrUpdateStudentForm = ({
             </div>
           </div>
           <div className="addTeacher-buttons">
-            <button  type="button"
+            <button  
+              type="button"
               onClick={isUpdateOn ? handleUpdate : handleAdd}>
               {isUpdateOn ? "Update" : "Add"}
             </button>
