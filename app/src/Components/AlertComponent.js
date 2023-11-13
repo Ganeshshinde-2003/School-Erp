@@ -1,37 +1,48 @@
 import React, { useState } from 'react';
+import Modal from '../Components/Modal';
 
-const AlertComponent = ({ onConfirm, onCancel }) => {
+const AlertComponent = ({ alertMessage, cnfBttonText, onConfirm, onCancel }) => {
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const closeAlert = () => {
-    console.log("cancle ");
+    console.log("cancel ",isModalOpen);
     onCancel();
+    setIsModalOpen(false);
   };
 
   const handleConfirm = () => {
-    console.log("cnf ");
+    console.log("confirm ");
+    setIsModalOpen(false);
     onConfirm();
   };
 
+  const messageToDisplay = alertMessage || "Are you sure you want to delete?";
+  const subMessageToDisplay = "Once clicked on below option can't be changed";
+  const buttonTextToDisplay = cnfBttonText || "Delete";
+  const buttonColorClass = cnfBttonText === "Approve" ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600";
+
+
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-      <div className="bg-white p-12 rounded shadow-md">
-        <p className="text-lg font-semibold mb-4">Are you sure you want to delete?</p>
-        <div className="flex space-x-4">
-          <button
-            onClick={handleConfirm}
-            className="bg-red-500 text-white px-6 py-3 rounded-full hover:bg-red-600 transition duration-300"
-          >
-            Delete
-          </button>
-          <button
-            onClick={closeAlert}
-            className="border border-black text-black px-6 py-3 rounded-full hover:bg-gray-200 transition duration-300"
-          >
-            Close
-          </button>
+    <Modal setShowModal={setIsModalOpen}>
+        <div className="bg-white p-12 rounded-lg shadow-md w-[500px]">
+          <p className="text-lg font-semibold mb-2">{messageToDisplay}</p>
+          <p className="text-sm text-gray-500 mb-4">{subMessageToDisplay}</p>
+          <div className="flex space-x-4">
+            <button
+              onClick={handleConfirm}
+              className={`${buttonColorClass} text-white px-8 py-3 rounded transition duration-300`}
+              >
+              {buttonTextToDisplay}
+            </button>
+            <button
+              onClick={closeAlert}
+              className="border border-black text-black px-8 py-3 rounded hover:bg-gray-200 transition duration-300"
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 };
 

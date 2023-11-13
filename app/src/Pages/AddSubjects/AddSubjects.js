@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AlertComponent from "../../Components/AlertComponent"
 import AddButton from "../../Components/AddButton";
-import "./AddSubject.css";
 import {
   getSubjectDataFromDb,
   deleteSubject,
@@ -21,7 +20,6 @@ const AddSubject = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
-  const [isDelete,setIsDelete]=useState(false);
 
   const fetchData = () => {
     getAddSubjectDatabase()
@@ -44,7 +42,7 @@ const AddSubject = () => {
     setDataChanged(false);
   }
 
-  const closeDeleteAlert = () => {
+  const onCancel = () => {
     setDocId(null);
     setShowDeleteAlert(false);
 
@@ -55,24 +53,25 @@ const AddSubject = () => {
       console.log("edit ocument with ID:", documentId);
       setSubjectUpdate(true);
       setDocId(documentId);
-      console.log(docId);
       setIsModalOpen(true);
+
     } else if (actionType === "delete") {
       setShowDeleteAlert(true);
       setDocId(documentId);
       }
     }
-  };
+  ;
 
-  const handleDelete = async ()=>{
+  const onConfirm = async ()=>{
     console.log("handle delete");
-    const response = await deleteSubject(documentId);
-    console.log("Delete document with ID:", documentId);
+    const response = await deleteSubject(docId);
+    console.log("Delete document with ID:", docId);
     if (response.status) {
       setDataChanged(true);
       setDocId(null);
       setShowDeleteAlert(false);
   }
+}
 
   const openModal = () => {
     console.log("Open modal");
@@ -141,7 +140,7 @@ const AddSubject = () => {
         isUpdateOn={subjectUpdate}
       />
       {showDeleteAlert && (
-        <AlertComponent onConfirm={handleDelete} onCancel={closeDeleteAlert} />
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
       )}
 
     </div>
