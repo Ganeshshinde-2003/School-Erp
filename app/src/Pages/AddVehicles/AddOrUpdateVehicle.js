@@ -46,15 +46,15 @@ const AddVehicle = () => {
   };
 
   useEffect(() => {
-    fetchData(); // Fetch data initially
+    fetchData(); 
   }, []);
 
   if (dataChanged) {
-    fetchData(); // Refetch data when dataChanged is true
+    fetchData(); 
     setDataChanged(false);
   }
 
-  // Function to open the modal
+  
   const openModal = () => {
     setIsModalOpen(true);
     setDocId(null);
@@ -64,7 +64,7 @@ const AddVehicle = () => {
   const handleVehicleAdded = () => {
     setTimeout(() => {
       setDataChanged(true);
-    }, 2000); // Hide the message after 2 seconds
+    }, 2000); 
   };
 
   const handleVehicleUpdated = () => {
