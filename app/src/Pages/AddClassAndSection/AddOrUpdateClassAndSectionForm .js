@@ -107,7 +107,7 @@ const AddOrUpdateClassAndSectionForm = ({
       )}
 
       <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
-        {isUpdateOn ? "Update Subject" : "Add Subject"}
+        {isUpdateOn ? "Update Class" : "Add Class"}
       </h2>
       <div className="addTeacher-form">
         <form>

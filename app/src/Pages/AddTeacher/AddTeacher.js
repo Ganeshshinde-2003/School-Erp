@@ -101,7 +101,7 @@ const AddTeacher = () => {
             </h1>
             <DynamicTable data={teacherData} rowHeight={100} action={true} handleAction={handleAction} ispanding={false} />
             <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-              <AddButton buttonText={"Add subject"} onClickButton={openModal} />
+              <AddButton buttonText={"Add Teacher"} onClickButton={openModal} />
             </p>
           </div>
         )}

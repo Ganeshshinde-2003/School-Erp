@@ -105,11 +105,11 @@ return (
       ) : (
         <div className="add-optional-sub-table">
           <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-            Add Subjects
+          Add Classes
           </h1>
           <DynamicTable data={subjectData} rowHeight={100} action={true} handleAction={handleAction} ispanding={false} />
           <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-            <AddButton buttonText={"Add subject"} onClickButton={openModal} />
+            <AddButton buttonText={"Add Class"} onClickButton={openModal} />
           </p>
         </div>
       )}

@@ -956,7 +956,7 @@ const AddOrUpdateTeacherForm = ({
               type="button"
               onClick={isUpdateOn ? handleUpdate : handleAdd}
             >
-              {isUpdateOn ? "Update" : "Save & Continue"}
+              {isUpdateOn ? "Update" : "Add"}
             </button>
             <button
               type="button"

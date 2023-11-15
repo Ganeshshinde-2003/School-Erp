@@ -36,7 +36,7 @@ const AddStudentPage = () => {
     <div className="mt-4 w-full flex items-center justify-center">
       <div className="mt-5 max-w-full">
         <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-          <AddButton buttonText={"Add subject"} onClickButton={openModal} />
+          <AddButton buttonText={"Add Application"} onClickButton={openModal} />
         </p>
       </div>
       <AddStudentForm
