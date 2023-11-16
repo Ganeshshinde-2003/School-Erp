@@ -5,10 +5,12 @@ import "./AddTeacher.css";
 import AddOrUpdateTeacherForm from "./AddOrUpdateTeacherForm";
 import { Oval } from "react-loader-spinner";
 import {  deleteTeacher, getTeacherFromDatabase,  getTeacherDataFromDd } from "../../api/TeacherMaster/AddTeacher";
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddTeacher = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teacherUpdate, setTeacherUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [teacherData, setTeacherData] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
@@ -49,15 +51,28 @@ const AddTeacher = () => {
       //calling the update api and handleUpdate
      
     } else if (actionType === 'delete') {
-      const response =await deleteTeacher(documentId);
-      console.log('Delete document with ID:', documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
-  // Function to open the modal
-  const openModal = () => {
+  
+  const onConfirm = async ()=>{
+    const response =await deleteTeacher(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+}
+
+const onCancel = () => {
+  setDocId(null);
+  setShowDeleteAlert(false);
+
+};
+
+const openModal = () => {
     console.log("Open modal");
     setDocId(null);
     setTeacherUpdate(false)
@@ -117,6 +132,9 @@ const AddTeacher = () => {
       DocId={docId}
       isUpdateOn={teacherUpdate}
     />
+     {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
     </div>
   );
 };

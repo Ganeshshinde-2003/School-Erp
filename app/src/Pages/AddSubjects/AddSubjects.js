@@ -42,12 +42,6 @@ const AddSubject = () => {
     setDataChanged(false);
   }
 
-  const onCancel = () => {
-    setDocId(null);
-    setShowDeleteAlert(false);
-
-  };
-
   const handleAction = async (actionType, documentId) => {
     if (actionType === "edit") {
       console.log("edit ocument with ID:", documentId);
@@ -73,6 +67,11 @@ const AddSubject = () => {
   }
 }
 
+const onCancel = () => {
+  setDocId(null);
+  setShowDeleteAlert(false);
+
+};
   const openModal = () => {
     console.log("Open modal");
     setDocId(null);

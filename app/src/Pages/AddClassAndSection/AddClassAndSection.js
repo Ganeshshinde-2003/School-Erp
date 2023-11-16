@@ -4,11 +4,12 @@ import AddButton from "../../Components/AddButton";
 import { Oval } from 'react-loader-spinner';
 import { addClassAndSectionsToDatabase, deleteClassAndSectionsData, getClassAndSectionsDatabase } from "../../api/ClassMaster/AddClassAndSection";
 import AddOrUpdateClassAndSectionForm from "./AddOrUpdateClassAndSectionForm ";
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddClassAndSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [subjectAdded, setSubjectAdded] = useState(false);
   const [subjectUpdate, setSubjectUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [subjectData, setSubjectData] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
@@ -55,14 +56,28 @@ const AddClassAndSubject = () => {
       setIsModalOpen(true);
      
     } else if (actionType === 'delete') {
-      const response =await deleteClassAndSectionsData(documentId);
-      console.log('Delete document with ID:', documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
 
+
+  const onConfirm = async ()=>{
+    console.log("handle delete");
+    const response = await deleteClassAndSectionsData(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+}
+
+const onCancel = () => {
+  setDocId(null);
+  setShowDeleteAlert(false);
+
+};
 
 // Function to open the modal
 const openModal = () => {
@@ -125,7 +140,9 @@ return (
     DocId={docId}
     isUpdateOn={subjectUpdate}
   />
-
+   {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
 </div>
 )};
 

@@ -5,11 +5,13 @@ import AddButton from "../../Components/AddButton";
 import { deleteOptionalSubject, getOptionalSubjectDatabase } from "../../api/ClassMaster/AddOptionalSubject";
 import AddOrUpdateOptionalSubjectForm from "./AddOrUpdateOptionalSubjectForm ";
 import { Oval } from 'react-loader-spinner';
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddOptionalSubject = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subjectUpdate, setSubjectUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [subjectData, setSubjectData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,13 +53,27 @@ const AddOptionalSubject = () => {
 
 
     } else if (actionType === 'delete') {
-      const response = await deleteOptionalSubject(documentId);
-      console.log('Delete document with ID:', documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
+
+  const onCancel = () => {
+    setDocId(null);
+    setShowDeleteAlert(false);
+
+  };
+
+  const onConfirm = async ()=>{
+    console.log("handle delete");
+    const response = await deleteOptionalSubject(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+}
 
 // Function to open the modal
 const openModal = () => {
@@ -119,7 +135,9 @@ const handleSubjectUpdated = () => {
         DocId={docId}
         isUpdateOn={subjectUpdate}
       />
-     
+       {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
     </div>
   );
 };
