@@ -52,11 +52,11 @@ const AddSubject = () => {
     } else if (actionType === "delete") {
       setShowDeleteAlert(true);
       setDocId(documentId);
-      }
     }
-  ;
+  }
+    ;
 
-  const onConfirm = async ()=>{
+  const onConfirm = async () => {
     console.log("handle delete");
     const response = await deleteSubject(docId);
     console.log("Delete document with ID:", docId);
@@ -64,14 +64,14 @@ const AddSubject = () => {
       setDataChanged(true);
       setDocId(null);
       setShowDeleteAlert(false);
+    }
   }
-}
 
   const onCancel = () => {
-  setDocId(null);
-  setShowDeleteAlert(false);
+    setDocId(null);
+    setShowDeleteAlert(false);
 
-};
+  };
   const openModal = () => {
     console.log("Open modal");
     setDocId(null);

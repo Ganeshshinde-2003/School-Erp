@@ -7,10 +7,12 @@ import {
   deleteHoliday,
   getHolidayAndEventsData,
 } from "../../api/AddHoliday/AddHoliday";
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [holidayUpdate, setHolidayUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [holidayData, setHolidayData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,15 +48,27 @@ const AddStudent = () => {
       console.log(docId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteHoliday(documentId);
-      console.log("Delete document with ID:", documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
 
-  // Function to open the modal
+  const onConfirm = async () => {
+    const response = await deleteHoliday(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+    }
+  }
+
+  const onCancel = () => {
+    setDocId(null);
+    setShowDeleteAlert(false);
+
+  };
+
   const openModal = () => {
     console.log("Open modal");
     setIsModalOpen(true);
@@ -119,6 +133,10 @@ const AddStudent = () => {
         DocId={docId}
         isUpdateOn={holidayUpdate}
       />
+      {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
+
     </div>
   );
 };

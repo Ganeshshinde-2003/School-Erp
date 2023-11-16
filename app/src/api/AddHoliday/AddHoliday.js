@@ -42,10 +42,19 @@ export const getHolidayAndEventsData = async () => {
         querySnapshot.forEach(async (doc) => {
           
             const data = doc.data();
+
+            // Convert timestamp to Date objects
+            const startDate = new Date(data.startDate);
+            const endDate = new Date(data.endDate);
+
+            // Format dates as DD/MM/YYYY (adjust as needed)
+            const formattedStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
+            const formattedEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+
             const modifiedData = {
                 "id": doc.id,                
                 "Name": data.eventName,
-                "Duration": data.startDate + "-" + data.endDate,
+                "Duration": `${formattedStartDate} - ${formattedEndDate}`,
                 "Holiday": data.isHoliday,
             };
             HolidayData.push(modifiedData);
