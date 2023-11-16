@@ -8,10 +8,12 @@ import {
   getDriverDataFromDatabase,
 } from "../../api/TransportMaster/AddDriver";
 import DynamicTable from "../../Components/DynamicTable";
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddDriver = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [driverUpdate, setDriverUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [driverData, setDriverData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,11 +40,8 @@ const AddDriver = () => {
       console.log(docId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteDriverData(documentId);
-      console.log("Delete document with ID:", documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
   useEffect(() => {
@@ -53,7 +52,23 @@ const AddDriver = () => {
     fetchData(); // Refetch data when dataChanged is true
     setDataChanged(false);
   }
-  // Function to open the modal
+
+  const onConfirm = async ()=>{
+    const response = await deleteDriverData(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+}
+
+  const onCancel = () => {
+  setDocId(null);
+  setShowDeleteAlert(false);
+
+};
+
   const openModal = () => {
     console.log("Open modal");
     setIsModalOpen(true);
@@ -121,6 +136,9 @@ const AddDriver = () => {
         DocId={docId}
         isUpdateOn={driverUpdate}
       />
+        {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
     </div>
   );
 };

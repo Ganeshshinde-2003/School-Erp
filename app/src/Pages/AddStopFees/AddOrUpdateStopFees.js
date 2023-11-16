@@ -8,10 +8,12 @@ import {
   deleteTransportData,
   getTransportDataFromDatabase,
 } from "../../api/TransportMaster/AddStopAndFees";
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddStop = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [stopUpdate, setStopUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [stopData, setStopData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,11 +40,8 @@ const AddStop = () => {
       console.log(docId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteTransportData(documentId);
-      console.log("Delete document with ID:", documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
 
@@ -54,6 +53,23 @@ const AddStop = () => {
     fetchData(); // Refetch data when dataChanged is true
     setDataChanged(false);
   }
+
+
+  const onConfirm = async ()=>{
+    const response = await deleteTransportData(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+}
+
+const onCancel = () => {
+  setDocId(null);
+  setShowDeleteAlert(false);
+
+};
 
   // Function to open the modal
   const openModal = () => {
@@ -125,6 +141,9 @@ const AddStop = () => {
         DocId={docId}
         isUpdateOn={stopUpdate}
       />
+      {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
     </div>
   );
 };

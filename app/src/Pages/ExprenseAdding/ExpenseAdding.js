@@ -7,10 +7,12 @@ import {
   deleteExpenseData,
   getExpenseDataFromDatabase,
 } from "../../api/ExpenseAdding/AddExpense";
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expenseUpdate, setexpenseUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [expenseData, setexpenseData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,14 +48,25 @@ const AddSubject = () => {
       console.log(docId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteExpenseData(documentId);
-      console.log("Delete document with ID:", documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
+  const onConfirm = async ()=>{
+    const response = await deleteExpenseData(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+}
 
+  const onCancel = () => {
+  setDocId(null);
+  setShowDeleteAlert(false);
+
+};
   // Function to open the modal
   const openModal = () => {
     console.log("Open modal");
@@ -119,6 +132,9 @@ const AddSubject = () => {
         DocId={docId}
         isUpdateOn={expenseUpdate}
       />
+       {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
     </div>
   );
 };

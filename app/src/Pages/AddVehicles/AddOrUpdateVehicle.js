@@ -10,10 +10,12 @@ import {
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import AddVehicleForm from "./AdOrUpdateVehicleForm";
+import AlertComponent from "../../Components/AlertComponent";
 
 const AddVehicle = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [vehicleUpdate, setVehicleUpdate] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [vehicleData, setVehicleData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,10 +40,8 @@ const AddVehicle = () => {
       setDocId(documentId);
       setIsModalOpen(true);
     } else if (actionType === "delete") {
-      const response = await deleteVehicleData(documentId);
-      if (response.status) {
-        setDataChanged(true);
-      }
+      setShowDeleteAlert(true);
+      setDocId(documentId);
     }
   };
 
@@ -54,6 +54,21 @@ const AddVehicle = () => {
     setDataChanged(false);
   }
 
+  const onConfirm = async ()=>{
+    const response = await deleteVehicleData(docId);
+    console.log("Delete document with ID:", docId);
+    if (response.status) {
+      setDataChanged(true);
+      setDocId(null);
+      setShowDeleteAlert(false);
+  }
+}
+
+  const onCancel = () => {
+  setDocId(null);
+  setShowDeleteAlert(false);
+
+};
   
   const openModal = () => {
     setIsModalOpen(true);
@@ -122,6 +137,9 @@ const AddVehicle = () => {
         DocId={docId}
         isUpdateOn={vehicleUpdate}
       />
+        {showDeleteAlert && (
+        <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
+      )}
     </div>
   );
 };

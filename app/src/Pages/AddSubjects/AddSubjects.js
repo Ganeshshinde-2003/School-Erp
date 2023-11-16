@@ -67,7 +67,7 @@ const AddSubject = () => {
   }
 }
 
-const onCancel = () => {
+  const onCancel = () => {
   setDocId(null);
   setShowDeleteAlert(false);
 
