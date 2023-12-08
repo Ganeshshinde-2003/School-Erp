@@ -109,7 +109,7 @@ export const getSubjectDataFromDb = async (DocId) => {
 
   
 
-  export const getSubjectsNameFromDb = async () => {
+  export const getAllSubjectsNameFromDb = async () => {
     const subjectsRef = collection(db, "AddSubjects");
     try {
         const querySnapshot = await getDocs(subjectsRef);

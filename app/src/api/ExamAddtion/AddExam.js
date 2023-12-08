@@ -102,21 +102,4 @@ export const getExamDataFromDb = async (DocId) => {
 
   
 
-  export const getSubjectsNameFromDb = async () => {
-    const examRef = collection(db, "AddExams");
-    try {
-        const querySnapshot = await getDocs(examRef);
-
-        const subjectData = [];
-
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            
-            subjectData.push(data.subjectName);
-        });
-
-        return subjectData; 
-    } catch (error) {
-        console.error(error);
-    }
-};
+  
