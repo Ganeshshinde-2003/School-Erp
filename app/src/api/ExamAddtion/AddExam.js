@@ -20,10 +20,10 @@ export const addExamToDatabase = async (examData) => {
             createdAt: serverTimestamp(),
 
         });
-        return { status: true, message: "Document successfully added" };
+        return { status: true, message: "Exam Document successfully added" };
     } catch (error) {
         console.error(error);
-        return { status: false, message: "Error adding document" };
+        return { status: false, message: "Error adding with exam document" };
     }
 };
 
@@ -36,7 +36,7 @@ export const getExamsDatabase = async () => {
 
         const querySnapshot = await getDocs(q);
         
-        const subjectData = [];
+        const examData = [];
         
         querySnapshot.forEach(async (doc) => {
           
@@ -47,11 +47,11 @@ export const getExamsDatabase = async () => {
                 "Total Exam Marks Reduced": data.totalExamMarksReduced,
                 "Marks Freeze Date": data.freezeDate,
             };
-            subjectData.push(modifiedData);
+            examData.push(modifiedData);
 
         });     
 
-        return subjectData; // Return the subjectdata
+        return examData; // Return the examdata
     } catch (error) {
         console.error(error);
     }
@@ -59,10 +59,10 @@ export const getExamsDatabase = async () => {
 
 export const updateExamInDatabase = async (documentId, updatedSubjectData) => {
     const examRef = collection(db, "AddExams");
-    const subjectDocRef = doc(examRef, documentId); // Use Id to reference the specific document
+    const examDocRef = doc(examRef, documentId); // Use Id to reference the specific document
 
     try {
-        await updateDoc(subjectDocRef, updatedSubjectData);
+        await updateDoc(examDocRef, updatedSubjectData);
         return { status: true, message: "Document successfully updated" };
     } catch (error) {
         console.error("Error updating document:", error);
@@ -73,10 +73,10 @@ export const updateExamInDatabase = async (documentId, updatedSubjectData) => {
 
 export const deleteExam = async (subjectId) => {
     const examRef = collection(db, "AddExams");
-    const subjectDocRef = doc(examRef, subjectId);
+    const examDocRef = doc(examRef, subjectId);
 
     try {
-        await deleteDoc(subjectDocRef);
+        await deleteDoc(examDocRef);
         return { status: true, message: "Document successfully deleted" };
     } catch (error) {
         console.error("Error deleting document:", error);
