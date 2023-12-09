@@ -124,20 +124,15 @@ const AddOrUpdateSubjectForm = ({
               <label className="block text-sm font-medium text-gray-700">
                 Subject Name
               </label>
-              <select
+              <input
                 type="text"
                 name="subjectName"
                 value={subjectData.subjectName}
                 onChange={handleInputChange}
                 className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">--- Select ---</option>
-                <option value="Pysics">Pysics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Biology">Biology</option>
-                <option value="Maths">Maths</option>
-              </select>
+              />
             </div>
+            
             <div className="form-first">
               <label className="block text-sm font-medium text-gray-700">
                 Subject Total Marks

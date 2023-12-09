@@ -16,14 +16,6 @@ const AddClassAndSubject = () => {
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
 
-  const data = {//temp data to add
-    "className": "7",
-    "noOfSections": 2,
-    "optionalSubjects": ["Sanskrit", "Music","Art"],
-    "subjects": ["Science", "Physics", "Biology"]
-  }
-  
-
   const fetchData = () => {
     getClassAndSectionsDatabase()
       .then((data) => {

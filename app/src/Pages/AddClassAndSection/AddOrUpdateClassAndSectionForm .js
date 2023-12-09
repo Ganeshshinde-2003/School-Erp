@@ -8,6 +8,8 @@ import {
   getClassAndSectionsDataFromDb,
   updateClassAndSectionsDatabase,
 } from "../../api/ClassMaster/AddClassAndSection";
+import { getAllOptionalSubjectsName } from "../../api/ClassMaster/AddOptionalSubject";
+import { getAllSubjectsNameFromDb } from "../../api/ClassMaster/Addsubject";
 
 const AddOrUpdateClassAndSectionForm = ({
   isUpdateOn,
@@ -24,31 +26,20 @@ const AddOrUpdateClassAndSectionForm = ({
     subjects: [],
   };
   const [classAndSectionData, setClassAndSectionData] = useState(inticalData);
+  const [subjectList, setsubjectList] = useState([]);
+  const [optionalSubjectList, setOptionalSubjectList] = useState([]);
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
-  const subjectList = [
-    "English",
-    "Kannada",
-    "Marathi",
-    "Physics",
-    "Chemistry",
-    "Biology",
-    "Maths",
-    "English",
-    "Kannada",
-    "Marathi",
-    "Physics",
-    "Chemistry",
-    "Biology",
-    "Maths",
-  ];
-  const optionalSubjectList = ["Sanskrit", "Bengal", "French", "Kashmir"];
+
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       getSubjectData(DocId);
     }
+    getSubjects();
+    getOptionalSubjects();
+
   }, [isModalOpen, isUpdateOn]);
 
   const getSubjectData = async (DocId) => {
@@ -63,6 +54,19 @@ const AddOrUpdateClassAndSectionForm = ({
     }
   };
 
+  const getSubjects = async () => {
+    await getAllSubjectsNameFromDb().then((data) => {
+      setsubjectList(data);
+      console.log("response", subjectList);
+    });
+  };
+  
+  const getOptionalSubjects = async () => {
+    await getAllOptionalSubjectsName().then((data) => {
+      setOptionalSubjectList(data);
+      console.log("response", optionalSubjectList);
+    });
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setClassAndSectionData({

@@ -110,7 +110,6 @@ const AddOrUpdateStudentForm = ({
   const getOptionalSubjects = async () => {
     await getAllOptionalSubjectsName().then((data) => {
       setOptionalSubjectsName(data);
-      console.log("response", optionalSubjectsName);
     });
   };
 
