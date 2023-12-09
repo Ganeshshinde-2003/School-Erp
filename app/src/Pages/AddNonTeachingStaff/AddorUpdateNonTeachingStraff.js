@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
-import {
-  getexpenseDataFromDb,
-  addSubjectToDatabase,
-  updateSubjectInDatabase,
-} from "../../api/ClassMaster/Addsubject";
 import "../AddTeacher/AddTeacherForm.css";
 import {
   addExpenseDataToDb,

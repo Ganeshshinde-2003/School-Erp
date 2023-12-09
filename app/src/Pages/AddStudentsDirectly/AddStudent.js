@@ -8,8 +8,14 @@ import {
   studentDataTest,
   updateStudentDirectlyToDatabase,
 } from "../../api/StudentMaster/AddStudentDirectly";
-import { studentDataTest, updateStudentDirectlyToDatabase } from "../../api/StudentMaster/AddStudentDirectly";
-import { addNonTeachingStaffToDb, deleteStaffData, getSpecificStaffDataFromDb, getStaffDataFromDatabase, testStaffData, updateStaffToDatabase } from "../../api/StaffManagement/AddNonTeachingStaff";
+import {
+  addNonTeachingStaffToDb,
+  deleteStaffData,
+  getSpecificStaffDataFromDb,
+  getStaffDataFromDatabase,
+  testStaffData,
+  updateStaffToDatabase,
+} from "../../api/StaffManagement/AddNonTeachingStaff";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
