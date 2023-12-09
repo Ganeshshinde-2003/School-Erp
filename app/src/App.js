@@ -17,6 +17,7 @@ import AddHoliday from "./Pages/AddHolidays/AddHoliday.js";
 import AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
 import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
 import AddNoticePage from "./Pages/AddNotice/AddNotice.js";
+import SalaryToTeacher from "./Pages/SalaryToTeacher/SalaryToTeacher.js";
 import AddVehicle from "./Pages/AddVehicles/AddOrUpdateVehicle.js";
 import AddNonTeachingStaff from "./Pages/AddNonTeachingStaff/AddNonTeachingStaff.js";
 
@@ -101,16 +102,12 @@ const App = () => {
               element={<AddNoticePage />}
             />
             <Route
-              path="/teacher-master/add-non-teaching-staff"
+              path="/staff-management/add-non-teaching-staff"
               element={<AddNonTeachingStaff />}
             />
             <Route
-              path="/teacher-master/salary-to-teachers"
-              element={<ExpenseAdding />}
-            />
-            <Route
-              path="/teacher-master/salary-to-non-teaching-staff"
-              element={<AddNoticePage />}
+              path="/staff-management/salary-to-teachers"
+              element={<SalaryToTeacher />}
             />
           </Routes>
         </div>
