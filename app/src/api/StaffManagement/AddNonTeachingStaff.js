@@ -13,14 +13,14 @@ import {
 } from "firebase/firestore";
 
 export const testStaffData = {
-    name: "Magan",
-    role: "Technician",
-    staffId: "S111",
-    mobileNo: "878934290",
-    salary: 15000,
-    bloodGroup: "O+",
-    bankAccount: "7889234",
-  };
+  name: "John Doe",
+  role: "Teacher",
+  staffId: "S001",
+  mobileNo: "1234567890",
+  salary: 50000,
+  bloodGroup: "A+",
+  bankAccount: "12345678901234",
+};
 
 export const addNonTeachingStaffToDb = async (StaffData) => {
   const StaffRef = collection(db, "AddNonTeachingStaff");
@@ -51,10 +51,7 @@ export const addNonTeachingStaffToDb = async (StaffData) => {
   }
 };
 
-export const updateStaffToDatabase = async (
-  documentId,
-  updatedStaffData
-) => {
+export const updateStaffToDatabase = async (documentId, updatedStaffData) => {
   const StaffDocRef = doc(db, "AddNonTeachingStaff", documentId);
 
   try {
@@ -119,18 +116,19 @@ export const getStaffDataFromDatabase = async () => {
 
       const modifiedStaffData = {
         id: doc.id,
-        name: data.name,
-        role: data.role,
-        staffId: data.staffId,
-        mobile: data.mobileNo,
-        salary: data.salary,
-        bloodGroup: data.bloodGroup,
-        bankAccount: data.bankAccount,
+        Name: data.name,
+        Role: data.role,
+        "Staff ID": data.staffId,
+        "Mobile No.": data.mobile,
+        Salary: data.salary,
+        "Blood Group": data.bloodGroup,
+        "Bank AccountNo": data.bankAccount,
       };
 
       StaffData.push(modifiedStaffData);
     }
 
+    console.log(StaffData);
     return StaffData;
   } catch (error) {
     console.error(error);
