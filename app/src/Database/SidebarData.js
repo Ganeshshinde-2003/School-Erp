@@ -100,8 +100,18 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: "Add staff",
-        path: "/teacher-master/add-teacher",
+        title: "Add Non Teaching Staff",
+        path: "/teacher-master/add-non-teaching-staff",
+        cName: "sub-nav",
+      },
+      {
+        title: "Salary to Teachers",
+        path: "/teacher-master/salary-to-teachers",
+        cName: "sub-nav",
+      },
+      {
+        title: "Salary to Non-Teaching Staff",
+        path: "/teacher-master/salary-to-non-teaching-staff",
         cName: "sub-nav",
       },
     ],

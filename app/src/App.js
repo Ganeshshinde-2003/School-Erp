@@ -18,8 +18,7 @@ import AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
 import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
 import AddNoticePage from "./Pages/AddNotice/AddNotice.js";
 import AddVehicle from "./Pages/AddVehicles/AddOrUpdateVehicle.js";
-
-
+import AddNonTeachingStaff from "./Pages/AddNonTeachingStaff/AddNonTeachingStaff.js";
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
@@ -90,8 +89,8 @@ const App = () => {
               element={<AddFeeSlab />}
             />
             <Route
-              path="transport-master/add-vehciles"
-              element={<AddVehicle/>}
+              path="/transport-master/add-vehciles"
+              element={<AddVehicle />}
             />
             <Route
               path="/fee-structures/add-fee-structures"
@@ -101,8 +100,19 @@ const App = () => {
               path="/send-notice/add-notices"
               element={<AddNoticePage />}
             />
+            <Route
+              path="/teacher-master/add-non-teaching-staff"
+              element={<AddNonTeachingStaff />}
+            />
+            <Route
+              path="/teacher-master/salary-to-teachers"
+              element={<ExpenseAdding />}
+            />
+            <Route
+              path="/teacher-master/salary-to-non-teaching-staff"
+              element={<AddNoticePage />}
+            />
           </Routes>
-
         </div>
       </div>
     </BrowserRouter>
