@@ -21,6 +21,14 @@ export const testStaffData = {
   bloodGroup: "A+",
   bankAccount: "12345678901234",
 };
+    name: "Magan",
+    role: "Technician",
+    staffId: "S111",
+    mobileNo: "878934290",
+    salary: 15000,
+    bloodGroup: "O+",
+    bankAccount: "7889234",
+  };
 
 export const addNonTeachingStaffToDb = async (StaffData) => {
   const StaffRef = collection(db, "AddNonTeachingStaff");
