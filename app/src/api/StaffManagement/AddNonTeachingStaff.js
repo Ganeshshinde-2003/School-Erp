@@ -13,7 +13,8 @@ import {
 } from "firebase/firestore";
 
 export const testStaffData = {
-  name: "John Doe",
+  firstName: "John",
+  lastName: "Smith",
   role: "Teacher",
   staffId: "S001",
   mobileNo: "1234567890",
@@ -27,7 +28,8 @@ export const addNonTeachingStaffToDb = async (StaffData) => {
 
   try {
     const StaffDoc = await addDoc(StaffRef, {
-      name: StaffData.name,
+      firstName: StaffData.firstName,
+      lastName: StaffData.lastName,
       role: StaffData.role,
       staffId: StaffData.staffId,
       mobile: StaffData.mobileNo,
@@ -116,7 +118,7 @@ export const getStaffDataFromDatabase = async () => {
 
       const modifiedStaffData = {
         id: doc.id,
-        Name: data.name,
+        Name: data.firstName + " " + data.lastName,
         Role: data.role,
         "Staff ID": data.staffId,
         "Mobile No.": data.mobile,
