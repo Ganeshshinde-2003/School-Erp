@@ -21,6 +21,7 @@ export const testStaffData = {
   salary: 50000,
   bloodGroup: "A+",
   bankAccount: "12345678901234",
+  dob: new Date(1990, 5, 15),
 };
 
 export const addNonTeachingStaffToDb = async (StaffData) => {
@@ -36,6 +37,7 @@ export const addNonTeachingStaffToDb = async (StaffData) => {
       salary: StaffData.salary,
       bloodGroup: StaffData.bloodGroup,
       bankAccount: StaffData.bankAccount,
+      dob: StaffData.dob,
       createdAt: serverTimestamp(),
     });
 
