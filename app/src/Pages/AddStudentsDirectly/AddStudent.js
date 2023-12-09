@@ -33,8 +33,7 @@ const AddStudent = () => {
 
   const openModal = async() => {
     console.log("Open modal");
-    getTeacherAndSalaryDataFromDatabase();
-    // setIsModalOpen(true);
+    setIsModalOpen(true);
   };
   
   const handleStudentAdded = () => {
