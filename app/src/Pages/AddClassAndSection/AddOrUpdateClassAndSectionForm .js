@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "../AddTeacher/AddTeacherForm.css";
+import "./AddClassAndSection.css";
 import {
   addClassAndSectionsToDatabase,
   getClassAndSectionsDataFromDb,
@@ -17,14 +18,32 @@ const AddOrUpdateClassAndSectionForm = ({
   handleSubjectUpdated,
 }) => {
   const inticalData = {
-    subjectTotalMarks: 100,
-    subjectName: "",
-    subjectCode: "",
+    className: "",
+    noOfSections: 0,
+    optionalSubjects: [],
+    subjects: [],
   };
   const [classAndSectionData, setClassAndSectionData] = useState(inticalData);
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const subjectList = [
+    "English",
+    "Kannada",
+    "Marathi",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Maths",
+    "English",
+    "Kannada",
+    "Marathi",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Maths",
+  ];
+  const optionalSubjectList = ["Sanskrit", "Bengal", "French", "Kashmir"];
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
@@ -51,7 +70,28 @@ const AddOrUpdateClassAndSectionForm = ({
       [name]: value,
     });
   };
+  const handleInputChange1 = (e) => {
+    const { name, checked } = e.target;
 
+    setClassAndSectionData((prevStudentData) => ({
+      ...prevStudentData,
+      subjects: checked
+        ? [...prevStudentData.subjects, name]
+        : prevStudentData.subjects.filter((subject) => subject !== name),
+    }));
+  };
+  const handleInputChange2 = (e) => {
+    const { name, checked } = e.target;
+
+    setClassAndSectionData((prevStudentData) => ({
+      ...prevStudentData,
+      optionalSubjects: checked
+        ? [...prevStudentData.optionalSubjects, name]
+        : prevStudentData.optionalSubjects.filter(
+            (subject) => subject !== name
+          ),
+    }));
+  };
   const handleUpdate = async () => {
     try {
       const response = await updateClassAndSectionsDatabase(
@@ -74,10 +114,11 @@ const AddOrUpdateClassAndSectionForm = ({
   };
 
   const handleAdd = async () => {
-    if (!classAndSectionData.subjectCode || !classAndSectionData.subjectName) {
+    if (!classAndSectionData.className || !classAndSectionData.noOfSections) {
       setError(true);
     } else {
       try {
+        console.log(classAndSectionData);
         const response = await addClassAndSectionsToDatabase(
           classAndSectionData
         );
@@ -114,52 +155,65 @@ const AddOrUpdateClassAndSectionForm = ({
           <div className="addTeacher-main-form subject-form">
             <div className="form-first">
               <label className="block text-sm font-medium text-gray-700">
-                Subject Code
+                Class Name
               </label>
               <input
                 type="text"
-                name="subjectCode"
-                value={classAndSectionData.subjectCode}
+                name="className"
+                value={classAndSectionData.className}
                 onChange={handleInputChange}
                 className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div className="form-first">
               <label className="block text-sm font-medium text-gray-700">
-                Subject Name
-              </label>
-              {/* <input
-                type="text"
-                name="subjectName"
-                value={classAndSectionData.subjectName}
-                onChange={handleInputChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              /> */}
-              <select
-                type="text"
-                name="subjectName"
-                value={classAndSectionData.subjectName}
-                onChange={handleInputChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="bus">--- Select ---</option>
-                <option value="Pysics">Pysics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Biology">Biology</option>
-                <option value="Maths">Maths</option>
-              </select>
-            </div>
-            <div className="form-first">
-              <label className="block text-sm font-medium text-gray-700">
-                Subject Total Marks
+                No. of sections
               </label>
               <input
-                type="number"
-                name="subjectTotalMarks"
-                value={classAndSectionData.subjectTotalMarks}
+                type="text"
+                name="noOfSections"
+                value={classAndSectionData.noOfSections}
                 onChange={handleInputChange}
                 className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
+            </div>
+          </div>
+          <div className="subject-addition">
+            <div className="subjects-add">
+              <p>Add Subjects*</p>
+              {subjectList?.map((subject) => (
+                <div key={subject} className="subject-add-check">
+                  <label className="block text-[15px] font-medium text-[#333333]">
+                    {subject}
+                  </label>
+                  <input
+                    type="checkbox"
+                    name={subject}
+                    checked={classAndSectionData.subjects.includes(subject)}
+                    onChange={handleInputChange1}
+                    className="mt-1 p-2 w-4 h-4 block w-half"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="subjects-add">
+              <p>Add Optional Subjects*</p>
+              {optionalSubjectList?.map((optionalSubject) => (
+                <div key={optionalSubject} className="subject-add-check">
+                  <label className="block text-[15px] font-medium text-[#333333]">
+                    {optionalSubject}
+                  </label>
+                  <input
+                    type="checkbox"
+                    name={optionalSubject}
+                    checked={classAndSectionData.optionalSubjects.includes(
+                      optionalSubject
+                    )}
+                    onChange={handleInputChange2}
+                    className="mt-1 p-2 w-4 h-4 block w-half"
+                  />
+                </div>
+              ))}
             </div>
           </div>
           <div className="add-subject-btn addTeacher-buttons">
@@ -173,11 +227,7 @@ const AddOrUpdateClassAndSectionForm = ({
             <button
               type="button"
               onClick={() => {
-                setClassAndSectionData({
-                  subjectTotalMarks: 100,
-                  subjectName: "",
-                  subjectCode: "",
-                });
+                setClassAndSectionData(inticalData);
                 setIsModalOpen(false);
               }}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "

@@ -4,14 +4,16 @@ import AddButton from "../../Components/AddButton";
 import "./AddStudent.css";
 import { Oval } from "react-loader-spinner";
 import AddOrUpdateStudentForm from "./AddOrUpdateStudentForm ";
-import { studentDataTest, updateStudentDirectlyToDatabase } from "../../api/StudentMaster/AddStudentDirectly";
+import {
+  studentDataTest,
+  updateStudentDirectlyToDatabase,
+} from "../../api/StudentMaster/AddStudentDirectly";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [studentUpdate, setStudentUpdate] = useState(false);
   const [docId, setDocId] = useState(null);
 
- 
   const handleAction = async (actionType, documentId) => {
     if (actionType === "edit") {
       console.log("edit ocument with ID:", documentId);
@@ -19,9 +21,8 @@ const AddStudent = () => {
       setDocId(documentId);
       console.log(docId);
       setIsModalOpen(true);
-    
     } else if (actionType === "delete") {
-      const response = await (documentId);
+      const response = await documentId;
       console.log("Delete document with ID:", documentId);
       if (response.status) {
         setDataChanged(true);
@@ -29,14 +30,12 @@ const AddStudent = () => {
     }
   };
 
-  const openModal = async() => {
+  const openModal = async () => {
     console.log("Open modal");
     setIsModalOpen(true);
   };
-  
-  const handleStudentAdded = () => {
-      setDataChanged(true);
-  };
+
+  const handleStudentAdded = () => {};
 
   const handleStudentUpdated = () => {
     setStudentUpdate(false);
@@ -51,7 +50,7 @@ const AddStudent = () => {
         </p>
       </div>
       <AddOrUpdateStudentForm
-        isModalOpen={isModalOpen} 
+        isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         handleStudentAdded={handleStudentAdded}
         handleStudentUpdated={handleStudentUpdated}
@@ -63,4 +62,3 @@ const AddStudent = () => {
 };
 
 export default AddStudent;
-
