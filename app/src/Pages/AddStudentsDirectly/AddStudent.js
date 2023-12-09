@@ -5,7 +5,7 @@ import "./AddStudent.css";
 import { Oval } from "react-loader-spinner";
 import AddOrUpdateStudentForm from "./AddOrUpdateStudentForm ";
 import { studentDataTest, updateStudentDirectlyToDatabase } from "../../api/StudentMaster/AddStudentDirectly";
-import { addNonTeachingStaffToDb, testStaffData } from "../../api/StaffManagement/AddNonTeachingStaff";
+import { addNonTeachingStaffToDb, deleteStaffData, getSpecificStaffDataFromDb, getStaffDataFromDatabase, testStaffData, updateStaffToDatabase } from "../../api/StaffManagement/AddNonTeachingStaff";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,9 +31,7 @@ const AddStudent = () => {
   };
 
   const openModal = async() => {
-    console.log("Open modal");
-    addNonTeachingStaffToDb(testStaffData);
-    // setIsModalOpen(true);
+    setIsModalOpen(true);
   };
   
   const handleStudentAdded = () => {

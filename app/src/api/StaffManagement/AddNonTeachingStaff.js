@@ -13,13 +13,13 @@ import {
 } from "firebase/firestore";
 
 export const testStaffData = {
-    name: "John Doe",
-    role: "Teacher",
-    staffId: "S001",
-    mobileNo: "1234567890",
-    salary: 50000,
-    bloodGroup: "A+",
-    bankAccount: "12345678901234",
+    name: "Magan",
+    role: "Technician",
+    staffId: "S111",
+    mobileNo: "878934290",
+    salary: 15000,
+    bloodGroup: "O+",
+    bankAccount: "7889234",
   };
 
 export const addNonTeachingStaffToDb = async (StaffData) => {
@@ -116,8 +116,6 @@ export const getStaffDataFromDatabase = async () => {
 
     for (const doc of querySnapshot.docs) {
       const data = doc.data();
-
-      const applicableClassesString = data.applicableClasses.join(", ");
 
       const modifiedStaffData = {
         id: doc.id,
