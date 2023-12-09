@@ -8,7 +8,7 @@ import {
   getStudentDataFromDd,
   updateStudentDirectlyToDatabase,
 } from "../../api/StudentMaster/AddStudentDirectly";
-import { getOptionalSubjectsName } from "../../api/ClassMaster/AddOptionalSubject";
+import { getAllOptionalSubjectsName } from "../../api/ClassMaster/AddOptionalSubject";
 const initialStudentData = {
   studentId: "",
   firstName: "",
@@ -111,7 +111,7 @@ const AddOrUpdateStudentForm = ({
 
 
   const getOptionalSubjects = async() => {
-    await getOptionalSubjectsName()
+    await getAllOptionalSubjectsName()
      .then((data) => {
       setOptionalSubjectsName(data);
       console.log("response",optionalSubjectsName);

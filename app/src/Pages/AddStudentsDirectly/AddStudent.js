@@ -31,6 +31,7 @@ const AddStudent = () => {
   };
 
   const openModal = async() => {
+    console.log("Open modal");
     setIsModalOpen(true);
   };
   

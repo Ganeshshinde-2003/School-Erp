@@ -105,7 +105,7 @@ export const getOptionalSubjectDataFromDb = async (DocId) => {
   };
 
   
-  export const getOptionalSubjectsName = async () => {
+  export const getAllOptionalSubjectsName = async () => {
     const optionalSubjectsRef = collection(db, "AddOptionalSubjects");
     try {
         const querySnapshot = await getDocs(optionalSubjectsRef);
