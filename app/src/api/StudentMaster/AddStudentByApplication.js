@@ -33,6 +33,7 @@ export const addStudentByApplicationToDatabase = async (studentData) => {
             paymentmode: studentData.paymentmode,
             upitransactionNo: studentData.upitransactionNo,
             aadharNo:studentData.aadharNo,
+            feeSlabApplingFor:studentData.feeSlabApplingFor,
             isPending: true,
             createdAt: serverTimestamp(),
         });
