@@ -75,11 +75,11 @@ const AddNonTeachingStaff = () => {
     setIsModalOpen(true);
   };
 
-  const handleExpenseAdded = () => {
+  const handleNonStaffAdded = () => {
     setDataChanged(true);
   };
 
-  const handlenonTeachingstaffUpdated = () => {
+  const handleNonTeachingstaffUpdated = () => {
     setDocId(null);
     setnonTeachingstaffUpdate(false);
     setDataChanged(true);
@@ -124,8 +124,8 @@ const AddNonTeachingStaff = () => {
       <AddorUpdateNonTeachingStaff
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleExpenseAdded={handleExpenseAdded}
-        handlenonTeachingstaffUpdated={handlenonTeachingstaffUpdated}
+        handleNonStaffAdded={handleNonStaffAdded}
+        handleNonTeachingstaffUpdated={handleNonTeachingstaffUpdated}
         DocId={docId}
         isUpdateOn={nonTeachingstaffUpdate}
       />
