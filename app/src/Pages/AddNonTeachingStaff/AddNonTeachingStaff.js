@@ -2,33 +2,34 @@ import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import { Oval } from "react-loader-spinner";
-import AddOrUpdateExpenseForm from "./AddOrUpdateExpenseFrom";
-import {
-  deleteExpenseData,
-  getExpenseDataFromDatabase,
-} from "../../api/ExpenseAdding/AddExpense";
+import AddorUpdateNonTeachingStaff from "./AddorUpdateNonTeachingStraff";
 import AlertComponent from "../../Components/AlertComponent";
+import {
+  deleteStaffData,
+  getStaffDataFromDatabase,
+} from "../../api/StaffManagement/AddNonTeachingStaff";
 
-const AddSubject = () => {
+const AddNonTeachingStaff = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [expenseUpdate, setexpenseUpdate] = useState(false);
+  const [nonTeachingstaffUpdate, setnonTeachingstaffUpdate] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
-  const [expenseData, setexpenseData] = useState([]);
+  const [nonTeachingStaffData, setnonTeachingStaffData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataChanged, setDataChanged] = useState(false);
   const [docId, setDocId] = useState(null);
 
   const fetchData = () => {
-    getExpenseDataFromDatabase()
+    getStaffDataFromDatabase()
       .then((data) => {
-        setexpenseData(data);
+        setnonTeachingStaffData(data);
         setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setIsLoading(false);
       });
+    console.log(nonTeachingStaffData);
   };
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const AddSubject = () => {
   const handleAction = async (actionType, documentId) => {
     if (actionType === "edit") {
       console.log("edit ocument with ID:", documentId);
-      setexpenseUpdate(true);
+      setnonTeachingstaffUpdate(true);
       setDocId(documentId);
       console.log(docId);
       setIsModalOpen(true);
@@ -53,7 +54,7 @@ const AddSubject = () => {
     }
   };
   const onConfirm = async () => {
-    const response = await deleteExpenseData(docId);
+    const response = await deleteStaffData(docId);
     console.log("Delete document with ID:", docId);
     if (response.status) {
       setDataChanged(true);
@@ -70,7 +71,7 @@ const AddSubject = () => {
   const openModal = () => {
     console.log("Open modal");
     setDocId(null);
-    setexpenseUpdate(false);
+    setnonTeachingstaffUpdate(false);
     setIsModalOpen(true);
   };
 
@@ -78,9 +79,9 @@ const AddSubject = () => {
     setDataChanged(true);
   };
 
-  const handleExpenseUpdated = () => {
+  const handlenonTeachingstaffUpdated = () => {
     setDocId(null);
-    setexpenseUpdate(false);
+    setnonTeachingstaffUpdate(false);
     setDataChanged(true);
   };
 
@@ -104,32 +105,29 @@ const AddSubject = () => {
           ) : (
             <div className="add-optional-sub-table">
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-                Add Expense
+                Add Staff
               </h1>
               <DynamicTable
-                data={expenseData}
+                data={nonTeachingStaffData}
                 rowHeight={100}
                 action={true}
                 ispanding={false}
                 handleAction={handleAction}
               />
               <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-                <AddButton
-                  buttonText={"Add Expense"}
-                  onClickButton={openModal}
-                />
+                <AddButton buttonText={"Add Staff"} onClickButton={openModal} />
               </p>
             </div>
           )}
         </div>
       </div>
-      <AddOrUpdateExpenseForm
+      <AddorUpdateNonTeachingStaff
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         handleExpenseAdded={handleExpenseAdded}
-        handleExpenseUpdated={handleExpenseUpdated}
+        handlenonTeachingstaffUpdated={handlenonTeachingstaffUpdated}
         DocId={docId}
-        isUpdateOn={expenseUpdate}
+        isUpdateOn={nonTeachingstaffUpdate}
       />
       {showDeleteAlert && (
         <AlertComponent onConfirm={onConfirm} onCancel={onCancel} />
@@ -138,4 +136,4 @@ const AddSubject = () => {
   );
 };
 
-export default AddSubject;
+export default AddNonTeachingStaff;

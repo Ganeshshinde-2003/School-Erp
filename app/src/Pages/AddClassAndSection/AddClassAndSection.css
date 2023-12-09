@@ -1,0 +1,33 @@
+.subject-addition {
+  width: 100%;
+  height: auto;
+  display: flex;
+  gap: 5px;
+}
+.subjects-add {
+  width: 50%;
+  border: 2px solid #333333;
+  border-radius: 5px;
+  overflow-y: scroll;
+  max-height: 200px;
+}
+.subjects-add::-webkit-scrollbar {
+  display: none;
+}
+.subjects-add {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.subjects-add p {
+  padding: 5px 10px;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: #d9d9d9;
+  color: black;
+}
+.subject-add-check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
