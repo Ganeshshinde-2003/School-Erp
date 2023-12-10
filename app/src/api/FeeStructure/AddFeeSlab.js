@@ -116,7 +116,7 @@ export const getFeeSlabDataFromDatabase = async () => {
       const modifiedFeeSlabData = {
         id: doc.id,
         slabName: data.slabName,
-        applicableClasses: data.applicableClassesString,
+        applicableClasses: applicableClassesString,
         slabId: data.slabId,
         requirements: data.requirements,
       };
