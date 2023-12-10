@@ -69,6 +69,10 @@ const AddOrUpdateTeacherForm = ({
       lastJobSalary: "",
       reasonForLeaving: "",
     },
+    assignClasses: {
+      class: "",
+      subject: "",
+    }
   };
 
   const [teacherData, setTeacherData] = useState(inticalteacherData);

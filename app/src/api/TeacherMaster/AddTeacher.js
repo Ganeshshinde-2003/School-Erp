@@ -102,6 +102,7 @@ export const addTeacherToDatabase = async (teacherData) => {
       addressDetails: teacherData.addressDetails,
       salaryDetails: teacherData.salaryDetails,
       experienceDetails: teacherData.experienceDetails,
+      assignClasses:teacherData.assignClasses,
       createdAt: serverTimestamp(),
     });
 
