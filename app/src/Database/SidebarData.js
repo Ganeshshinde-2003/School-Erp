@@ -180,8 +180,8 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: "Add driver",
-        path: "/teacher-master/add-teacher",
+        title: "Add Timetable",
+        path: "/timetable/add-timetable",
         cName: "sub-nav",
       },
     ],
