@@ -487,7 +487,6 @@ const AddOrUpdateTeacherForm = ({
                     <option value="B+">B+</option>
                     <option value="B+">B-</option>
                     <option value="B+">AB+</option>
-
                   </select>
                 </div>
               </div>
@@ -815,10 +814,10 @@ const AddOrUpdateTeacherForm = ({
               </div>
             </div>
             <div className={activeCom === 5 ? "component-card" : "hidden-card"}>
-              {/* <div className="form-first">
+              <div className="form-first">
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    Completion year
+                    Select Class
                   </label>
                   <input
                     type="text"
@@ -829,63 +828,11 @@ const AddOrUpdateTeacherForm = ({
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Service in Year
-                  </label>
-                  <input
-                    type="text"
-                    name="serviceInYears"
-                    value={teacherData.experienceDetails.serviceInYears}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Date Of Joining
-                  </label>
-                  <input
-                    type="text"
-                    name="joiningDate"
-                    value={teacherData.experienceDetails.joiningDate}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Date of Confirmation
-                  </label>
-                  <input
-                    type="text"
-                    name="dateOfConfirmation"
-                    value={teacherData.experienceDetails.dateOfConfirmation}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Experience summery
-                  </label>
-                  <input
-                    type="text"
-                    name="experienceSummary"
-                    value={teacherData.experienceDetails.experienceSummary}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
               </div>
               <div className="form-first">
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    Old PF No.
+                    Select Subject.
                   </label>
                   <input
                     type="text"
@@ -896,59 +843,7 @@ const AddOrUpdateTeacherForm = ({
                     className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Previous Job
-                  </label>
-                  <input
-                    type="text"
-                    name="previousJob"
-                    value={teacherData.experienceDetails.previousJob}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Date of Leaving
-                  </label>
-                  <input
-                    type="text"
-                    name="dateOfLeaving"
-                    value={teacherData.experienceDetails.dateOfLeaving}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Last Job Salary
-                  </label>
-                  <input
-                    type="text"
-                    name="lastJobSalary"
-                    value={teacherData.experienceDetails.lastJobSalary}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[18px] font-medium text-[#333333]">
-                    Reason For Leaving
-                  </label>
-                  <input
-                    type="text"
-                    name="reasonForLeaving"
-                    value={teacherData.experienceDetails.reasonForLeaving}
-                    onChange={handleInputChange4}
-                    required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-              </div> */}
+              </div>
             </div>
           </div>
           <div className="addTeacher-buttons">
