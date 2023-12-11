@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import DynamicTable from "../../Components/DynamicTable";
 import { Oval } from "react-loader-spinner";
-import {
-  getTimetableTable,
-} from "../../api/Timetable/Timetable";
-
-
-
+import { getTimetableTable } from "../../api/Timetable/Timetable";
+import DynamicTimeTable from "../../Components/DynamicTimeTable";
 
 const TimetableTable = () => {
   const [timetableData, setTimetableData] = useState([]);
@@ -50,7 +45,7 @@ const TimetableTable = () => {
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
                 Timetable Table
               </h1>
-              <DynamicTable
+              <DynamicTimeTable
                 data={timetableData}
                 rowHeight={100}
                 action={false} // Set action to false to hide edit and delete options

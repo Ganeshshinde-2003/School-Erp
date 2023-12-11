@@ -67,7 +67,7 @@ export const getClassAndSectionsDatabase = async () => {
       const data = doc.data();
       if (data.subjects || data.optionalSubjects) {
         data.optionalSubjects = data.optionalSubjects.join(", ");
-        data.subjects = data.subjects.join(", "); // Join the array with a comma and space
+        data.subjects = data.subjects.join(", "); 
       }
       const modifiedData = {
         id: doc.id,

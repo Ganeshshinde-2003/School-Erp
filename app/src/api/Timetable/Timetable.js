@@ -13,7 +13,6 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-
 const timetableDatafortesting = {
   className: "2B",
   subject: "Sports",
@@ -23,77 +22,76 @@ const timetableDatafortesting = {
 };
 
 export const getTimetableTable = async () => {
-    const classAndSectionsRef = collection(db, "AddClassAndSections");
-  
-    try {
-      const querySnapshot = await getDocs(classAndSectionsRef);
-  
-      const timetableData = [];
-  
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-  
-        const className = data.className;
-        const nameOfSections = data.nameOfSections;
-  
-        const timetableItem = {
-          id: doc.id,
-          "Class":className,
-          "Section":nameOfSections,
-        };
-  
-        timetableData.push(timetableItem);
-      });
-  
-      console.log("timetableData", timetableData);
-      return timetableData;
-    } catch (error) {
-      console.error(error);
-      // Handle the error as needed
-    }
-  };
+  const classAndSectionsRef = collection(db, "AddClassAndSections");
 
+  try {
+    const querySnapshot = await getDocs(classAndSectionsRef);
+    
+    const timetableData = [];
 
-  export const addTimetable = async (data) => {
-    const { className, subject, startTime, endTime, day } = data;
-    const timetableRef = doc(db, "Timetable", className);
-  
-    try {
-      // Get the current timetable data for the class
-      const classDocSnapshot = await getDoc(timetableRef);
-      const classData = classDocSnapshot.data() || {};
-  
-      // Get the current timetable data for the specified day
-      const dayData = classData[day] || {};
-  
-      // Update the day data with the new timetable entry
-      dayData[startTime] = {
-        startTime,
-        endTime,
-        subject
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      const className = data.className;
+      const nameOfSections = data.nameOfSections;
+
+      const formattedSections = nameOfSections.join(" ");
+
+      const timetableItem = {
+        id: doc.id,
+        Class: className,
+        Section: formattedSections,
       };
-  
-      // Update the class document with the modified timetable data
-      await setDoc(timetableRef, {
-        ...classData,
-        [day]: dayData,
-      });
-  
-      console.log("Timetable entry added successfully");
-      return {
-        status: true,
-        message: "Timetable entry added successfully",
-      };
-    } catch (error) {
-      console.error("Error adding timetable entry:", error);
-      return {
-        status: false,
-        message: "Error adding timetable entry",
-      };
-    }
-  };
 
+      timetableData.push(timetableItem);
+    });
 
+    console.log("timetableData", timetableData);
+    return timetableData;
+  } catch (error) {
+    console.error(error);
+    // Handle the error as needed
+  }
+};
+
+export const addTimetable = async (data) => {
+  const { className, subject, startTime, endTime, day } = data;
+  const timetableRef = doc(db, "Timetable", className);
+
+  try {
+    // Get the current timetable data for the class
+    const classDocSnapshot = await getDoc(timetableRef);
+    const classData = classDocSnapshot.data() || {};
+
+    // Get the current timetable data for the specified day
+    const dayData = classData[day] || {};
+
+    // Update the day data with the new timetable entry
+    dayData[startTime] = {
+      startTime,
+      endTime,
+      subject,
+    };
+
+    // Update the class document with the modified timetable data
+    await setDoc(timetableRef, {
+      ...classData,
+      [day]: dayData,
+    });
+
+    console.log("Timetable entry added successfully");
+    return {
+      status: true,
+      message: "Timetable entry added successfully",
+    };
+  } catch (error) {
+    console.error("Error adding timetable entry:", error);
+    return {
+      status: false,
+      message: "Error adding timetable entry",
+    };
+  }
+};
 
 export const getTimetableData = async (className) => {
   const timetableRef = doc(db, "Timetable", className);
