@@ -21,6 +21,7 @@ import SalaryToTeacher from "./Pages/SalaryToTeacher/SalaryToTeacher.js";
 import AddVehicle from "./Pages/AddVehicles/AddOrUpdateVehicle.js";
 import AddNonTeachingStaff from "./Pages/AddNonTeachingStaff/AddNonTeachingStaff.js";
 import SalaryToNonTeachingStaff from "./Pages/SalaryToNonTeachingStaff/SalaryToNonTeachingStaff.js";
+import AddFeeStructure from "./Pages/AddFeeStructure/AddFeeStructure.js";
 
 // import {db} from "./config/firebase";
 // import {getDocs, collection} from "firebase/firestore";
@@ -96,7 +97,7 @@ const App = () => {
             />
             <Route
               path="/fee-structures/add-fee-structures"
-              element={<ExpenseAdding />}
+              element={<AddFeeStructure />}
             />
             <Route
               path="/send-notice/add-notices"
