@@ -20,9 +20,9 @@ import AddNoticePage from "./Pages/AddNotice/AddNotice.js";
 import SalaryToTeacher from "./Pages/SalaryToTeacher/SalaryToTeacher.js";
 import AddVehicle from "./Pages/AddVehicles/AddOrUpdateVehicle.js";
 import AddNonTeachingStaff from "./Pages/AddNonTeachingStaff/AddNonTeachingStaff.js";
-
-// import {db} from "./config/firebase";
-// import {getDocs, collection} from "firebase/firestore";
+import SalaryToNonTeachingStaff from "./Pages/SalaryToNonTeachingStaff/SalaryToNonTeachingStaff.js";
+import AddFeeStructure from "./Pages/AddFeeStructure/AddFeeStructure.js";
+import AddTimetable from "./Pages/Timetable/AddTimetable.js";
 
 const App = () => {
   return (
@@ -95,7 +95,7 @@ const App = () => {
             />
             <Route
               path="/fee-structures/add-fee-structures"
-              element={<ExpenseAdding />}
+              element={<AddFeeStructure />}
             />
             <Route
               path="/send-notice/add-notices"
@@ -109,6 +109,14 @@ const App = () => {
               path="/staff-management/salary-to-teachers"
               element={<SalaryToTeacher />}
             />
+            <Route
+            path="/staff-management/salary-to-non-teaching-staff"
+            element={<SalaryToNonTeachingStaff />}
+          />
+          <Route
+          path="/timetable/add-timetable"
+          element={<AddTimetable/>}
+        />
           </Routes>
         </div>
       </div>

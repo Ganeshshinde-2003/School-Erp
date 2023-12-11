@@ -11,9 +11,9 @@ export const addNoticeToDatabase = async (noticeData) => {
       noticeDescription: noticeData.noticeDescription,
       createdAt: serverTimestamp(),
     });
-    return { status: true, message: "Document successfully added" };
+    return { status: true, message: "Successfully sent notice" };
   } catch (error) {
     console.error(error);
-    return { status: false, message: "Error adding document" };
+    return { status: false, message: "Error while sending" };
   }
 };
