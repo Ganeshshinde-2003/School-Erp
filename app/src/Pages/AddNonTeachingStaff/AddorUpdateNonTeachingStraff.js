@@ -92,7 +92,7 @@ const AddorUpdateNonTeachingStaff = ({
     } else {
       try {
         const response = await addNonTeachingStaffToDb(staffData);
-        // Show a confirmation message
+
         setConfirmationMessage(response.message);
 
         setstaffData(inticalData);
