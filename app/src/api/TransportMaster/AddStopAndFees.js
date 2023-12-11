@@ -115,3 +115,22 @@ export const getSpecificTransportDataFromDb = async (DocId) => {
         console.error(error);
     }
 };
+
+export const getAllTransportSlabs = async () => {
+    const transportSlabRef = collection(db, "AddStopAndFees");
+    try {
+        const querySnapshot = await getDocs(transportSlabRef);
+
+        const transportSlabsData = [];
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            
+            transportSlabsData.push(data.stopName);
+        });
+
+        return transportSlabsData; 
+    } catch (error) {
+        console.error(error);
+    }
+};

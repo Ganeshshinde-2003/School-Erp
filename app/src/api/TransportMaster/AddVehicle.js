@@ -130,3 +130,22 @@ export const getVehicleDataFromDatabase = async () => {
     console.error(error);
   }
 };
+
+export const getAllVehiclesName = async () => {
+  const vehicleRef = collection(db, "AddVehicle");
+  try {
+      const querySnapshot = await getDocs(vehicleRef);
+
+      const vhicleData = [];
+
+      querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          
+          vhicleData.push(data.vehicleName);
+      });
+
+      return vhicleData; 
+  } catch (error) {
+      console.error(error);
+  }
+};

@@ -129,3 +129,22 @@ export const getFeeSlabDataFromDatabase = async () => {
     console.error(error);
   }
 };
+
+export const getAllclassNames = async () => {
+  const feeSlabRef = collection(db, "AddFeeSlab");
+  try {
+    const querySnapshot = await getDocs(feeSlabRef);
+
+    const feeSlabData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      feeSlabData.push(data.slabName);
+    });
+
+    return feeSlabData;
+  } catch (error) {
+    console.error(error);
+  }
+};

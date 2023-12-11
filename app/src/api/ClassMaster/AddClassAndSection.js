@@ -42,7 +42,7 @@ export const addClassAndSectionsToDatabase = async (classData) => {
       createdAt: serverTimestamp(),
     });
 
-  
+
     console.log("Document successfully written!");
     await addAssignSubjectsToDatabase(nameOfSections, classData.subjects, classData.optionalSubjects);
 
@@ -168,3 +168,21 @@ const addAssignSubjectsToDatabase = async (nameOfSections, subjects, optionalSub
   }
 };
 
+export const getAllclassNames = async () => {
+  const classAndSectionsRef = collection(db, "AddClassAndSections");
+  try {
+    const querySnapshot = await getDocs(classAndSectionsRef);
+
+    const classNameData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      classNameData.push(data.className);
+    });
+
+    return classNameData;
+  } catch (error) {
+    console.error(error);
+  }
+};
