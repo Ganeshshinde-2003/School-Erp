@@ -9,6 +9,25 @@ import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, where, query
  * @param {string} examData.subjectCode - The unique identifier for the subject.
  */
 
+export const examData = {
+    examName: "Midterm Exam",
+    totalExamMarksReduced: 50,
+    classesAndSubjects: [
+      {
+        className: "Class3",
+        subjects: ["Math", "History", "Physics"],
+        optionalSubjects: ["Computer Science", "Art"]
+      },
+      {
+        className: "Class4",
+        subjects: ["Chemistry", "Biology", "English"],
+        optionalSubjects: ["Music", "Geography"]
+      }
+    ],
+    freezeDate: new Date("2023-11-15"), // Replace with your desired date
+  };
+  
+
 export const addExamToDatabase = async (examData) => {
     const examRef = collection(db, "AddExams");
    
@@ -16,6 +35,7 @@ export const addExamToDatabase = async (examData) => {
         await addDoc(examRef, {
             examName: examData.examName,
             totalExamMarksReduced: examData.totalExamMarksReduced,
+            classesAndSubjects:examData.classesAndSubjects,
             freezeDate: examData.freezeDate,
             createdAt: serverTimestamp(),
 
@@ -84,7 +104,7 @@ export const deleteExam = async (subjectId) => {
     }
 };
 
-export const getExamDataFromDb = async (DocId) => {
+export const getSpecificExamData = async (DocId) => {
     try {
       const subjectDocRef = doc(db, "AddExams", DocId);
       const subjectDocSnapshot = await getDoc(subjectDocRef);

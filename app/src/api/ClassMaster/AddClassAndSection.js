@@ -186,3 +186,52 @@ export const getAllclassNames = async () => {
     console.error(error);
   }
 };
+
+// export const getAllclassNamesAndSubjects = async () => {
+//   const classAndSectionsRef = collection(db, "AddClassAndSections");
+//   try {
+//     const querySnapshot = await getDocs(classAndSectionsRef);
+
+//     const classNameAndSubjectsData = {};
+
+//     querySnapshot.forEach((doc) => {
+//       const data = doc.data();
+//       const className = data.className;
+//       const subjects = data.subjects; // Assuming subjects is an array in your document
+
+//       // Store class name as key and subjects as values in the object
+//       classNameAndSubjectsData[className] = subjects;
+//     });
+
+//     return classNameAndSubjectsData;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+export const getAllclassesAndSubjects = async () => {
+  const classAndSectionsRef = collection(db, "AddClassAndSections");
+  try {
+    const querySnapshot = await getDocs(classAndSectionsRef);
+
+    const classesAndSubjectsData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const className = data.className;
+      const subjects = data.subjects || []; // Ensure subjects is an array
+      const optionalSubjects = data.optionalSubjects || []; // Ensure optionalSubjects is an array
+
+      // Push an object with className, subjects, and optionalSubjects to the array
+      classesAndSubjectsData.push({
+        className: className,
+        subjects: subjects,
+        optionalSubjects: optionalSubjects
+      });
+    });
+
+    return classesAndSubjectsData;
+  } catch (error) {
+    console.error(error);
+  }
+};
