@@ -23,6 +23,8 @@ import AddNonTeachingStaff from "./Pages/AddNonTeachingStaff/AddNonTeachingStaff
 import SalaryToNonTeachingStaff from "./Pages/SalaryToNonTeachingStaff/SalaryToNonTeachingStaff.js";
 import AddFeeStructure from "./Pages/AddFeeStructure/AddFeeStructure.js";
 import AddTimetable from "./Pages/Timetable/AddTimetable.js";
+import CheckSyllabus from "./Pages/CheckSyllabus/CheckSyllabus.js";
+import AddExams from "./Pages/AddExams/AddExams.js";
 
 const App = () => {
   return (
@@ -110,13 +112,15 @@ const App = () => {
               element={<SalaryToTeacher />}
             />
             <Route
-            path="/staff-management/salary-to-non-teaching-staff"
-            element={<SalaryToNonTeachingStaff />}
-          />
-          <Route
-          path="/timetable/add-timetable"
-          element={<AddTimetable/>}
-        />
+              path="/staff-management/salary-to-non-teaching-staff"
+              element={<SalaryToNonTeachingStaff />}
+            />
+            <Route path="/timetable/add-timetable" element={<AddTimetable />} />
+            <Route
+              path="/syllabus/check-syllabus"
+              element={<CheckSyllabus />}
+            />
+            <Route path="/exam-addition/add-exam" element={<AddExams />} />
           </Routes>
         </div>
       </div>

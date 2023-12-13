@@ -1,5 +1,17 @@
 import { db } from "../../config/firebase";
-import { doc,getDocs,addDoc, collection,updateDoc,deleteDoc,getDoc, where, query, orderBy, serverTimestamp } from "firebase/firestore";
+import {
+  doc,
+  getDocs,
+  addDoc,
+  collection,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  where,
+  query,
+  orderBy,
+  serverTimestamp,
+} from "firebase/firestore";
 
 /**
  * Add a Exam to the database.
@@ -29,6 +41,7 @@ export const examData = {
   
 
 export const addExamToDatabase = async (examData) => {
+
     const examRef = collection(db, "AddExams");
    
     try {
@@ -47,61 +60,55 @@ export const addExamToDatabase = async (examData) => {
     }
 };
 
-
-
 export const getExamsDatabase = async () => {
-    const examRef = collection(db, "AddExams");
-    try {
-        const q = query(examRef, orderBy("createdAt", "asc")); // Add the orderBy query here
+  const examRef = collection(db, "AddExams");
+  try {
+    const q = query(examRef, orderBy("createdAt", "asc"));
 
-        const querySnapshot = await getDocs(q);
-        
-        const examData = [];
-        
-        querySnapshot.forEach(async (doc) => {
-          
-            const data = doc.data();
-            const modifiedData = {
-                "id": doc.id,                
-                "Exam Name": data.examName,
-                "Total Exam Marks Reduced": data.totalExamMarksReduced,
-                "Marks Freeze Date": data.freezeDate,
-            };
-            examData.push(modifiedData);
+    const querySnapshot = await getDocs(q);
+    const examDataPromises = querySnapshot.docs.map(async (doc) => {
+      const data = doc.data();
+      const modifiedData = {
+        id: doc.id,
+        "Exam Name": data.examName,
+        "Total Exam Marks Reduced": data.totalExamMarksReduced,
+        "Marks Freeze Date": data.freezeDate,
+      };
+      return modifiedData;
+    });
 
-        });     
+    const examData = await Promise.all(examDataPromises);
 
-        return examData; // Return the examdata
-    } catch (error) {
-        console.error(error);
-    }
+    return examData;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const updateExamInDatabase = async (documentId, updatedSubjectData) => {
-    const examRef = collection(db, "AddExams");
-    const examDocRef = doc(examRef, documentId); // Use Id to reference the specific document
+  const examRef = collection(db, "AddExams");
+  const examDocRef = doc(examRef, documentId); // Use Id to reference the specific document
 
-    try {
-        await updateDoc(examDocRef, updatedSubjectData);
-        return { status: true, message: "Document successfully updated" };
-    } catch (error) {
-        console.error("Error updating document:", error);
-        return { status: false, message: "Error updating document" };
-    }
+  try {
+    await updateDoc(examDocRef, updatedSubjectData);
+    return { status: true, message: "Document successfully updated" };
+  } catch (error) {
+    console.error("Error updating document:", error);
+    return { status: false, message: "Error updating document" };
+  }
 };
 
-
 export const deleteExam = async (subjectId) => {
-    const examRef = collection(db, "AddExams");
-    const examDocRef = doc(examRef, subjectId);
+  const examRef = collection(db, "AddExams");
+  const examDocRef = doc(examRef, subjectId);
 
-    try {
-        await deleteDoc(examDocRef);
-        return { status: true, message: "Document successfully deleted" };
-    } catch (error) {
-        console.error("Error deleting document:", error);
-        return { status: false, message: "Error deleting document" };
-    }
+  try {
+    await deleteDoc(examDocRef);
+    return { status: true, message: "Document successfully deleted" };
+  } catch (error) {
+    console.error("Error deleting document:", error);
+    return { status: false, message: "Error deleting document" };
+  }
 };
 
 export const getSpecificExamData = async (DocId) => {
@@ -118,8 +125,8 @@ export const getSpecificExamData = async (DocId) => {
       console.error("Error fetching subject data", error);
       throw error;
     }
-  };
-
-  
-
-  
+  } catch (error) {
+    console.error("Error fetching subject data", error);
+    throw error;
+  }
+};
