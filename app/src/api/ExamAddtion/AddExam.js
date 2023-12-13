@@ -125,8 +125,4 @@ export const getSpecificExamData = async (DocId) => {
       console.error("Error fetching subject data", error);
       throw error;
     }
-  } catch (error) {
-    console.error("Error fetching subject data", error);
-    throw error;
-  }
 };
