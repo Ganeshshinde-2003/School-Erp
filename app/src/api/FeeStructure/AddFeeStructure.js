@@ -29,6 +29,11 @@ export const feeStructureTestDay = {
 
 };
 
+// setIsModalOpen(true);
+// addFeeStructure(feeStructureTestDay);
+// updateFeeStructure(feeStructureTestDay);
+// getSpecificFeeStructure("3");
+
 
 
 export const getFeeStructureDataTable = async () => {
@@ -54,7 +59,7 @@ export const getFeeStructureDataTable = async () => {
         const feeStructureItem = {
           id: className,
           Class: className,
-          applicationFee,
+          "Application Fees":applicationFee,
         };
   
         feeStructureArray.push(feeStructureItem);

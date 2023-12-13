@@ -7,6 +7,7 @@ import {
   deleteFeeSlabData,
   getFeeSlabDataFromDatabase,
 } from "../../api/FeeStructure/AddFeeSlab";
+import { getFeeStructureDataTable } from "../../api/FeeStructure/AddFeeStructure";
 
 const AddFeeSlab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +19,7 @@ const AddFeeSlab = () => {
   const [docId, setDocId] = useState(null);
 
   const fetchData = () => {
-    getFeeSlabDataFromDatabase()
+    getFeeStructureDataTable()
       .then((data) => {
         setFeeSlabData(data);
         setIsLoading(false);
@@ -92,7 +93,7 @@ const AddFeeSlab = () => {
           ) : (
             <div className="add-optional-sub-table">
               <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-                Add Fee Slabs
+                Add Fee Structure
               </h1>
               <DynamicTable
                 data={feeSlabData}
@@ -101,12 +102,6 @@ const AddFeeSlab = () => {
                 ispanding={false}
                 handleAction={handleAction}
               />
-              <p className="h-16 text-center font-bold text-white flex items-center justify-center">
-                <AddButton
-                  buttonText={"Add Holiday"}
-                  onClickButton={openModal}
-                />
-              </p>
             </div>
           )}
         </div>
