@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import AddButton from "../../Components/AddButton";
 import "../../Pages/AddStudentsDirectly/AddStudent.css";
 import AddOrUpdateNoticeForm from "./AddOrUpdateNotice";
-import { addFeeStructure, feeStructureTestDay, getFeeStructureData, getFeeStructureDataForTable, getFeeStructureDataTable, getSpecificFeeStructure, updateFeeStructure } from "../../api/FeeStructure/AddFeeStructure";
 
 const AddNoticePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,11 +12,7 @@ const AddNoticePage = () => {
 
   const openModal = () => {
     console.log("Open modal");
-    // setIsModalOpen(true);
-    // addFeeStructure(feeStructureTestDay);
-    // updateFeeStructure(feeStructureTestDay);
-    // getSpecificFeeStructure("3");
-    getFeeStructureDataTable();
+    setIsModalOpen(true);
   };
 
   const handleNoticeAdded = () => {
