@@ -115,10 +115,10 @@ export const getFeeSlabDataFromDatabase = async () => {
 
       const modifiedFeeSlabData = {
         id: doc.id,
-        slabName: data.slabName,
-        applicableClasses: applicableClassesString,
-        slabId: data.slabId,
-        requirements: data.requirements,
+        "Slab Name": data.slabName,
+        "Applicable Classes": applicableClassesString,
+        "Slab ID": data.slabId,
+        "Requirements": data.requirements,
       };
 
       feeSlabData.push(modifiedFeeSlabData);
@@ -130,7 +130,7 @@ export const getFeeSlabDataFromDatabase = async () => {
   }
 };
 
-export const getAllclassNames = async () => {
+export const getAllFeeSlab = async () => {
   const feeSlabRef = collection(db, "AddFeeSlab");
   try {
     const querySnapshot = await getDocs(feeSlabRef);
