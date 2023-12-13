@@ -117,19 +117,6 @@ export const SidebarData = [
     ],
   },
   {
-    title: "Assigning",
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    subNav: [
-      {
-        title: "Add driver",
-        path: "/teacher-master/add-teacher",
-        cName: "sub-nav",
-      },
-    ],
-  },
-  {
     title: "Fee Structures",
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
@@ -154,8 +141,8 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: "Add driver",
-        path: "/teacher-master/add-teacher",
+        title: "Add Exam",
+        path: "/exam-addition/add-exam",
         cName: "sub-nav",
       },
     ],
@@ -193,8 +180,8 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: "Add driver",
-        path: "/teacher-master/add-teacher",
+        title: "Check Syllabus",
+        path: "/syllabus/check-syllabus",
         cName: "sub-nav",
       },
     ],
