@@ -37,12 +37,10 @@ const AddStudent = () => {
   };
   
   const handleStudentAdded = () => {
-      setDataChanged(true);
   };
 
   const handleStudentUpdated = () => {
     setStudentUpdate(false);
-    setDataChanged(true);
   };
 
   return (
@@ -55,7 +53,6 @@ const AddStudent = () => {
       <AddOrUpdateStudentForm
         isModalOpen={isModalOpen} 
         setIsModalOpen={setIsModalOpen}
-        handleStudentAdded={handleStudentAdded}
         handleStudentUpdated={handleStudentUpdated}
         DocId={docId}
         isUpdateOn={studentUpdate}

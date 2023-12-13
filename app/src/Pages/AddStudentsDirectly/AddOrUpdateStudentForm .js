@@ -9,6 +9,9 @@ import {
   updateStudentDirectlyToDatabase,
 } from "../../api/StudentMaster/AddStudentDirectly";
 import { getAllOptionalSubjectsName } from "../../api/ClassMaster/AddOptionalSubject";
+import { getAllTransportSlabs } from "../../api/TransportMaster/AddStopAndFees";
+import { getAllFeeSlab } from "../../api/FeeStructure/AddFeeSlab";
+import { getAllclassNames } from "../../api/ClassMaster/AddClassAndSection";
 const initialStudentData = {
   studentId: "",
   firstName: "",
@@ -78,11 +81,13 @@ const AddOrUpdateStudentForm = ({
   isModalOpen,
   setIsModalOpen,
   DocId,
-  handleStudentAdded,
   handleStudentUpdated,
 }) => {
   const [studentData, setStudentData] = useState(initialStudentData);
   const [optionalSubjectsName, setOptionalSubjectsName] = useState([]);
+  const [transportOptions, setTransportOptions] = useState([]);
+  const [classOptions,setClassOptions] = useState([]);
+  const [feeOptions,setFeeOptions] = useState([]);
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
@@ -93,6 +98,9 @@ const AddOrUpdateStudentForm = ({
       getStudentData(DocId);
     }
     getOptionalSubjects();
+    getTransportSlabs();
+    getClasses();
+    getFeeSlabs();
   }, [isModalOpen, isUpdateOn]);
 
   const getStudentData = async (DocId) => {
@@ -112,6 +120,28 @@ const AddOrUpdateStudentForm = ({
       setOptionalSubjectsName(data);
     });
   };
+
+  const getTransportSlabs = async () => {
+    await getAllTransportSlabs().then((data) => {
+      console.log(transportOptions);
+      setTransportOptions(data);
+    });
+  };
+
+  const getClasses = async () => {
+    await getAllclassNames().then((data) => {
+      console.log(classOptions);
+      setClassOptions(data);
+    });
+  };
+
+  const getFeeSlabs = async () => {
+    await getAllFeeSlab().then((data) => {
+      console.log(feeOptions);
+      setFeeOptions(data);
+    });
+  };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -168,8 +198,8 @@ const AddOrUpdateStudentForm = ({
       optionalSubjects: checked
         ? [...prevStudentData.optionalSubjects, name]
         : prevStudentData.optionalSubjects.filter(
-            (subject) => subject !== name
-          ),
+          (subject) => subject !== name
+        ),
     }));
   };
   const handleInputChange6 = (e) => {
@@ -215,7 +245,6 @@ const AddOrUpdateStudentForm = ({
     setTimeout(() => {
       setConfirmationMessage(null);
       setIsModalOpen(false);
-      handleStudentAdded();
     }, 2000); // Hide the message after 2 seconds
   };
 
@@ -287,9 +316,11 @@ const AddOrUpdateStudentForm = ({
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">--- Select ---</option>
-                  <option value="bus">Bus</option>
-                  <option value="car">Car</option>
-                  <option value="bike">Bike</option>
+                  {transportOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option.charAt(0).toUpperCase() + option.slice(1)}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -332,9 +363,11 @@ const AddOrUpdateStudentForm = ({
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">--- Select ---</option>
-                  <option value="bus">Class A</option>
-                  <option value="car">Class B</option>
-                  <option value="bike">Class C</option>
+                  {classOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -349,9 +382,11 @@ const AddOrUpdateStudentForm = ({
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">--- Select ---</option>
-                  <option value="bus">Class A</option>
-                  <option value="car">Class B</option>
-                  <option value="bike">Class C</option>
+                  {feeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

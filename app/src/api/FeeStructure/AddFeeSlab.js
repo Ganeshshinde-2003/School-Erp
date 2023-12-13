@@ -115,14 +115,33 @@ export const getFeeSlabDataFromDatabase = async () => {
 
       const modifiedFeeSlabData = {
         id: doc.id,
-        slabName: data.slabName,
-        applicableClasses: applicableClassesString,
-        slabId: data.slabId,
-        requirements: data.requirements,
+        "Slab Name": data.slabName,
+        "Applicable Classes": applicableClassesString,
+        "Slab ID": data.slabId,
+        "Requirements": data.requirements,
       };
 
       feeSlabData.push(modifiedFeeSlabData);
     }
+
+    return feeSlabData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getAllFeeSlab = async () => {
+  const feeSlabRef = collection(db, "AddFeeSlab");
+  try {
+    const querySnapshot = await getDocs(feeSlabRef);
+
+    const feeSlabData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      feeSlabData.push(data.slabName);
+    });
 
     return feeSlabData;
   } catch (error) {

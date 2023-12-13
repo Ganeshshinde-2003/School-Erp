@@ -107,7 +107,7 @@ const AddFeeSlab = () => {
               />
               <p className="h-16 text-center font-bold text-white flex items-center justify-center">
                 <AddButton
-                  buttonText={"Add Holiday"}
+                  buttonText={"Add a Slab"}
                   onClickButton={openModal}
                 />
               </p>

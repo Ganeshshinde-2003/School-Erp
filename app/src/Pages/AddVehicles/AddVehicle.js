@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
-import Alert from "@mui/material/Alert";
 import { Oval } from "react-loader-spinner";
 import {
   addVehicleDataToDb,

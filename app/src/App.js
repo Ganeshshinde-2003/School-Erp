@@ -18,7 +18,7 @@ import AddStop from "./Pages/AddStopFees/AddOrUpdateStopFees.js";
 import AddFeeSlab from "./Pages/AddFeeSlab/AddFeeSlab.js";
 import AddNoticePage from "./Pages/AddNotice/AddNotice.js";
 import SalaryToTeacher from "./Pages/SalaryToTeacher/SalaryToTeacher.js";
-import AddVehicle from "./Pages/AddVehicles/AddOrUpdateVehicle.js";
+import AddVehicle from "./Pages/AddVehicles/AddVehicle.js";
 import AddNonTeachingStaff from "./Pages/AddNonTeachingStaff/AddNonTeachingStaff.js";
 import SalaryToNonTeachingStaff from "./Pages/SalaryToNonTeachingStaff/SalaryToNonTeachingStaff.js";
 import AddFeeStructure from "./Pages/AddFeeStructure/AddFeeStructure.js";
