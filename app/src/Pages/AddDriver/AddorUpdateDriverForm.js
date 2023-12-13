@@ -7,6 +7,7 @@ import {
   getSpecificDriverDataFromDb,
   updateDriverDataToDatabase,
 } from "../../api/TransportMaster/AddDriver";
+import { getAllVehiclesName } from "../../api/TransportMaster/AddVehicle";
 const initialDriverData = {
   firstName: "",
   lastName: "",
@@ -29,6 +30,7 @@ const AddOrUpdateDriverForm = ({
 }) => {
   const [driverData, setDriverData] = useState(initialDriverData);
   const [error, setError] = useState(false);
+  const [allotVechle,SetAllotVechle] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const AddOrUpdateDriverForm = ({
       // Fetch subject data from Firebase when the modal is opened for update
       getDriverData(DocId);
     }
+    getAllVechles();
   }, [isModalOpen, isUpdateOn]);
 
   const getDriverData = async (DocId) => {
@@ -48,6 +51,13 @@ const AddOrUpdateDriverForm = ({
     } catch (error) {
       console.error("Error fetching subject data", error);
     }
+  };
+
+  const getAllVechles = async () => {
+    await getAllVehiclesName().then((data) => {
+      console.log(allotVechle);
+      SetAllotVechle(data);
+    });
   };
 
   const handleInputChange = (e) => {
@@ -152,16 +162,18 @@ const AddOrUpdateDriverForm = ({
                   Allot Vehicle*
                 </label>
                 <select
-                  name="driverVehicle"
-                  value={driverData.driverVehicle}
-                  onChange={handleInputChange}
+                   name="driverVehicle"
+                   value={driverData.driverVehicle}
+                   onChange={handleInputChange}
                   required
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">--- Select ---</option>
-                  <option value="bus">Bus</option>
-                  <option value="car">Car</option>
-                  <option value="bike">Bike</option>
+                  {allotVechle.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>

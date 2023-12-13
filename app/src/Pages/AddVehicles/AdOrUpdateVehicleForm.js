@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
+import Checkbox from "@mui/material/Checkbox";
 import {
   addVehicleDataToDb,
   updateVehicleDataToDatabase,
   getSpecificVehicleDataFromDb,
-  getVehicleDataFromDatabase,
+  getAllVehiclesName,
 } from "../../api/TransportMaster/AddVehicle";
-import Checkbox from "@mui/material/Checkbox";
+import { getAllTransportSlabs } from "../../api/TransportMaster/AddStopAndFees";
 
 const initialVehicleData = {
   vehicleName: "",
@@ -37,15 +38,12 @@ const AddVehicleForm = ({
 
     // Fetch stops data from the API
     fetchStopsData();
-  }, [isModalOpen, isUpdateOn]);
+  }, [isModalOpen, isUpdateOn, DocId]);
 
   const fetchStopsData = async () => {
-    try {
-      const stopsData = await getVehicleDataFromDatabase();
-      setStopsList(stopsData.map((item) => item.stops).flat());
-    } catch (error) {
-      console.error("Error fetching stops data", error);
-    }
+    await getAllTransportSlabs().then((data) => {
+      setStopsList(data);
+    });
   };
 
   const getVehicleData = async (DocId) => {
@@ -156,7 +154,7 @@ const AddVehicleForm = ({
               </div>
               <div>
                 <label className="block text-[18px] font-medium text-[#333333]">
-                  Vehicle I'D*
+                  Vehicle ID*
                 </label>
                 <input
                   type="text"
@@ -172,46 +170,49 @@ const AddVehicleForm = ({
                   Stops*
                 </label>
                 <div className="flex flex-wrap">
-                  {stopsList.map((stop) => (
-                    <div key={stop} className="mr-4">
+                  {stopsList?.map((stop) => (
+                    <div key={stop}>
+                      <label className="block text-[18px] font-medium text-[#333333]">
+                        {stop}
+                      </label>
                       <Checkbox
+                        name={stop}
                         checked={vehicleData.stops.includes(stop)}
                         onChange={() => handleCheckboxChange(stop)}
-                        color="primary"
+                        className="mt-1 p-2 w-8 h-8 block w-half "
                       />
-                      {stop}
                     </div>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-          <div className="addTeacher-buttons">
-            <button
-              type="button"
-              onClick={isUpdateOn ? handleUpdate : handleAdd}
-            >
-              {isUpdateOn ? "Update" : "Add"}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setVehicleData(initialVehicleData);
-                setIsModalOpen(false);
-              }}
-              className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
-            >
-              Close
-            </button>
-          </div>
         </form>
+      </div>
+      <div className="addTeacher-buttons">
+        <button
+          type="button"
+          onClick={isUpdateOn ? handleUpdate : handleAdd}
+        >
+          {isUpdateOn ? "Update" : "Add"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setVehicleData(initialVehicleData);
+            setIsModalOpen(false);
+          }}
+          className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
+        >
+          Close
+        </button>
       </div>
       {confirmationMessage && (
         <div className="text-green-500 mt-4 text-center">
           {confirmationMessage}
         </div>
       )}
-    </Modal>
+    </Modal >
   );
 };
 
