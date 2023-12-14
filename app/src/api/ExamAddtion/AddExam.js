@@ -66,19 +66,20 @@ export const getExamsDatabase = async () => {
     const q = query(examRef, orderBy("createdAt", "asc"));
 
     const querySnapshot = await getDocs(q);
-    const examDataPromises = querySnapshot.docs.map(async (doc) => {
+
+    const examData = [];
+
+    for (const doc of querySnapshot.docs) {
       const data = doc.data();
       const modifiedData = {
         id: doc.id,
         "Exam Name": data.examName,
         "Total Exam Marks Reduced": data.totalExamMarksReduced,
         "Marks Freeze Date": data.freezeDate,
-      };
-      return modifiedData;
-    });
-
-    const examData = await Promise.all(examDataPromises);
-
+      };    
+      examData.push(modifiedData);
+    }
+    console.log(examData);
     return examData;
   } catch (error) {
     console.error(error);
@@ -125,8 +126,4 @@ export const getSpecificExamData = async (DocId) => {
       console.error("Error fetching subject data", error);
       throw error;
     }
-  } catch (error) {
-    console.error("Error fetching subject data", error);
-    throw error;
-  }
-};
+  };

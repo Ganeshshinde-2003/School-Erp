@@ -235,3 +235,25 @@ export const getAllclassesAndSubjects = async () => {
     console.error(error);
   }
 };
+
+
+export const getSubjectsByClassName = async (className) => {
+  const assignSubjectsRef = doc(db, "AssignSubjects", className);
+  try {
+    const docSnapshot = await getDoc(assignSubjectsRef);
+
+    if (!docSnapshot.exists()) {
+      return [];
+    }
+
+    const subjectsData = docSnapshot.data();
+
+    // Filter subjects with false values
+    const falseSubjects = Object.keys(subjectsData).filter(subject => !subjectsData[subject]);
+
+    return falseSubjects;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
