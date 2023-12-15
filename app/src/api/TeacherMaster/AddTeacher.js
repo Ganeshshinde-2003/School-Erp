@@ -10,6 +10,7 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  where,
   setDoc,
 } from "firebase/firestore";
 
@@ -208,3 +209,91 @@ export const getTeacherDataFromDd = async (DocId) => {
     throw error;
   }
 };
+
+
+
+
+
+// export const searchUser = async (searchTerm) => {
+//   const studentRef = collection(db, 'AddStudentsDirectly');
+//   const teacherRef = collection(db, 'AddTeachers');
+
+//   try {
+//     let studentQuery;
+//     let teacherQuery;
+
+//     // Check if searchTerm is a number (indicating ID search)
+//     if (!isNaN(searchTerm)) {
+//       studentQuery = query(studentRef, where('studentId', '==', searchTerm));
+//       teacherQuery = query(teacherRef, where('teacherId', '==', searchTerm));
+//     } else {
+//       // If searchTerm is not a number, treat it as a name search
+//       studentQuery = query(studentRef, where('firstName', '==', searchTerm));
+//       teacherQuery = query(teacherRef, where('firstName', '==', searchTerm));
+//     }
+
+//     const studentSnapshot = await getDocs(studentQuery);
+//     const students = studentSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+//     const teacherSnapshot = await getDocs(teacherQuery);
+//     const teachers = teacherSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+//     const searchResults = {
+//       students: students,
+//       teachers: teachers,
+//     };
+
+//     return searchResults;
+//   } catch (error) {
+//     console.error('Error searching users:', error);
+//     throw error;
+//   }
+// };
+
+
+
+export const searchUser = async (searchTerm) => {
+  const studentRef = collection(db, 'AddStudentsDirectly');
+  const teacherRef = collection(db, 'AddTeachers');
+
+  try {
+    const lowercaseTerm = searchTerm.toLowerCase(); // Convert searchTerm to lowercase for case-insensitive matching
+
+    // Fetch all student names and IDs
+    const studentQuery = query(studentRef);
+    const studentSnapshot = await getDocs(studentQuery);
+    const students = studentSnapshot.docs.map(doc => ({
+      id: doc.id,
+      firstName: doc.data().firstName,
+      studentId: doc.data().studentId,
+    }));
+
+    // Fetch all teacher names and IDs
+    const teacherQuery = query(teacherRef);
+    const teacherSnapshot = await getDocs(teacherQuery);
+    const teachers = teacherSnapshot.docs.map(doc => ({
+      id: doc.id,
+      firstName: doc.data().firstName,
+      teacherId: doc.data().teacherId,
+    }));
+
+    // Filter student names based on the search term
+    const filteredStudents = students.filter(student => student.firstName.toLowerCase().includes(lowercaseTerm));
+
+    // Filter teacher names based on the search term
+    const filteredTeachers = teachers.filter(teacher => teacher.firstName.toLowerCase().includes(lowercaseTerm));
+
+    // Combine and return the results
+    const searchResults = {
+      students: filteredStudents,
+      teachers: filteredTeachers,
+    };
+
+    return searchResults;
+  } catch (error) {
+    console.error('Error searching users:', error);
+    throw error;
+  }
+};
+
+
