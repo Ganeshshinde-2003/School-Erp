@@ -43,7 +43,6 @@ const AddOrUpdateFeeSlab = ({
   const [newSlabName, setNewSlabName] = useState("");
   const [trackActiveCom, setTrackActiveCom] = useState(1);
   const [feeSlabArray, setFeeSlabArray] = useState([]);
-  const [fieldValue, setFieldValue] = useState("");
   const [applicationFee, setApppicaiontFee] = useState(0);
   const [feeStructureData, setFeeStructureData] = useState({});
 
@@ -79,7 +78,9 @@ const AddOrUpdateFeeSlab = ({
     const firstKey = Object.keys(
       feeSlabArray[index].data.applicableFees[classIndex]
     )[0];
-    feeSlabArray[index].data.applicableFees[classIndex][firstKey] = fieldValue;
+    feeSlabArray[index].data.applicableFees[classIndex][firstKey] =
+      e.target.value;
+
     setFeeSlabArray(updatedArray);
 
     const transformedData = {
@@ -215,7 +216,6 @@ const AddOrUpdateFeeSlab = ({
                             label={Object.keys(classObj)[0]}
                             onChange={(e) => {
                               handleInputChange(e, index2, classIndex);
-                              setFieldValue(e.target.value);
                             }}
                           />
                         </li>
