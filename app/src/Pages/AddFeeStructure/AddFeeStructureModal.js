@@ -8,6 +8,10 @@ import {
   getSpecificFeeSlabDataFromDb,
   updateFeeSlabToDatabase,
 } from "../../api/FeeStructure/AddFeeSlab";
+import AddButton from "../../Components/AddButton";
+import FeeSlabNamePopUp from "./FeeSlabNamePopup";
+import AddTextField from "../../Components/AddTextField";
+// ... (existing imports)
 
 const AddOrUpdateFeeSlab = ({
   isUpdateOn,
@@ -17,36 +21,35 @@ const AddOrUpdateFeeSlab = ({
   handleFeeSlabAdded,
   handleFeeSlabUpdated,
 }) => {
-  const inticalData = {
+  const initialData = {
     slabName: "",
     applicableClasses: [],
     slabId: "",
     requirements: "",
   };
-  const [feeSlabData, setFeeSlabData] = useState(inticalData);
-  const classes = [
-    "Nursery",
-    "LKG",
-    "UKG",
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-    "XI",
-    "XII",
+
+  const feeSlabs = [
+    "Regular Fee",
+    "Sports quota",
+    "Free Quota",
+    "Discount Quota",
   ];
+
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const [activeCom, setActiveCom] = useState(1);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [newSlabName, setNewSlabName] = useState("");
+  const [trackActiveCom, setTrackActiveCom] = useState(1);
+  const [feeSlabArray, setFeeSlabArray] = useState([]);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       getFeeSlabData(DocId);
+    } else {
+      setFeeSlabArray(
+        feeSlabs.map((slabName) => ({ slabName, data: { ...initialData } }))
+      );
     }
   }, [isModalOpen, isUpdateOn]);
 
@@ -55,44 +58,80 @@ const AddOrUpdateFeeSlab = ({
       const subject = await getSpecificFeeSlabDataFromDb(DocId);
 
       if (subject) {
-        setFeeSlabData(subject);
+        setFeeSlabArray(
+          feeSlabs.map((slabName) => ({
+            slabName,
+            data: subject[slabName] ?? { ...initialData },
+          }))
+        );
       }
     } catch (error) {
       console.error("Error fetching subject data", error);
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, index) => {
     const { name, value, type, checked } = e.target;
 
+    const updatedArray = [...feeSlabArray];
+
     if (type === "checkbox") {
-      // If the input is a checkbox, handle it separately
       const updatedClasses = checked
-        ? [...(feeSlabData.applicableClasses ?? []), name]
-        : (feeSlabData.applicableClasses ?? []).filter(
+        ? [...(feeSlabArray[index].data.applicableClasses ?? []), name]
+        : (feeSlabArray[index].data.applicableClasses ?? []).filter(
             (className) => className !== name
           );
 
-      setFeeSlabData({
-        ...feeSlabData,
-        applicableClasses: updatedClasses,
-      });
+      updatedArray[index] = {
+        ...feeSlabArray[index],
+        data: {
+          ...feeSlabArray[index].data,
+          applicableClasses: updatedClasses,
+        },
+      };
     } else {
-      // For other input types, handle normally
-      setFeeSlabData({
-        ...feeSlabData,
-        [name]: value,
-      });
+      updatedArray[index] = {
+        ...feeSlabArray[index],
+        data: {
+          ...feeSlabArray[index].data,
+          [name]: value,
+        },
+      };
     }
+
+    setFeeSlabArray(updatedArray);
+    console.log(
+      `Updated FeeSlabArray for ${feeSlabArray[index].slabName}:`,
+      updatedArray
+    );
+  };
+
+  const handleAddSlab = () => {
+    const activeIndex = activeCom - 1;
+    const updatedArray = [...feeSlabArray];
+    const slabData = updatedArray[activeIndex].data;
+    slabData.applicableClasses = [
+      ...(slabData.applicableClasses || []),
+      newSlabName,
+    ];
+    setNewSlabName("");
+    setFeeSlabArray(updatedArray);
+    console.log(
+      `Updated FeeSlabArray after adding slab for ${feeSlabArray[activeIndex].slabName}:`,
+      updatedArray
+    );
+    setIsModalOpen2(false);
   };
 
   const handleUpdate = async () => {
     try {
-      console.log("pppp");
-      const response = await updateFeeSlabToDatabase(DocId, feeSlabData);
+      const response = await updateFeeSlabToDatabase(DocId, feeSlabArray);
 
       setConfirmationMessage(response.message);
-      setFeeSlabData(inticalData);
+      setFeeSlabArray(
+        feeSlabs.map((slabName) => ({ slabName, data: { ...initialData } }))
+      );
+
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
@@ -105,14 +144,16 @@ const AddOrUpdateFeeSlab = ({
 
   const handleAdd = async () => {
     try {
-      const response = await addFeeSlabToDb(feeSlabData);
+      const response = await addFeeSlabToDb(feeSlabArray);
 
       setConfirmationMessage(response.message);
-
-      setFeeSlabData(inticalData);
+      setFeeSlabArray(
+        feeSlabs.map((slabName) => ({ slabName, data: { ...initialData } }))
+      );
     } catch (error) {
       console.error("Error updating subject data", error);
     }
+
     setTimeout(() => {
       setConfirmationMessage(null);
       setIsModalOpen(false);
@@ -131,75 +172,67 @@ const AddOrUpdateFeeSlab = ({
       )}
 
       <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
-        {isUpdateOn ? "Update Holidays/Event" : "Add Event/Holidays"}
+        {isUpdateOn ? "Add Fee Structure" : "Add Fee Structure"}
       </h2>
       <div className="addTeacher-form">
         <form>
-          <div className="addTeacher-main-form subject-form">
+          <div className="addTeacher-main-form">
             <div className="form-first">
-              <div className="select-form-container">
-                <label className="block text-sm font-medium text-gray-700">
-                  Slab Name*
+              <div>
+                <label className="block text-[18px] font-medium text-[#333333]">
+                  Admission Fees*
                 </label>
                 <input
                   type="text"
-                  name="slabName"
-                  value={feeSlabData.slabName}
-                  onChange={handleInputChange}
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-              <div className="select-form-container">
-                <label className="block text-sm font-medium text-gray-700">
-                  Slab I'd*
-                </label>
-                <input
-                  type="text"
-                  name="slabId"
-                  value={feeSlabData.slabId}
-                  onChange={handleInputChange}
-                  className="mt-1 p-2 block w-[100%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  name="firstName"
+                  onChange={(e) => handleInputChange(e, 0)}
+                  required
+                  className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
-            <div className="form-first second-form">
-              <div className="select-form-container checkbox-select">
-                <label className="block text-sm font-medium text-gray-700">
-                  Applicable for*
-                </label>
-                <div className="checkbox-container">
-                  {classes.map((subject) => (
-                    <div key={subject} className="checbox-many">
-                      <label className="block text-[15px] font-medium text-[#333333]">
-                        {subject}
-                      </label>
-                      <input
-                        type="checkbox"
-                        name={subject}
-                        checked={feeSlabData.applicableClasses?.includes(
-                          subject
-                        )}
-                        onChange={handleInputChange}
-                        className="mt-1 p-2 w-4 h-4 block w-half"
-                      />
-                    </div>
-                  ))}
+          </div>
+          <div className="addTeacher-components">
+            <div className="components-name">
+              {feeSlabArray.map((slab, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    setActiveCom(index + 1);
+                    setTrackActiveCom(index + 1);
+                  }}
+                  className={activeCom === index + 1 ? "active-component" : ""}
+                >
+                  {slab.slabName}
                 </div>
-              </div>
-              <div className="select-form-container text-area">
-                <label className="block text-sm w-[200px] font-medium text-gray-700">
-                  Requirements*
-                </label>
-                <textarea
-                  rows="4"
-                  type="date"
-                  name="requirements"
-                  value={feeSlabData.requirements}
-                  onChange={handleInputChange}
-                  className="mt-1 p-2 block w-[110%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              ))}
+            </div>
+            {feeSlabArray.map((slab, index2) => (
+              <div
+                key={index2}
+                className={
+                  activeCom === index2 + 1 ? "component-card" : "hidden-card"
+                }
+              >
+                {activeCom === index2 + 1 && (
+                  <div className="applicable-classes">
+                    <ul>
+                      {slab.data.applicableClasses.map(
+                        (className, classIndex) => (
+                          <li key={classIndex}>
+                            <AddTextField label={className} />
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+                )}
+                <AddButton
+                  buttonText={"Add a Slab"}
+                  onClickButton={() => setIsModalOpen2(true)}
                 />
               </div>
-            </div>
+            ))}
           </div>
           <div className="add-subject-btn addTeacher-buttons">
             <button
@@ -207,12 +240,17 @@ const AddOrUpdateFeeSlab = ({
               onClick={isUpdateOn ? handleUpdate : handleAdd}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
             >
-              {isUpdateOn ? "Update" : "Add"}
+              {isUpdateOn ? "Add" : "Add"}
             </button>
             <button
               type="button"
               onClick={() => {
-                setFeeSlabData(inticalData);
+                setFeeSlabArray(
+                  feeSlabs.map((slabName) => ({
+                    slabName,
+                    data: { ...initialData },
+                  }))
+                );
                 setIsModalOpen(false);
               }}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
@@ -228,6 +266,14 @@ const AddOrUpdateFeeSlab = ({
           {confirmationMessage}
         </div>
       )}
+      <FeeSlabNamePopUp
+        isModalOpen2={isModalOpen2}
+        setIsModalOpen2={setIsModalOpen2}
+        newSlabName={newSlabName}
+        setNewSlabName={setNewSlabName}
+        activeCom={trackActiveCom}
+        onAddSlab={handleAddSlab}
+      />
     </Modal>
   );
 };

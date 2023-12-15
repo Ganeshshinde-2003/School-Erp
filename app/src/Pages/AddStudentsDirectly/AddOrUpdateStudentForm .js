@@ -687,7 +687,6 @@ const AddOrUpdateStudentForm = ({
                 </div>
               </div>
             </div>
-
             <div className={activeCom === 3 ? "component-card" : "hidden-card"}>
               <div className="form-first">
                 <div>
