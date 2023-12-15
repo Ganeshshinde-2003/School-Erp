@@ -11,7 +11,7 @@ const Navbar = () => {
         <p className="text-white">Indian Public School</p>
       </div>
       <div>
-       <SearchComponent />
+        <SearchComponent />
       </div>
       <div className="flex mr-4 justify-around items-center gap-5">
         <select name="date" id="date" className="px-2 py-1 rounded-md">

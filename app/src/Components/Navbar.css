@@ -1,3 +1,16 @@
 .navbar {
   background-image: linear-gradient(#2a2a2b, #1c1c1d);
 }
+.search-container {
+  position: relative;
+}
+.search-show {
+  position: absolute;
+  width: 450px;
+  background-color: #e5e5e5;
+  margin-top: 10px;
+  padding: 30px 30px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  border-radius: 10px;
+}

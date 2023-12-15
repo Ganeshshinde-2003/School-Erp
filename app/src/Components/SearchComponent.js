@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import debounce from 'lodash/debounce';
-import { searchUser } from '../api/TeacherMaster/AddTeacher';
+import React, { useState } from "react";
+import debounce from "lodash/debounce";
+import { searchUser } from "../api/TeacherMaster/AddTeacher";
+import "./Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 function SearchComponent() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [show ,setShow] = useState(false);
-  const [searchResults, setSearchResults] = useState({ students: [], teachers: [] });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [show, setShow] = useState(false);
+  const [searchResults, setSearchResults] = useState({
+    students: [],
+    teachers: [],
+  });
+  const navigate = useNavigate();
 
   const debouncedSearch = debounce(async (term) => {
     try {
@@ -17,7 +23,7 @@ function SearchComponent() {
         setSearchResults(results);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }, 100);
 
@@ -28,9 +34,12 @@ function SearchComponent() {
   };
   const handleItemClick = (id) => {
     console.log(`Item with id ${id} clicked!`);
+    navigate(`/searchresult/${id}`);
+    setSearchTerm("");
+    setShow(false);
   };
   return (
-    <div>
+    <div className="search-container">
       <input
         className="text-center px-2 py-1 rounded-md"
         type="text"
@@ -39,15 +48,17 @@ function SearchComponent() {
         onChange={handleChange}
       />
 
-      {show &&
-        <div>
+      {show && (
+        <div className="search-show">
           <ul>
             {searchResults.students.map((student) => (
-              <li key={student.id} className="bg-blue-100 border p-2 my-2"
-              onClick={() => handleItemClick(student.id)}
+              <li
+                key={student.id}
+                className="bg-[#888787] border rounded-lg p-2 my-2 cursor-pointer"
+                onClick={() => handleItemClick(student.id)}
               >
                 <span className="font-bold">{student.firstName}</span> -
-                <span className="text-gray-500 ml-2">({student.studentId})</span>
+                <span className="text-white ml-2">({student.studentId})</span>
                 <span className="text-sm text-lightGray ml-2">Student</span>
               </li>
             ))}
@@ -55,17 +66,19 @@ function SearchComponent() {
 
           <ul>
             {searchResults.teachers.map((teacher) => (
-              <li key={teacher.id} className="bg-green-100 border p-2 my-2 cursor-pointer text-black"
-              onClick={() => handleItemClick(teacher.id)}
+              <li
+                key={teacher.id}
+                className="bg-[#888787] border rounded-lg p-2 my-2 cursor-pointer"
+                onClick={() => handleItemClick(teacher.id)}
               >
-                <span className="text-lg font-bold">{teacher.firstName}</span>
-                <span className="text-gray-500 ml-2">({teacher.teacherId})</span>
+                <span className="font-bold">{teacher.firstName}</span>
+                <span className="text-white ml-2">({teacher.teacherId})</span>
                 <span className="text-sm text-lightGray ml-2">Teacher</span>
               </li>
             ))}
           </ul>
         </div>
-      }
+      )}
     </div>
   );
 }
