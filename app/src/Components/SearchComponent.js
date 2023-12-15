@@ -29,6 +29,7 @@ function SearchComponent() {
 
   const handleChange = (event) => {
     const term = event.target.value;
+    console.log(term);
     setSearchTerm(term);
     debouncedSearch(term);
   };

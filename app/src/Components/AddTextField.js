@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../Pages/AddTeacher/AddTeacherForm.css";
 
-const AddTextField = ({ label, onChange }) => {
+const AddTextField = ({ label,value, onChange }) => {
   return (
     <>
       {label !== "" && (
@@ -11,6 +11,7 @@ const AddTextField = ({ label, onChange }) => {
           </label>
           <input
             type="text"
+            value={value}
             onChange={onChange}
             placeholder="Enter Amount"
             className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

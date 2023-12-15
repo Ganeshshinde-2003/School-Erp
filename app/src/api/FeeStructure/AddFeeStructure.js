@@ -11,6 +11,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  where,
 } from "firebase/firestore";
 
 export const feeStructureTestDay = {
@@ -21,19 +22,13 @@ export const feeStructureTestDay = {
     practicalFee: "500",
     waterFee: "100",
   },
-    normal:{
+  normal:{
         examfee: "100",
         practicalFee: "50",
         
     },
 
 };
-
-// setIsModalOpen(true);
-// addFeeStructure(feeStructureTestDay);
-// updateFeeStructure(feeStructureTestDay);
-// getSpecificFeeStructure("3");
-
 
 
 export const getFeeStructureDataTable = async () => {
@@ -81,7 +76,6 @@ export const addFeeStructure = async (data) => {
     const feeStructureRef = doc(db, "AddFeeStructure", className);
   
     try {
-      // Set the fee structure data for the specified class
       await setDoc(feeStructureRef, {
         ...slabs,
         createdAt: serverTimestamp(),
@@ -197,3 +191,40 @@ export const getSpecificTimetableData = async (data) => {
     };
   }
 };
+
+
+export const isDocpresentInDb = async (DocId) => {
+  try {
+    const docRef = doc(db, "AddFeeStructure", DocId);
+    
+    const docSnapshot = await getDoc(docRef);
+
+    if (!docSnapshot.exists()) {
+     return false;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.error("Error getting document:", error);
+  }
+};
+
+export const slabarrayfromactualdb = async (DocId) => {
+
+      // Fetch data from the "AddFeeSlab" collection
+      const feeSlabCollectionRef = collection(db, "AddFeeSlab");
+      const querySnapshot = await getDocs(feeSlabCollectionRef);
+
+      // Filter documents where "applicableClasses" array contains the given docId
+      const matchingSlabs = [];
+      querySnapshot.forEach((doc) => {
+        const applicableClasses = doc.data().applicableClasses;
+        console.log("Applicable",applicableClasses);
+        if (applicableClasses && applicableClasses.includes(DocId)) {
+          matchingSlabs.push(
+           doc.data().slabName
+          );
+        }
+      });
+  return matchingSlabs;
+}

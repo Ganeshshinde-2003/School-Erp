@@ -8,6 +8,7 @@ import {
   getSpecificFeeSlabDataFromDb,
   updateFeeSlabToDatabase,
 } from "../../api/FeeStructure/AddFeeSlab";
+import { getAllclassNames } from "../../api/ClassMaster/AddClassAndSection";
 
 const AddOrUpdateFeeSlab = ({
   isUpdateOn,
@@ -24,31 +25,24 @@ const AddOrUpdateFeeSlab = ({
     requirements: "",
   };
   const [feeSlabData, setFeeSlabData] = useState(inticalData);
-  const classes = [
-    "Nursery",
-    "LKG",
-    "UKG",
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-    "XI",
-    "XII",
-  ];
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const [classOptions,setClassOptions] = useState([]);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       getFeeSlabData(DocId);
     }
+    getClasses();
+
   }, [isModalOpen, isUpdateOn]);
+
+  const getClasses = async () => {
+    await getAllclassNames().then((data) => {
+      console.log(classOptions);
+      setClassOptions(data);
+    });
+  };
 
   const getFeeSlabData = async (DocId) => {
     try {
@@ -78,7 +72,6 @@ const AddOrUpdateFeeSlab = ({
         applicableClasses: updatedClasses,
       });
     } else {
-      // For other input types, handle normally
       setFeeSlabData({
         ...feeSlabData,
         [name]: value,
@@ -168,7 +161,7 @@ const AddOrUpdateFeeSlab = ({
                   Applicable for*
                 </label>
                 <div className="checkbox-container">
-                  {classes.map((subject) => (
+                  {classOptions.map((subject) => (
                     <div key={subject} className="checbox-many">
                       <label className="block text-[15px] font-medium text-[#333333]">
                         {subject}

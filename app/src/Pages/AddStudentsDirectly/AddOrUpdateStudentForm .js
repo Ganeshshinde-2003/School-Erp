@@ -94,7 +94,6 @@ const AddOrUpdateStudentForm = ({
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
-      // Fetch subject data from Firebase when the modal is opened for update
       getStudentData(DocId);
     }
     getOptionalSubjects();
