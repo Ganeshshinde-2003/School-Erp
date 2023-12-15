@@ -25,6 +25,7 @@ import AddFeeStructure from "./Pages/AddFeeStructure/AddFeeStructure.js";
 import AddTimetable from "./Pages/Timetable/AddTimetable.js";
 import CheckSyllabus from "./Pages/CheckSyllabus/CheckSyllabus.js";
 import AddExams from "./Pages/AddExams/AddExams.js";
+import SearchDetailsShow from "./Pages/SearchDetailsShow/SearchDetailsShow.js";
 
 const App = () => {
   return (
@@ -121,6 +122,7 @@ const App = () => {
               element={<CheckSyllabus />}
             />
             <Route path="/exam-addition/add-exam" element={<AddExams />} />
+            <Route path="/searchresult/:id" element={<SearchDetailsShow />} />
           </Routes>
         </div>
       </div>

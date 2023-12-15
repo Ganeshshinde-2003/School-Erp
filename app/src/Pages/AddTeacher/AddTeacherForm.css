@@ -114,3 +114,8 @@
 .checbox-many label {
   width: 50px !important;
 }
+.component-card-two {
+  flex-direction: column !important;
+  align-items: self-start !important;
+  gap: 20px;
+}
