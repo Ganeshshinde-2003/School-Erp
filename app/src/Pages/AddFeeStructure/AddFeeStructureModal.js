@@ -11,7 +11,10 @@ import {
 import AddButton from "../../Components/AddButton";
 import FeeSlabNamePopUp from "./FeeSlabNamePopup";
 import AddTextField from "../../Components/AddTextField";
-// ... (existing imports)
+import {
+  addFeeStructure,
+  updateFeeStructure,
+} from "../../api/FeeStructure/AddFeeStructure";
 
 const AddOrUpdateFeeSlab = ({
   isUpdateOn,
@@ -23,9 +26,7 @@ const AddOrUpdateFeeSlab = ({
 }) => {
   const initialData = {
     slabName: "",
-    applicableClasses: [],
-    slabId: "",
-    requirements: "",
+    applicableFees: [],
   };
 
   const feeSlabs = [
@@ -42,6 +43,9 @@ const AddOrUpdateFeeSlab = ({
   const [newSlabName, setNewSlabName] = useState("");
   const [trackActiveCom, setTrackActiveCom] = useState(1);
   const [feeSlabArray, setFeeSlabArray] = useState([]);
+  const [fieldValue, setFieldValue] = useState("");
+  const [applicationFee, setApppicaiontFee] = useState(0);
+  const [feeStructureData, setFeeStructureData] = useState({});
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
@@ -70,62 +74,51 @@ const AddOrUpdateFeeSlab = ({
     }
   };
 
-  const handleInputChange = (e, index) => {
-    const { name, value, type, checked } = e.target;
-
+  const handleInputChange = (e, index, classIndex) => {
     const updatedArray = [...feeSlabArray];
-
-    if (type === "checkbox") {
-      const updatedClasses = checked
-        ? [...(feeSlabArray[index].data.applicableClasses ?? []), name]
-        : (feeSlabArray[index].data.applicableClasses ?? []).filter(
-            (className) => className !== name
-          );
-
-      updatedArray[index] = {
-        ...feeSlabArray[index],
-        data: {
-          ...feeSlabArray[index].data,
-          applicableClasses: updatedClasses,
-        },
-      };
-    } else {
-      updatedArray[index] = {
-        ...feeSlabArray[index],
-        data: {
-          ...feeSlabArray[index].data,
-          [name]: value,
-        },
-      };
-    }
-
+    const firstKey = Object.keys(
+      feeSlabArray[index].data.applicableFees[classIndex]
+    )[0];
+    feeSlabArray[index].data.applicableFees[classIndex][firstKey] = fieldValue;
     setFeeSlabArray(updatedArray);
-    console.log(
-      `Updated FeeSlabArray for ${feeSlabArray[index].slabName}:`,
-      updatedArray
-    );
+
+    const transformedData = {
+      className: DocId,
+      applicationFee: applicationFee,
+    };
+
+    updatedArray.forEach((entry) => {
+      const slabName = entry.slabName;
+      const applicableFees = entry.data.applicableFees;
+
+      transformedData[slabName] = {};
+
+      applicableFees.forEach((fee) => {
+        const [key] = Object.keys(fee);
+        transformedData[slabName][key] = fee[key];
+      });
+    });
+
+    console.log(transformedData);
+    setFeeStructureData(transformedData);
   };
 
   const handleAddSlab = () => {
     const activeIndex = activeCom - 1;
     const updatedArray = [...feeSlabArray];
     const slabData = updatedArray[activeIndex].data;
-    slabData.applicableClasses = [
-      ...(slabData.applicableClasses || []),
-      newSlabName,
-    ];
+    const newClass = { [newSlabName]: "" };
+
+    slabData.applicableFees = [...(slabData.applicableFees || []), newClass];
+
     setNewSlabName("");
     setFeeSlabArray(updatedArray);
-    console.log(
-      `Updated FeeSlabArray after adding slab for ${feeSlabArray[activeIndex].slabName}:`,
-      updatedArray
-    );
     setIsModalOpen2(false);
   };
 
   const handleUpdate = async () => {
     try {
-      const response = await updateFeeSlabToDatabase(DocId, feeSlabArray);
+      const response = await updateFeeStructure(DocId, feeSlabArray);
 
       setConfirmationMessage(response.message);
       setFeeSlabArray(
@@ -144,12 +137,8 @@ const AddOrUpdateFeeSlab = ({
 
   const handleAdd = async () => {
     try {
-      const response = await addFeeSlabToDb(feeSlabArray);
-
+      const response = await addFeeStructure(feeStructureData);
       setConfirmationMessage(response.message);
-      setFeeSlabArray(
-        feeSlabs.map((slabName) => ({ slabName, data: { ...initialData } }))
-      );
     } catch (error) {
       console.error("Error updating subject data", error);
     }
@@ -183,9 +172,10 @@ const AddOrUpdateFeeSlab = ({
                   Admission Fees*
                 </label>
                 <input
-                  type="text"
-                  name="firstName"
-                  onChange={(e) => handleInputChange(e, 0)}
+                  type="Number"
+                  name="applicationFee"
+                  value={applicationFee}
+                  onChange={(e) => setApppicaiontFee(e.target.value)}
                   required
                   className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -211,19 +201,25 @@ const AddOrUpdateFeeSlab = ({
               <div
                 key={index2}
                 className={
-                  activeCom === index2 + 1 ? "component-card" : "hidden-card"
+                  activeCom === index2 + 1
+                    ? "component-card component-card-two"
+                    : "hidden-card"
                 }
               >
                 {activeCom === index2 + 1 && (
                   <div className="applicable-classes">
                     <ul>
-                      {slab.data.applicableClasses.map(
-                        (className, classIndex) => (
-                          <li key={classIndex}>
-                            <AddTextField label={className} />
-                          </li>
-                        )
-                      )}
+                      {slab.data.applicableFees.map((classObj, classIndex) => (
+                        <li key={classIndex}>
+                          <AddTextField
+                            label={Object.keys(classObj)[0]}
+                            onChange={(e) => {
+                              handleInputChange(e, index2, classIndex);
+                              setFieldValue(e.target.value);
+                            }}
+                          />
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 )}
@@ -237,7 +233,7 @@ const AddOrUpdateFeeSlab = ({
           <div className="add-subject-btn addTeacher-buttons">
             <button
               type="button"
-              onClick={isUpdateOn ? handleUpdate : handleAdd}
+              onClick={isUpdateOn ? handleAdd : handleUpdate}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
             >
               {isUpdateOn ? "Add" : "Add"}
