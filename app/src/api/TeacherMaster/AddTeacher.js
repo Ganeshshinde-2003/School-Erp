@@ -1,4 +1,4 @@
-import { db } from "../../config/firebase";
+import { db, storage } from "../../config/firebase";
 import {
   getDocs,
   addDoc,
@@ -13,6 +13,7 @@ import {
   where,
   setDoc,
 } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 /**
  * Add a teacher to the database with subcollections.
@@ -89,6 +90,25 @@ export const teacherDatatest = {
 
 export const addTeacherToDatabase = async (teacherData) => {
   const teacherRef = collection(db, "AddTeachers");
+
+  try {
+    const profilePicRef = ref(
+      storage,
+      `addTeacher/profile_pics/${teacherData.teacherId}`
+    );
+    await uploadString(profilePicRef, teacherData.profilePic, "data_url");
+  } catch (error) {
+    console.error("Error uploading profile picture to storage:", error);
+    return {
+      status: false,
+      message: "Error uploading profile picture",
+    };
+  }
+
+  const profilePicUrl = await getDownloadURL(
+    ref(storage, `addTeacher/profile_pics/${teacherData.teacherId}`)
+  );
+
   try {
     const teacherDoc = await addDoc(teacherRef, {
       teacherId: teacherData.teacherId,
@@ -97,13 +117,14 @@ export const addTeacherToDatabase = async (teacherData) => {
       firstName: teacherData.firstName,
       lastName: teacherData.lastName,
       mobileNo: teacherData.mobileNo,
+      profilePic: profilePicUrl,
       classTeacher: teacherData.classTeacher,
       transportSlab: teacherData.transportSlab,
       personalDetails: teacherData.personalDetails,
       addressDetails: teacherData.addressDetails,
       salaryDetails: teacherData.salaryDetails,
       experienceDetails: teacherData.experienceDetails,
-      assignClasses:teacherData.assignClasses,
+      assignClasses: teacherData.assignClasses,
       createdAt: serverTimestamp(),
     });
 
@@ -166,11 +187,36 @@ export const updateTeacherInDatabase = async (
 
     const teacherDataChanged =
       JSON.stringify(existingData) !== JSON.stringify(updatedTeacherData);
-    console.log("backend data", existingData);
-    console.log("checking for changes", teacherDataChanged);
+    console.log("Backend data:", existingData);
+    console.log("Checking for changes:", teacherDataChanged);
 
-    if (teacherDataChanged) {
+    // Check if the image has changed
+    const profilePicChanged =
+      updatedTeacherData.profilePic !== existingData.profilePic;
+
+    if (teacherDataChanged || profilePicChanged) {
+      // If the image has changed, upload the new image to Firebase Storage
+      if (profilePicChanged && updatedTeacherData.profilePic) {
+        const profilePicRef = ref(
+          storage,
+          `addTeacher/profile_pics/${documentId}`
+        );
+        await uploadString(
+          profilePicRef,
+          updatedTeacherData.profilePic,
+          "data_url"
+        );
+
+        // Get the URL of the uploaded profile picture
+        const profilePicUrl = await getDownloadURL(profilePicRef);
+
+        // Update the profilePic field in the teacher data
+        updatedTeacherData.profilePic = profilePicUrl;
+      }
+
+      // Update the document in Firestore with the updated data
       await updateDoc(teacherDocRef, updatedTeacherData);
+
       return { status: true, message: "Document successfully updated" };
     }
   } catch (error) {
@@ -210,10 +256,6 @@ export const getTeacherDataFromDd = async (DocId) => {
   }
 };
 
-
-
-
-
 // export const searchUser = async (searchTerm) => {
 //   const studentRef = collection(db, 'AddStudentsDirectly');
 //   const teacherRef = collection(db, 'AddTeachers');
@@ -250,11 +292,9 @@ export const getTeacherDataFromDd = async (DocId) => {
 //   }
 // };
 
-
-
 export const searchUser = async (searchTerm) => {
-  const studentRef = collection(db, 'AddStudentsDirectly');
-  const teacherRef = collection(db, 'AddTeachers');
+  const studentRef = collection(db, "AddStudentsDirectly");
+  const teacherRef = collection(db, "AddTeachers");
 
   try {
     const lowercaseTerm = searchTerm.toLowerCase(); // Convert searchTerm to lowercase for case-insensitive matching
@@ -262,7 +302,7 @@ export const searchUser = async (searchTerm) => {
     // Fetch all student names and IDs
     const studentQuery = query(studentRef);
     const studentSnapshot = await getDocs(studentQuery);
-    const students = studentSnapshot.docs.map(doc => ({
+    const students = studentSnapshot.docs.map((doc) => ({
       id: doc.id,
       firstName: doc.data().firstName,
       studentId: doc.data().studentId,
@@ -271,17 +311,21 @@ export const searchUser = async (searchTerm) => {
     // Fetch all teacher names and IDs
     const teacherQuery = query(teacherRef);
     const teacherSnapshot = await getDocs(teacherQuery);
-    const teachers = teacherSnapshot.docs.map(doc => ({
+    const teachers = teacherSnapshot.docs.map((doc) => ({
       id: doc.id,
       firstName: doc.data().firstName,
       teacherId: doc.data().teacherId,
     }));
 
     // Filter student names based on the search term
-    const filteredStudents = students.filter(student => student.firstName.toLowerCase().includes(lowercaseTerm));
+    const filteredStudents = students.filter((student) =>
+      student.firstName.toLowerCase().includes(lowercaseTerm)
+    );
 
     // Filter teacher names based on the search term
-    const filteredTeachers = teachers.filter(teacher => teacher.firstName.toLowerCase().includes(lowercaseTerm));
+    const filteredTeachers = teachers.filter((teacher) =>
+      teacher.firstName.toLowerCase().includes(lowercaseTerm)
+    );
 
     // Combine and return the results
     const searchResults = {
@@ -291,9 +335,7 @@ export const searchUser = async (searchTerm) => {
 
     return searchResults;
   } catch (error) {
-    console.error('Error searching users:', error);
+    console.error("Error searching users:", error);
     throw error;
   }
 };
-
-

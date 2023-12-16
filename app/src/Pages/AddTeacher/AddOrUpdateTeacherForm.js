@@ -8,6 +8,10 @@ import {
 } from "../../api/TeacherMaster/AddTeacher";
 import "./AddTeacherForm.css";
 import { getAllTransportSlabs } from "../../api/TransportMaster/AddStopAndFees";
+import {
+  getAllclassNames,
+  getSubjectsByClassName,
+} from "../../api/ClassMaster/AddClassAndSection";
 
 const AddOrUpdateTeacherForm = ({
   isUpdateOn,
@@ -26,6 +30,7 @@ const AddOrUpdateTeacherForm = ({
     mobileNo: "",
     classTeacher: "",
     transportSlab: "",
+    profilePic: null,
 
     personalDetails: {
       dob: "",
@@ -73,7 +78,7 @@ const AddOrUpdateTeacherForm = ({
     assignClasses: {
       class: "",
       subject: "",
-    }
+    },
   };
 
   const [teacherData, setTeacherData] = useState(inticalteacherData);
@@ -83,6 +88,9 @@ const AddOrUpdateTeacherForm = ({
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
   const [docIdforUpdate, setDocIdforUpdate] = useState(null);
+  const [className, setClassName] = useState([]);
+  const [subjectsName, setSubjectsName] = useState([]);
+  const [singleClassName, setSingleClassName] = useState("");
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
@@ -91,7 +99,25 @@ const AddOrUpdateTeacherForm = ({
       getTeacherData(DocId);
     }
     getTransportSlabs();
+    getClassNames();
   }, [isModalOpen, isUpdateOn]);
+
+  const getClassNames = async () => {
+    await getAllclassNames().then((data) => {
+      setClassName(data);
+    });
+  };
+
+  const getSubjectNames = async (className) => {
+    console.log(className);
+    if (teacherData.assignClasses.class !== "") {
+      console.log(className);
+      await getSubjectsByClassName(className).then((data) => {
+        setSubjectsName(data);
+        console.log(data);
+      });
+    }
+  };
 
   const getTeacherData = async (DocId) => {
     try {
@@ -113,12 +139,27 @@ const AddOrUpdateTeacherForm = ({
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setTeacherData({
-      ...teacherData,
-      [name]: value,
-    });
+    const { name, files } = e.target;
+
+    if (name === "profilePic" && files && files[0]) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setTeacherData({
+          ...teacherData,
+          [name]: reader.result, // Convert the file to a data URL
+        });
+      };
+
+      reader.readAsDataURL(files[0]);
+    } else {
+      setTeacherData({
+        ...teacherData,
+        [name]: e.target.value,
+      });
+    }
   };
+
   const handleInputChange1 = (e) => {
     const { name, value } = e.target;
     setTeacherData({
@@ -159,7 +200,21 @@ const AddOrUpdateTeacherForm = ({
       },
     });
   };
+  const handleInputChange5 = (e) => {
+    const { name, value } = e.target;
+    setTeacherData({
+      ...teacherData,
+      assignClasses: {
+        ...teacherData.assignClasses,
+        [name]: value,
+      },
+    });
 
+    if (teacherData.assignClasses.class !== "") {
+      setSingleClassName(teacherData.assignClasses.class);
+      getSubjectNames(teacherData.assignClasses.class);
+    }
+  };
   const handleUpdate = async () => {
     try {
       const response = await updateTeacherInDatabase(DocId, teacherData);
@@ -193,7 +248,7 @@ const AddOrUpdateTeacherForm = ({
       handleTeacherAdded();
     }, 2000);
   };
-
+  
   if (!isModalOpen) return null;
 
   return (
@@ -328,23 +383,33 @@ const AddOrUpdateTeacherForm = ({
                 </select>
               </div>
             </div>
-            <div className="form-first">
-              <div>
-                <label
-                  htmlFor="fileInput"
-                  className="mt-1 p-2 w-half text-[20px] font-bold block h-[200px] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center"
-                  style={{ color: "#333333" }}
-                >
-                  Photo+
-                </label>
+            <div className="form-first w-[200px]">
+              <label
+                htmlFor="fileInput"
+                className={`mt-1 p-2 w-half text-[20px] font-bold block h-[200px] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center ${
+                  teacherData.profilePic ? "cursor-pointer" : ""
+                }`}
+                style={{ color: "#333333" }}
+              >
+                {teacherData.profilePic ? (
+                  <img
+                    src={teacherData.profilePic}
+                    alt="Selected Profile"
+                    className="mt-2 h-[200px] w-full rounded-[10px] form-first"
+                  />
+                ) : (
+                  "Photo+"
+                )}
+              </label>
 
-                <input
-                  type="file"
-                  id="fileInput"
-                  accept="image/*"
-                  className="hidden"
-                />
-              </div>
+              <input
+                type="file"
+                name="profilePic"
+                id="fileInput"
+                onChange={handleInputChange}
+                accept="image/*"
+                className="hidden"
+              />
             </div>
           </div>
           <div className="addTeacher-components">
@@ -833,31 +898,43 @@ const AddOrUpdateTeacherForm = ({
               <div className="form-first">
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    Select Class
+                    Select Class*
                   </label>
-                  <input
-                    type="text"
-                    name="completionYear"
-                    value={teacherData.experienceDetails.completionYear}
-                    onChange={handleInputChange4}
+                  <select
+                    name="class"
+                    value={teacherData.assignClasses.class}
+                    onChange={handleInputChange5}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">--- Select ---</option>
+                    {className.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="form-first">
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    Select Subject.
+                    Select Subject*
                   </label>
-                  <input
-                    type="text"
-                    name="oldPFNo"
-                    value={teacherData.experienceDetails.oldPFNo}
-                    onChange={handleInputChange4}
+                  <select
+                    name="subject"
+                    value={teacherData.assignClasses.subject}
+                    onChange={handleInputChange5}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">--- Select ---</option>
+                    {subjectsName.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>

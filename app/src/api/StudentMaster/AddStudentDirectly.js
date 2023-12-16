@@ -1,4 +1,4 @@
-import { db } from "../../config/firebase";
+import { db, storage } from "../../config/firebase";
 import {
   getDocs,
   addDoc,
@@ -10,8 +10,10 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  where,
   setDoc,
 } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 /**
  * Add a student to the database with subcollections.
@@ -68,7 +70,7 @@ export const studentDataTest = {
     upitransactionNo: "92673r7797t38798tguyt77",
     otherUniqeNo: "other873678576ew2",
   },
- 
+
   demography: {
     religion: "Christian",
     cast: "Another Cast",
@@ -86,20 +88,41 @@ export const studentDataTest = {
     previousClassPercentage: "92%",
     importantDocsTaken: true,
   },
-  optionalSubjects:["ghgj","jhgjk"]
+  optionalSubjects: ["ghgj", "jhgjk"],
 };
 
 export const addStudentDirectlyToDatabase = async (studentData) => {
   const studentRef = collection(db, "AddStudentsDirectly");
+
+  try {
+    const profilePicRef = ref(
+      storage,
+      `addStudentDirectly/profile_pics/${studentData.studentId}`
+    );
+    await uploadString(profilePicRef, studentData.profilePic, "data_url");
+  } catch (error) {
+    console.error("Error uploading profile picture to storage:", error);
+    return {
+      status: false,
+      message: "Error uploading profile picture",
+    };
+  }
+
+  const profilePicUrl = await getDownloadURL(
+    ref(storage, `addStudentDirectly/profile_pics/${studentData.studentId}`)
+  );
+
   try {
     const studentDoc = await addDoc(studentRef, {
       firstName: studentData.firstName,
       lastName: studentData.lastName,
-      mobileNo: studentData.mobileNo || 0,
-      transportSlab: studentData.transportSlab || "Bus",
-      admissionDate: studentData.admissionDate ||  "",
-      joiningClass: studentData.joiningClass || "1",
-      feeslab: studentData?.feeslab || 0,
+      studentId: studentData.studentId,
+      mobileNo: studentData.mobileNo,
+      transportSlab: studentData.transportSlab,
+      profilePic: profilePicUrl,
+      admissionDate: studentData.admissionDate,
+      joiningClass: studentData.joiningClass,
+      feeslab: studentData?.feeslab,
       personalDetails: studentData?.personalDetails,
       addressDetails: studentData?.addressDetails,
       takeAdmissionfees: studentData?.takeAdmissionfees,
@@ -136,9 +159,37 @@ export const updateStudentDirectlyToDatabase = async (
 
     const studentDataChanged =
       JSON.stringify(existingData) !== JSON.stringify(updatedStudentData);
+    console.log("Backend data:", existingData);
+    console.log("Checking for changes:", studentDataChanged);
 
-    if (studentDataChanged) {
+    // Check if the image has changed
+    const profilePicChanged =
+      updatedStudentData.profilePic !== existingData.profilePic;
+
+    if (studentDataChanged || profilePicChanged) {
+      // If the image has changed, upload the new image to Firebase Storage
+      if (profilePicChanged && updatedStudentData.profilePic) {
+        const profilePicRef = ref(
+          storage,
+          `addStudentDirectly/profile_pics/${documentId}`
+        );
+        await uploadString(
+          profilePicRef,
+          updatedStudentData.profilePic,
+          "data_url"
+        );
+
+        // Get the URL of the uploaded profile picture
+        const profilePicUrl = await getDownloadURL(profilePicRef);
+
+        // Update the profilePic field in the student data
+        updatedStudentData.profilePic = profilePicUrl;
+      }
+
+      // Update the document in Firestore with the updated data
       await updateDoc(studentDocRef, updatedStudentData);
+
+      console.log("Data updated successfully");
       return { status: true, message: "Document successfully updated" };
     }
   } catch (error) {
