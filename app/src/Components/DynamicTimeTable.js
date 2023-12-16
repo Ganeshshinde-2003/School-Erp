@@ -1,6 +1,10 @@
+// DynamicTimeTable.jsx
+
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
+import { Link } from "react-router-dom";
+import TimetableModal from "./TimeTableModal";
 
 import "./DynamicTable.css";
 import AddButton from "./AddButton";
@@ -12,28 +16,33 @@ const DynamicTimeTable = ({
   handleAction,
   ispanding,
 }) => {
-  // Check if there is no data to display
   if (!data || data.length === 0) {
     return <div>No data to display</div>;
   }
 
-  // State for SI.No
   const [siNo, setSiNo] = useState(1);
+  const [selectedSection, setSelectedSection] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Update SI.No when data changes
   useEffect(() => {
     setSiNo(1);
   }, [data]);
 
-  // Define hidden columns
-  const hiddenColumns = ["id"];
+  const openModal = (section) => {
+    setSelectedSection(section);
+    setIsModalOpen(true);
+  };
 
-  // Sort the data based on the "Class" column
+  const closeModal = () => {
+    setSelectedSection(null);
+    setIsModalOpen(false);
+  };
+
+  const hiddenColumns = ["id"];
   const sortedData = [...data].sort(
     (a, b) => parseInt(a.Class) - parseInt(b.Class)
   );
 
-  // Extract column names from the first data row
   const columns = Object.keys(sortedData[0]).filter(
     (column) => !hiddenColumns.includes(column)
   );
@@ -42,14 +51,11 @@ const DynamicTimeTable = ({
     <table className="min-w-full border-collapse">
       <thead className="table-cols">
         <tr>
-          {/* Header for SI.No */}
           <th
             className={`h-[${rowHeight}px] py-2 px-4 text-center color-white bg-gray-200 border border-gray-300`}
           >
             SI.No
           </th>
-
-          {/* Headers for other columns */}
           {columns.map((column) => (
             <th
               className={`h-[${rowHeight}px] py-2 px-4 text-center bg-gray-200 border border-gray-300`}
@@ -58,8 +64,6 @@ const DynamicTimeTable = ({
               {column}
             </th>
           ))}
-
-          {/* Edit/Delete header if action is enabled */}
           {action && (
             <th
               className={`h-[${rowHeight}px] py-2 px-4 text-center bg-gray-200 border border-gray-300`}
@@ -67,8 +71,6 @@ const DynamicTimeTable = ({
               Edit/Delete
             </th>
           )}
-
-          {/* Approve/disapprove header if ispanding is enabled */}
           {ispanding && (
             <th
               className={`h-[${rowHeight}px] py-2 px-4 text-center bg-gray-200 border border-gray-300`}
@@ -81,37 +83,30 @@ const DynamicTimeTable = ({
       <tbody>
         {sortedData.map((row, rowIndex) => (
           <tr key={rowIndex} className={`h-[${rowHeight}px]`}>
-            {/* SI.No column */}
             <td className="py-2 px-4 border border-gray-300 text-center">
               {siNo + rowIndex}
             </td>
-
-            {/* Data columns */}
             {columns.map((column) => (
               <td
                 className="py-2 px-4 border border-gray-300 text-center"
                 key={column}
               >
-                {column === "Section"
-                  ? // Render buttons vertically in column direction
-                    row[column].split(" ").map((buttonText, index) => (
-                      <div key={index}>
+                {column === "Section" ? (
+                  row[column].split(" ").map((buttonText, index) => (
+                    <div key={index}>
                         <button
-                          onClick={() =>
-                            console.log("Button clicked:", buttonText)
-                          }
                           className="bg-blue-500 text-white px-3 py-1 text-sm m-1 rounded"
+                          onClick={() => openModal(`Section ${buttonText}`)}
                         >
                           {`Section ${buttonText}`}
                         </button>
-                      </div>
-                    ))
-                  : // Render normal data for other columns
-                    row[column]}
+                    </div>
+                  ))
+                ) : (
+                  row[column]
+                )}
               </td>
             ))}
-
-            {/* Edit/Delete column if action is enabled */}
             {action && (
               <td
                 className={`h-[${rowHeight}px] py-2 px-4 border border-gray-300 text-center`}
@@ -128,8 +123,6 @@ const DynamicTimeTable = ({
                 </div>
               </td>
             )}
-
-            {/* Approve/disapprove column if ispanding is enabled */}
             {ispanding && (
               <td
                 className={`h-[${rowHeight}px] py-2 px-4 border border-gray-300 text-center`}
@@ -153,6 +146,13 @@ const DynamicTimeTable = ({
           </tr>
         ))}
       </tbody>
+      {selectedSection && (
+        <TimetableModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          section={selectedSection}
+        />
+      )}
     </table>
   );
 };
