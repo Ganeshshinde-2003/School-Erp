@@ -30,6 +30,7 @@ const AddOrUpdateTeacherForm = ({
     mobileNo: "",
     classTeacher: "",
     transportSlab: "",
+    profilePic: null,
 
     personalDetails: {
       dob: "",
@@ -138,12 +139,27 @@ const AddOrUpdateTeacherForm = ({
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setTeacherData({
-      ...teacherData,
-      [name]: value,
-    });
+    const { name, files } = e.target;
+
+    if (name === "profilePic" && files && files[0]) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setTeacherData({
+          ...teacherData,
+          [name]: reader.result, // Convert the file to a data URL
+        });
+      };
+
+      reader.readAsDataURL(files[0]);
+    } else {
+      setTeacherData({
+        ...teacherData,
+        [name]: e.target.value,
+      });
+    }
   };
+
   const handleInputChange1 = (e) => {
     const { name, value } = e.target;
     setTeacherData({
@@ -232,7 +248,7 @@ const AddOrUpdateTeacherForm = ({
       handleTeacherAdded();
     }, 2000);
   };
-
+  
   if (!isModalOpen) return null;
 
   return (
@@ -367,23 +383,33 @@ const AddOrUpdateTeacherForm = ({
                 </select>
               </div>
             </div>
-            <div className="form-first">
-              <div>
-                <label
-                  htmlFor="fileInput"
-                  className="mt-1 p-2 w-half text-[20px] font-bold block h-[200px] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center"
-                  style={{ color: "#333333" }}
-                >
-                  Photo+
-                </label>
+            <div className="form-first w-[200px]">
+              <label
+                htmlFor="fileInput"
+                className={`mt-1 p-2 w-half text-[20px] font-bold block h-[200px] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center ${
+                  teacherData.profilePic ? "cursor-pointer" : ""
+                }`}
+                style={{ color: "#333333" }}
+              >
+                {teacherData.profilePic ? (
+                  <img
+                    src={teacherData.profilePic}
+                    alt="Selected Profile"
+                    className="mt-2 h-[200px] w-full rounded-[10px] form-first"
+                  />
+                ) : (
+                  "Photo+"
+                )}
+              </label>
 
-                <input
-                  type="file"
-                  id="fileInput"
-                  accept="image/*"
-                  className="hidden"
-                />
-              </div>
+              <input
+                type="file"
+                name="profilePic"
+                id="fileInput"
+                onChange={handleInputChange}
+                accept="image/*"
+                className="hidden"
+              />
             </div>
           </div>
           <div className="addTeacher-components">

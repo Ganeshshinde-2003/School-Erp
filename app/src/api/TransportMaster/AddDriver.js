@@ -1,4 +1,4 @@
-import { db } from "../../config/firebase";
+import { db, storage } from "../../config/firebase";
 import {
   getDocs,
   addDoc,
@@ -10,8 +10,10 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  where,
   setDoc,
 } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 export const testdriverData = {
   driverName: "Harman Singh",
@@ -25,6 +27,24 @@ export const testdriverData = {
 
 export const addDriverDataToDb = async (driverData) => {
   const driverRef = collection(db, "AddDriver");
+
+  try {
+    const profilePicRef = ref(
+      storage,
+      `addDriver/profile_pics/${driverData.driverId}`
+    );
+    await uploadString(profilePicRef, driverData.profilePic, "data_url");
+  } catch (error) {
+    console.error("Error uploading profile picture to storage:", error);
+    return {
+      status: false,
+      message: "Error uploading profile picture",
+    };
+  }
+
+  const profilePicUrl = await getDownloadURL(
+    ref(storage, `addDriver/profile_pics/${driverData.driverId}`)
+  );
   try {
     const driverDoc = await addDoc(driverRef, {
       firstName: driverData.firstName,
@@ -35,6 +55,7 @@ export const addDriverDataToDb = async (driverData) => {
       driverSalary: driverData.driverSalary,
       bloodGroup: driverData.bloodGroup,
       dob: driverData.dob,
+      profilePic: profilePicUrl,
       bankAccountNumber: driverData.bankAccountNumber,
       createdAt: serverTimestamp(),
     });
@@ -55,7 +76,7 @@ export const addDriverDataToDb = async (driverData) => {
 
 export const updateDriverDataToDatabase = async (
   documentId,
-  updateddriverData
+  updatedDriverData
 ) => {
   const driverDocRef = doc(db, "AddDriver", documentId);
 
@@ -64,10 +85,37 @@ export const updateDriverDataToDatabase = async (
     const existingData = driverDocSnapshot.data();
 
     const driverDataChanged =
-      JSON.stringify(existingData) !== JSON.stringify(updateddriverData);
+      JSON.stringify(existingData) !== JSON.stringify(updatedDriverData);
+    console.log("Backend data:", existingData);
+    console.log("Checking for changes:", driverDataChanged);
 
-    if (driverDataChanged) {
-      await updateDoc(driverDocRef, updateddriverData);
+    // Check if the image has changed
+    const profilePicChanged =
+      updatedDriverData.profilePic !== existingData.profilePic;
+
+    if (driverDataChanged || profilePicChanged) {
+      // If the image has changed, upload the new image to Firebase Storage
+      if (profilePicChanged && updatedDriverData.profilePic) {
+        const profilePicRef = ref(
+          storage,
+          `addDriver/profile_pics/${documentId}`
+        );
+        await uploadString(
+          profilePicRef,
+          updatedDriverData.profilePic,
+          "data_url"
+        );
+
+        // Get the URL of the uploaded profile picture
+        const profilePicUrl = await getDownloadURL(profilePicRef);
+
+        // Update the profilePic field in the driver data
+        updatedDriverData.profilePic = profilePicUrl;
+      }
+
+      // Update the document in Firestore with the updated data
+      await updateDoc(driverDocRef, updatedDriverData);
+
       console.log("Data updated successfully");
       return { status: true, message: "Document successfully updated" };
     }

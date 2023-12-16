@@ -21,6 +21,7 @@ const initialStudentData = {
   admissionDate: null,
   joiningClass: "",
   feeslab: "",
+  profilePic: null,
 
   personalDetails: {
     gender: "",
@@ -86,8 +87,8 @@ const AddOrUpdateStudentForm = ({
   const [studentData, setStudentData] = useState(initialStudentData);
   const [optionalSubjectsName, setOptionalSubjectsName] = useState([]);
   const [transportOptions, setTransportOptions] = useState([]);
-  const [classOptions,setClassOptions] = useState([]);
-  const [feeOptions,setFeeOptions] = useState([]);
+  const [classOptions, setClassOptions] = useState([]);
+  const [feeOptions, setFeeOptions] = useState([]);
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
@@ -141,13 +142,26 @@ const AddOrUpdateStudentForm = ({
     });
   };
 
-
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setStudentData({
-      ...studentData,
-      [name]: value,
-    });
+    const { name, files } = e.target;
+
+    if (name === "profilePic" && files && files[0]) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setStudentData({
+          ...studentData,
+          [name]: reader.result, // Convert the file to a data URL
+        });
+      };
+
+      reader.readAsDataURL(files[0]);
+    } else {
+      setStudentData({
+        ...studentData,
+        [name]: e.target.value,
+      });
+    }
   };
   const handleInputChange1 = (e) => {
     const { name, value } = e.target;
@@ -197,8 +211,8 @@ const AddOrUpdateStudentForm = ({
       optionalSubjects: checked
         ? [...prevStudentData.optionalSubjects, name]
         : prevStudentData.optionalSubjects.filter(
-          (subject) => subject !== name
-        ),
+            (subject) => subject !== name
+          ),
     }));
   };
   const handleInputChange6 = (e) => {
@@ -362,9 +376,9 @@ const AddOrUpdateStudentForm = ({
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">--- Select ---</option>
-                  {classOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
+                  {classOptions.map((options) => (
+                    <option key={options} value={options}>
+                      {options}
                     </option>
                   ))}
                 </select>
@@ -389,23 +403,33 @@ const AddOrUpdateStudentForm = ({
                 </select>
               </div>
             </div>
-            <div className="form-first">
-              <div>
-                <label
-                  htmlFor="fileInput"
-                  className="mt-1 p-2 w-half text-[20px] font-bold block h-[200px] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center"
-                  style={{ color: "#333333" }}
-                >
-                  Photo+
-                </label>
+            <div className="form-first w-[200px]">
+              <label
+                htmlFor="fileInput"
+                className={`mt-1 p-2 w-half text-[20px] font-bold block h-[200px] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center ${
+                  studentData.profilePic ? "cursor-pointer" : ""
+                }`}
+                style={{ color: "#333333" }}
+              >
+                {studentData.profilePic ? (
+                  <img
+                    src={studentData.profilePic}
+                    alt="Selected Profile"
+                    className="mt-2 h-[200px] w-full rounded-[10px] form-first"
+                  />
+                ) : (
+                  "Photo+"
+                )}
+              </label>
 
-                <input
-                  type="file"
-                  id="fileInput"
-                  accept="image/*"
-                  className="hidden"
-                />
-              </div>
+              <input
+                type="file"
+                name="profilePic"
+                id="fileInput"
+                onChange={handleInputChange}
+                accept="image/*"
+                className="hidden"
+              />
             </div>
           </div>
           <div className="addTeacher-components">
