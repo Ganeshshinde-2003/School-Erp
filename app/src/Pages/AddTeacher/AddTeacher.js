@@ -7,7 +7,7 @@ import { Oval } from "react-loader-spinner";
 import {
   deleteTeacher,
   getTeacherFromDatabase,
-  getTeacherDataFromDd,
+  getSpecificTeacherDataFromDd,
 } from "../../api/TeacherMaster/AddTeacher";
 import AlertComponent from "../../Components/AlertComponent";
 import { getSubjectsByClassName } from "../../api/ClassMaster/AddClassAndSection";

@@ -286,9 +286,6 @@ export const getSubjectsByClassName = async (className) => {
     const falseSubjects = Object.keys(subjectsData).filter(subject => !subjectsData[subject]);
     console.log(falseSubjects);
 
-    const falseSubjects = Object.keys(subjectsData).filter(
-      (subject) => !subjectsData[subject]
-    );
     console.log(falseSubjects);
     return falseSubjects;
   } catch (error) {

@@ -239,7 +239,7 @@ export const deleteTeacher = async (teacheId) => {
   }
 };
 
-export const getTeacherDataFromDd = async (DocId) => {
+export const getSpecificTeacherDataFromDd = async (DocId) => {
   try {
     const teacherDocRef = doc(db, "AddTeachers", DocId);
     const teacherDocSnapshot = await getDoc(teacherDocRef);

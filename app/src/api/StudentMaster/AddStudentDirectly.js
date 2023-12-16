@@ -212,7 +212,7 @@ export const deleteStudent = async (docId) => {
   }
 };
 
-export const getStudentDataFromDd = async (DocId) => {
+export const getSpecificStudentDataFromDd = async (DocId) => {
   try {
     const studentDocRef = doc(db, "AddStudentsDirectly", DocId);
     const studentDocSnapshot = await getDoc(studentDocRef);

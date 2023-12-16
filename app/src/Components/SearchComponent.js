@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import debounce from "lodash/debounce";
-import { searchUser } from "../api/TeacherMaster/AddTeacher";
+import { getSpecificTeacherDataFromDd, searchUser } from "../api/TeacherMaster/AddTeacher";
+import {
+  getSpecificStudentDataFromDd,
+  updateStudentDirectlyToDatabase,
+
+} from "../api/StudentMaster/AddStudentDirectly";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +16,7 @@ function SearchComponent() {
     students: [],
     teachers: [],
   });
+  const [resultData,setresultData] = useState({});
   const navigate = useNavigate();
 
   const debouncedSearch = debounce(async (term) => {
@@ -33,9 +39,23 @@ function SearchComponent() {
     setSearchTerm(term);
     debouncedSearch(term);
   };
-  const handleItemClick = (id) => {
-    console.log(`Item with id ${id} clicked!`);
-    navigate(`/searchresult/${id}`);
+
+  const handleStudentItemClick = async(docId) => {
+    console.log(`Item with id ${docId} clicked!`);
+    const response = await getSpecificStudentDataFromDd(docId);
+    setresultData(response);
+    console.log(response);
+    navigate(`/searchresult/${docId}`);
+    setSearchTerm("");
+    setShow(false);
+  };
+
+  const handleTeacherItemClick = async(docId) => {
+    console.log(`Item with id ${docId} clicked!`);
+    const response = await getSpecificTeacherDataFromDd(docId);
+    setresultData(response);
+    console.log(response);
+    navigate(`/searchresult/${docId}`);
     setSearchTerm("");
     setShow(false);
   };
@@ -56,7 +76,7 @@ function SearchComponent() {
               <li
                 key={student.id}
                 className="bg-[#888787] border rounded-lg p-2 my-2 cursor-pointer"
-                onClick={() => handleItemClick(student.id)}
+                onClick={() => handleStudentItemClick(student.id)}
               >
                 <span className="font-bold">{student.firstName}</span> -
                 <span className="text-white ml-2">({student.studentId})</span>
@@ -70,7 +90,7 @@ function SearchComponent() {
               <li
                 key={teacher.id}
                 className="bg-[#888787] border rounded-lg p-2 my-2 cursor-pointer"
-                onClick={() => handleItemClick(teacher.id)}
+                onClick={() => handleTeacherItemClick(teacher.id)}
               >
                 <span className="font-bold">{teacher.firstName}</span>
                 <span className="text-white ml-2">({teacher.teacherId})</span>

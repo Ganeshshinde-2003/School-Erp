@@ -5,7 +5,7 @@ import "./AddStudentForm.css";
 import "../AddTeacher/AddTeacherForm.css";
 import {
   addStudentDirectlyToDatabase,
-  getStudentDataFromDd,
+  getSpecificStudentDataFromDd,
   updateStudentDirectlyToDatabase,
 } from "../../api/StudentMaster/AddStudentDirectly";
 import { getAllOptionalSubjectsName } from "../../api/ClassMaster/AddOptionalSubject";
@@ -105,7 +105,7 @@ const AddOrUpdateStudentForm = ({
 
   const getStudentData = async (DocId) => {
     try {
-      const subject = await getStudentDataFromDd(DocId);
+      const subject = await getSpecificStudentDataFromDd(DocId);
 
       if (subject) {
         setStudentData(subject);

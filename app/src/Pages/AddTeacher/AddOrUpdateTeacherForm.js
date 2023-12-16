@@ -4,12 +4,12 @@ import Alert from "@mui/material/Alert";
 import {
   addTeacherToDatabase,
   updateTeacherInDatabase,
-  getTeacherDataFromDd,
+  getSpecificTeacherDataFromDd,
 } from "../../api/TeacherMaster/AddTeacher";
 import "./AddTeacherForm.css";
 import { getAllTransportSlabs } from "../../api/TransportMaster/AddStopAndFees";
 import {
-  getAllclassNames,
+  getAllClassesAndSectionNames,
   getSubjectsByClassName,
 } from "../../api/ClassMaster/AddClassAndSection";
 
@@ -103,7 +103,7 @@ const AddOrUpdateTeacherForm = ({
   }, [isModalOpen, isUpdateOn]);
 
   const getClassNames = async () => {
-    await getAllclassNames().then((data) => {
+    await getAllClassesAndSectionNames().then((data) => {
       setClassName(data);
     });
   };
@@ -114,14 +114,14 @@ const AddOrUpdateTeacherForm = ({
       console.log(className);
       await getSubjectsByClassName(className).then((data) => {
         setSubjectsName(data);
-        console.log(data);
+        console.log(`${className} :`,data);
       });
     }
   };
 
   const getTeacherData = async (DocId) => {
     try {
-      const teacher = await getTeacherDataFromDd(DocId);
+      const teacher = await getSpecificTeacherDataFromDd(DocId);
 
       if (teacher) {
         setTeacherData(teacher);
