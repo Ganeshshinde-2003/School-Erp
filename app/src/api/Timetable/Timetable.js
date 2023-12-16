@@ -98,7 +98,7 @@ export const getTimetableData = async (className) => {
 
   try {
     const classDocSnapshot = await getDoc(timetableRef);
-
+    console.log(className)
     if (classDocSnapshot.exists()) {
       return {
         timetableData: classDocSnapshot.data(),

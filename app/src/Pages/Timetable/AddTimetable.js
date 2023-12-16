@@ -1,11 +1,16 @@
+// TimetableTable.jsx
+
 import React, { useEffect, useState } from "react";
 import { Oval } from "react-loader-spinner";
 import { getTimetableTable } from "../../api/Timetable/Timetable";
 import DynamicTimeTable from "../../Components/DynamicTimeTable";
+import TimetableModal from "../../Components/TimeTableModal";
 
 const TimetableTable = () => {
   const [timetableData, setTimetableData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSection, setSelectedSection] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = () => {
     getTimetableTable()
@@ -20,8 +25,18 @@ const TimetableTable = () => {
   };
 
   useEffect(() => {
-    fetchData(); // Fetch data initially
+    fetchData();
   }, []);
+
+  const openModal = (section) => {
+    setSelectedSection(section);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedSection(null);
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="mt-4 w-full">
@@ -48,13 +63,23 @@ const TimetableTable = () => {
               <DynamicTimeTable
                 data={timetableData}
                 rowHeight={100}
-                action={false} // Set action to false to hide edit and delete options
+                action={false}
                 ispanding={false}
+                onSectionClick={openModal} // Add this prop
               />
             </div>
           )}
         </div>
       </div>
+
+      {/* Render the modal */}
+      {selectedSection && (
+        <TimetableModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          // timetableData={/* Get timetable data for the selected section */}
+        />
+      )}
     </div>
   );
 };

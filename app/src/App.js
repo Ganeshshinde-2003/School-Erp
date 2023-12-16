@@ -22,7 +22,7 @@ import AddVehicle from "./Pages/AddVehicles/AddVehicle.js";
 import AddNonTeachingStaff from "./Pages/AddNonTeachingStaff/AddNonTeachingStaff.js";
 import SalaryToNonTeachingStaff from "./Pages/SalaryToNonTeachingStaff/SalaryToNonTeachingStaff.js";
 import AddFeeStructure from "./Pages/AddFeeStructure/AddFeeStructure.js";
-import AddTimetable from "./Pages/Timetable/AddTimetable.js";
+import TimetablePage from "./Pages/Timetable/AddTimetable.js";
 import CheckSyllabus from "./Pages/CheckSyllabus/CheckSyllabus.js";
 import AddExams from "./Pages/AddExams/AddExams.js";
 import SearchDetailsShow from "./Pages/SearchDetailsShow/SearchDetailsShow.js";
@@ -44,6 +44,8 @@ const App = () => {
               path="/class-master/add-optional-subject"
               element={<AddOptionalSubject />}
             />
+
+
             <Route
               path="/class-master/add-class-and-section"
               element={<AddClassAndSection />}
@@ -116,7 +118,7 @@ const App = () => {
               path="/staff-management/salary-to-non-teaching-staff"
               element={<SalaryToNonTeachingStaff />}
             />
-            <Route path="/timetable/add-timetable" element={<AddTimetable />} />
+            <Route path="/timetable/add-timetable" element={<TimetablePage />} />
             <Route
               path="/syllabus/check-syllabus"
               element={<CheckSyllabus />}
