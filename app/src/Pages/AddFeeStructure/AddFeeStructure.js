@@ -65,14 +65,6 @@ const AddFeeSlab = () => {
     setDataChanged(true);
   };
 
-  const handleFeeSlabUpdated = () => {
-    setFeeSlabUpdate(true);
-    setTimeout(() => {
-      setFeeSlabUpdate(false);
-      setDataChanged(true);
-    }, 2000);
-  };
-
   return (
     <div className="mt-4 w-full">
       <div className="mt-5 max-w-full">
@@ -110,7 +102,6 @@ const AddFeeSlab = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         handleFeeSlabAdded={handleFeeSlabAdded}
-        handleFeeSlabUpdated={handleFeeSlabUpdated}
         DocId={docId}
         isUpdateOn={feeSlabUpdate}
       />

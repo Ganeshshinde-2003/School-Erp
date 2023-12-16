@@ -243,7 +243,34 @@ export const getAllclassesAndSubjects = async () => {
   }
 };
 
+
+
+export const getAllClassesAndSectionNames = async () => {
+  const classAndSectionsRef = collection(db, "AddClassAndSections");
+
+  try {
+    const querySnapshot = await getDocs(classAndSectionsRef);
+
+    const classNameData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      // Concatenate the arrays in nameOfSections into classNameData
+      classNameData.push(...data.nameOfSections);
+    });
+
+    console.log(classNameData);
+
+    return classNameData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
 export const getSubjectsByClassName = async (className) => {
+  console.log(className);
   console.log(className);
   const assignSubjectsRef = doc(db, "AssignSubjects", className);
   try {
@@ -254,8 +281,11 @@ export const getSubjectsByClassName = async (className) => {
     }
 
     const subjectsData = docSnapshot.data();
-
+    console.log(subjectsData);
     // Filter subjects with false values
+    const falseSubjects = Object.keys(subjectsData).filter(subject => !subjectsData[subject]);
+    console.log(falseSubjects);
+
     const falseSubjects = Object.keys(subjectsData).filter(
       (subject) => !subjectsData[subject]
     );

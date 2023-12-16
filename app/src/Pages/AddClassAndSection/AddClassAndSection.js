@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import { Oval } from 'react-loader-spinner';
-import { addClassAndSectionsToDatabase, deleteClassAndSectionsData, getClassAndSectionsDatabase } from "../../api/ClassMaster/AddClassAndSection";
+import { addClassAndSectionsToDatabase, deleteClassAndSectionsData, getAllClassesAndSectionNames, getAllclassesAndSectionNames, getClassAndSectionsDatabase, getSubjectsByClassName } from "../../api/ClassMaster/AddClassAndSection";
 import AddOrUpdateClassAndSectionForm from "./AddOrUpdateClassAndSectionForm ";
 import AlertComponent from "../../Components/AlertComponent";
 
@@ -72,8 +72,7 @@ const onCancel = () => {
 };
 
 // Function to open the modal
-const openModal = () => {
-console.log("Open modal");
+const openModal = async() => {
 setDocId(null);
 setSubjectUpdate(false)
 setIsModalOpen(true);

@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
-import Alert from "@mui/material/Alert";
 import "../AddTeacher/AddTeacherForm.css";
-import {
-  addFeeSlabToDb,
-  getFeeSlabDataFromDatabase,
-  getSpecificFeeSlabDataFromDb,
-  updateFeeSlabToDatabase,
-} from "../../api/FeeStructure/AddFeeSlab";
 import AddButton from "../../Components/AddButton";
 import FeeSlabNamePopUp from "./FeeSlabNamePopup";
 import AddTextField from "../../Components/AddTextField";
@@ -27,19 +20,11 @@ const AddOrUpdateFeeSlab = ({
   setIsModalOpen,
   DocId,
   handleFeeSlabAdded,
-  handleFeeSlabUpdated,
 }) => {
   const initialData = {
     slabName: "",
     applicableFees: [],
   };
-
-  // const feeSlabs = [
-  //   "Regular Fee",
-  //   "Sports quota",
-  //   "Free Quota",
-  //   "Discount Quota",
-  // ];
 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
@@ -63,37 +48,29 @@ const AddOrUpdateFeeSlab = ({
 
     try {
       setIsLoading(true);
-      const isDocExsitInDb = await isDocpresentInDb(DocId);
-      console.log(isDocExsitInDb);
-      if (!isDocExsitInDb) {
-        const resArrayFromActualDB = await slabarrayfromactualdb(DocId);
-        console.log(resArrayFromActualDB)
-        setFeeSlabArray(
-          resArrayFromActualDB.map((slabName) => ({ slabName, data: { ...initialData } }))
-        );
-      }
-      else {
-        const feeStruct = await getSpecificFeeStructure(DocId);
-        console.log(feeStruct);
-        setApppicaiontFee(feeStruct?.applicationFee);
-        const feeSlabs = Object.keys(feeStruct).filter(
-          (key) => key !== "className" && key !== "applicationFee" && key !== "createdAt"
-        );
-        setFeeSlabArray(
-          feeSlabs.map((slabName) => ({ slabName, data: { ...initialData } }))
-        );
-        const neweStruct = transformDataToArray(feeStruct);
-        console.log(neweStruct);
-        setFeeSlabArray(neweStruct);
-      }
-
-      setIsLoading(true);
+      const feeStruct = await getSpecificFeeStructure(DocId);
+      console.log(feeStruct);
+      setApppicaiontFee(feeStruct?.applicationFee);
+      
+      const neweStruct = transformDataToArray(feeStruct);
+      console.log(neweStruct);
+    
+      const feeSlabs = await slabarrayfromactualdb(DocId);
+      
+      // Map feeSlabs with data from neweStruct or set initialData if not present
+      const updatedFeeSlabArray = feeSlabs.map((slabName) => ({
+        slabName,
+        data: neweStruct.find(item => item.slabName === slabName)?.data || { ...initialData }
+      }));
+    
+      setFeeSlabArray(updatedFeeSlabArray);
+      console.log(updatedFeeSlabArray);
     } catch (error) {
       console.error("Error fetching feeStruct data", error);
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
+    
   };
 
   const transformDataToArray = (originalData) => {
@@ -172,24 +149,24 @@ const AddOrUpdateFeeSlab = ({
     console.log(updatedArray);
   };
 
-  const handleUpdate = async () => {
-    try {
-      const response = await updateFeeStructure(DocId, feeSlabArray);
+  // const handleUpdate = async () => {
+  //   try {
+  //     const response = await updateFeeStructure(DocId, feeSlabArray);
 
-      setConfirmationMessage(response.message);
-      setFeeSlabArray(
-        feeSlabs.map((slabName) => ({ slabName, data: { ...initialData } }))
-      );
+  //     setConfirmationMessage(response.message);
+  //     setFeeSlabArray(
+  //       feeSlabs.map((slabName) => ({ slabName, data: { ...initialData } }))
+  //     );
 
-      setTimeout(() => {
-        setConfirmationMessage(null);
-        setIsModalOpen(false);
-        handleFeeSlabUpdated();
-      }, 2000);
-    } catch (error) {
-      console.error("Error updating feeStruct data", error);
-    }
-  };
+  //     setTimeout(() => {
+  //       setConfirmationMessage(null);
+  //       setIsModalOpen(false);
+  //       handleFeeSlabUpdated();
+  //     }, 2000);
+  //   } catch (error) {
+  //     console.error("Error updating feeStruct data", error);
+  //   }
+  // };
 
   const handleAdd = async () => {
     try {
@@ -300,10 +277,10 @@ const AddOrUpdateFeeSlab = ({
               <div className="add-feeStruct-btn addTeacher-buttons">
                 <button
                   type="button"
-                  onClick={isUpdateOn ? handleAdd : handleUpdate}
+                  onClick={handleAdd}
                   className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
                 >
-                  {isUpdateOn ? "Add" : "Add"}
+                  {"Add"}
                 </button>
                 <button
                   type="button"
