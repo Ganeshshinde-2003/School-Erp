@@ -17,7 +17,8 @@ const TimetableModal = ({ isOpen, closeModal, section }) => {
   useEffect(() => {
     if (section) {
       // Fetch timetable data for the selected section
-        className = extractSectionCode(section);
+      console.log(section);
+         var className = extractSectionCode(section);
        console.log(className)
        getTimetableData(className)
         .then((data) => {
