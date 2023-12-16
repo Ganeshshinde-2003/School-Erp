@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import debounce from "lodash/debounce";
-import { getSpecificTeacherDataFromDd, searchUser } from "../api/TeacherMaster/AddTeacher";
+import {
+  getSpecificTeacherDataFromDd,
+  searchUser,
+} from "../api/TeacherMaster/AddTeacher";
 import {
   getSpecificStudentDataFromDd,
   updateStudentDirectlyToDatabase,
-
 } from "../api/StudentMaster/AddStudentDirectly";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +18,7 @@ function SearchComponent() {
     students: [],
     teachers: [],
   });
-  const [resultData,setresultData] = useState({});
+  const [resultData, setresultData] = useState({});
   const navigate = useNavigate();
 
   const debouncedSearch = debounce(async (term) => {
@@ -40,22 +42,26 @@ function SearchComponent() {
     debouncedSearch(term);
   };
 
-  const handleStudentItemClick = async(docId) => {
+  const handleStudentItemClick = async (docId) => {
     console.log(`Item with id ${docId} clicked!`);
     const response = await getSpecificStudentDataFromDd(docId);
     setresultData(response);
     console.log(response);
-    navigate(`/searchresult/${docId}`);
+    navigate(`/searchresult/${docId}`, {
+      state: { resultData: response, who: "student" },
+    });
     setSearchTerm("");
     setShow(false);
   };
 
-  const handleTeacherItemClick = async(docId) => {
+  const handleTeacherItemClick = async (docId) => {
     console.log(`Item with id ${docId} clicked!`);
     const response = await getSpecificTeacherDataFromDd(docId);
     setresultData(response);
     console.log(response);
-    navigate(`/searchresult/${docId}`);
+    navigate(`/searchresult/${docId}`, {
+      state: { resultData: response, who: "teacher" },
+    });
     setSearchTerm("");
     setShow(false);
   };
