@@ -8,6 +8,10 @@ import {
 } from "../../api/TeacherMaster/AddTeacher";
 import "./AddTeacherForm.css";
 import { getAllTransportSlabs } from "../../api/TransportMaster/AddStopAndFees";
+import {
+  getAllclassNames,
+  getSubjectsByClassName,
+} from "../../api/ClassMaster/AddClassAndSection";
 
 const AddOrUpdateTeacherForm = ({
   isUpdateOn,
@@ -73,7 +77,7 @@ const AddOrUpdateTeacherForm = ({
     assignClasses: {
       class: "",
       subject: "",
-    }
+    },
   };
 
   const [teacherData, setTeacherData] = useState(inticalteacherData);
@@ -83,6 +87,9 @@ const AddOrUpdateTeacherForm = ({
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [activeCom, setActiveCom] = useState(1);
   const [docIdforUpdate, setDocIdforUpdate] = useState(null);
+  const [className, setClassName] = useState([]);
+  const [subjectsName, setSubjectsName] = useState([]);
+  const [singleClassName, setSingleClassName] = useState("");
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
@@ -91,7 +98,25 @@ const AddOrUpdateTeacherForm = ({
       getTeacherData(DocId);
     }
     getTransportSlabs();
+    getClassNames();
   }, [isModalOpen, isUpdateOn]);
+
+  const getClassNames = async () => {
+    await getAllclassNames().then((data) => {
+      setClassName(data);
+    });
+  };
+
+  const getSubjectNames = async (className) => {
+    console.log(className);
+    if (teacherData.assignClasses.class !== "") {
+      console.log(className);
+      await getSubjectsByClassName(className).then((data) => {
+        setSubjectsName(data);
+        console.log(data);
+      });
+    }
+  };
 
   const getTeacherData = async (DocId) => {
     try {
@@ -159,7 +184,21 @@ const AddOrUpdateTeacherForm = ({
       },
     });
   };
+  const handleInputChange5 = (e) => {
+    const { name, value } = e.target;
+    setTeacherData({
+      ...teacherData,
+      assignClasses: {
+        ...teacherData.assignClasses,
+        [name]: value,
+      },
+    });
 
+    if (teacherData.assignClasses.class !== "") {
+      setSingleClassName(teacherData.assignClasses.class);
+      getSubjectNames(teacherData.assignClasses.class);
+    }
+  };
   const handleUpdate = async () => {
     try {
       const response = await updateTeacherInDatabase(DocId, teacherData);
@@ -833,31 +872,43 @@ const AddOrUpdateTeacherForm = ({
               <div className="form-first">
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    Select Class
+                    Select Class*
                   </label>
-                  <input
-                    type="text"
-                    name="completionYear"
-                    value={teacherData.experienceDetails.completionYear}
-                    onChange={handleInputChange4}
+                  <select
+                    name="class"
+                    value={teacherData.assignClasses.class}
+                    onChange={handleInputChange5}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">--- Select ---</option>
+                    {className.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="form-first">
                 <div>
                   <label className="block text-[18px] font-medium text-[#333333]">
-                    Select Subject.
+                    Select Subject*
                   </label>
-                  <input
-                    type="text"
-                    name="oldPFNo"
-                    value={teacherData.experienceDetails.oldPFNo}
-                    onChange={handleInputChange4}
+                  <select
+                    name="subject"
+                    value={teacherData.assignClasses.subject}
+                    onChange={handleInputChange5}
                     required
-                    className="mt-1 p-2 block w-half border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
+                    className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">--- Select ---</option>
+                    {subjectsName.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
