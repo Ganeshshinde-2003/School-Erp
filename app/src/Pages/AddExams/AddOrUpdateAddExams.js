@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "../AddTeacher/AddTeacherForm.css";
-import {
-  addFeeSlabToDb,
-  getFeeSlabDataFromDatabase,
-  getSpecificFeeSlabDataFromDb,
-  updateFeeSlabToDatabase,
-} from "../../api/FeeStructure/AddFeeSlab";
+
+import { addExamToDatabase, getSpecificExamData, updateExamInDatabase } from "../../api/ExamAddtion/AddExam";
 
 const AddOrUpdateFeeSlab = ({
   isUpdateOn,
@@ -17,45 +13,40 @@ const AddOrUpdateFeeSlab = ({
   handleFeeSlabAdded,
   handleFeeSlabUpdated,
 }) => {
-  const inticalData = {
-    slabName: "",
-    applicableClasses: [],
-    slabId: "",
-    requirements: "",
-  };
-  const [feeSlabData, setFeeSlabData] = useState(inticalData);
-  const classes = [
-    "Nursery",
-    "LKG",
-    "UKG",
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-    "XI",
-    "XII",
-  ];
+const inticalData = {
+  examName: "",
+  totalExamMarksReduced: 0,
+  classesAndSubjects: [
+    {
+      className: "",
+      subjects: [],
+      optionalSubjects: []
+    },
+    {
+      className: "",
+      subjects: [],
+      optionalSubjects: []
+    }
+  ],
+  freezeDate: "", 
+}; 
+  const [examData, setExamData] = useState(inticalData);
+ 
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
-      getFeeSlabData(DocId);
+      getExamData(DocId);
     }
   }, [isModalOpen, isUpdateOn]);
 
-  const getFeeSlabData = async (DocId) => {
+  const getExamData = async (DocId) => {
     try {
-      const subject = await getSpecificFeeSlabDataFromDb(DocId);
+      const subject = await getSpecificExamData(DocId);
 
       if (subject) {
-        setFeeSlabData(subject);
+        setExamData(subject);
       }
     } catch (error) {
       console.error("Error fetching subject data", error);
@@ -68,19 +59,19 @@ const AddOrUpdateFeeSlab = ({
     if (type === "checkbox") {
       // If the input is a checkbox, handle it separately
       const updatedClasses = checked
-        ? [...(feeSlabData.applicableClasses ?? []), name]
-        : (feeSlabData.applicableClasses ?? []).filter(
+        ? [...(examData.applicableClasses ?? []), name]
+        : (examData.applicableClasses ?? []).filter(
             (className) => className !== name
           );
 
-      setFeeSlabData({
-        ...feeSlabData,
+      setExamData({
+        ...examData,
         applicableClasses: updatedClasses,
       });
     } else {
       // For other input types, handle normally
-      setFeeSlabData({
-        ...feeSlabData,
+      setExamData({
+        ...examData,
         [name]: value,
       });
     }
@@ -89,10 +80,10 @@ const AddOrUpdateFeeSlab = ({
   const handleUpdate = async () => {
     try {
       console.log("pppp");
-      const response = await updateFeeSlabToDatabase(DocId, feeSlabData);
+      const response = await updateExamInDatabase(DocId, examData);
 
       setConfirmationMessage(response.message);
-      setFeeSlabData(inticalData);
+      setExamData(inticalData);
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
@@ -105,11 +96,11 @@ const AddOrUpdateFeeSlab = ({
 
   const handleAdd = async () => {
     try {
-      const response = await addFeeSlabToDb(feeSlabData);
+      const response = await addExamToDatabase(examData);
 
       setConfirmationMessage(response.message);
 
-      setFeeSlabData(inticalData);
+      setExamData(inticalData);
     } catch (error) {
       console.error("Error updating subject data", error);
     }
@@ -144,7 +135,7 @@ const AddOrUpdateFeeSlab = ({
                 <input
                   type="text"
                   name="slabName"
-                  value={feeSlabData.slabName}
+                  value={examData.slabName}
                   onChange={handleInputChange}
                   className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -156,7 +147,7 @@ const AddOrUpdateFeeSlab = ({
                 <input
                   type="text"
                   name="slabId"
-                  value={feeSlabData.slabId}
+                  value={examData.slabId}
                   onChange={handleInputChange}
                   className="mt-1 p-2 block w-[100%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -176,7 +167,7 @@ const AddOrUpdateFeeSlab = ({
                       <input
                         type="checkbox"
                         name={subject}
-                        checked={feeSlabData.applicableClasses?.includes(
+                        checked={examData.applicableClasses?.includes(
                           subject
                         )}
                         onChange={handleInputChange}
@@ -194,7 +185,7 @@ const AddOrUpdateFeeSlab = ({
                   rows="4"
                   type="date"
                   name="requirements"
-                  value={feeSlabData.requirements}
+                  value={examData.requirements}
                   onChange={handleInputChange}
                   className="mt-1 p-2 block w-[110%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -212,7 +203,7 @@ const AddOrUpdateFeeSlab = ({
             <button
               type="button"
               onClick={() => {
-                setFeeSlabData(inticalData);
+                setExamData(inticalData);
                 setIsModalOpen(false);
               }}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "

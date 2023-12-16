@@ -19,7 +19,12 @@ const AddExam = () => {
   const fetchData = () => {
     getExamsDatabase()
       .then((data) => {
-        setExamData(data);
+        const formattedData = data.map(item => ({
+          ...item,
+          'Marks Freeze Date': item['Marks Freeze Date'].toDate().toLocaleString()
+        }));
+        setExamData(formattedData);
+        console.log(examData)
         setIsLoading(false);
       })
       .catch((error) => {
