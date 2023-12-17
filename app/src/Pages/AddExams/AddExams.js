@@ -19,18 +19,16 @@ const AddExam = () => {
   const fetchData = () => {
     getExamsDatabase()
       .then((data) => {
-        const formattedData = data.map(item => ({
-          ...item,
-          'Marks Freeze Date': item['Marks Freeze Date'].toDate().toLocaleString()
-        }));
-        setExamData(formattedData);
-        console.log(examData)
+        setExamData(data);
+        console.log(examData);
         setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setIsLoading(false);
       });
+
+    console.log(examData);
   };
 
   useEffect(() => {
@@ -65,11 +63,11 @@ const AddExam = () => {
     setIsModalOpen(true);
   };
 
-  const handleFeeSlabAdded = () => {
+  const handleExamAdded = () => {
     setDataChanged(true);
   };
 
-  const handleexamDataUpdated = () => {
+  const handlExamUpdated = () => {
     setExamDataUpdate(true);
     setTimeout(() => {
       setExamDataUpdate(false);
@@ -116,8 +114,8 @@ const AddExam = () => {
       <AddOrUpdateFeeSlab
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleFeeSlabAdded={handleFeeSlabAdded}
-        handleexamDataUpdated={handleexamDataUpdated}
+        handleExamAdded={handleExamAdded}
+        handlExamUpdated={handlExamUpdated}
         DocId={docId}
         isUpdateOn={examDataUpdate}
       />

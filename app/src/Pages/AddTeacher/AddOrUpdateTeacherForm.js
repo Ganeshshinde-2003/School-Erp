@@ -114,7 +114,7 @@ const AddOrUpdateTeacherForm = ({
       console.log(className);
       await getSubjectsByClassName(className).then((data) => {
         setSubjectsName(data);
-        console.log(`${className} :`,data);
+        console.log(`${className} :`, data);
       });
     }
   };
@@ -248,7 +248,7 @@ const AddOrUpdateTeacherForm = ({
       handleTeacherAdded();
     }, 2000);
   };
-  
+
   if (!isModalOpen) return null;
 
   return (
@@ -377,9 +377,9 @@ const AddOrUpdateTeacherForm = ({
                   className="mt-1 p-2 block w-[47%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">--- Select ---</option>
-                  <option value="bus">Class A</option>
-                  <option value="car">Class B</option>
-                  <option value="bike">Class C</option>
+                  <option value="Class A">Class A</option>
+                  <option value="Class B">Class B</option>
+                  <option value="Class C">Class C</option>
                 </select>
               </div>
             </div>
