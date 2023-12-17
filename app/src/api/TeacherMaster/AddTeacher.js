@@ -162,7 +162,7 @@ export const getTeacherFromDatabase = async () => {
         Email: data.emailId,
         Salary: data.salaryDetails?.salaryAmount || 0,
         "Class Teacher": data.classTeacher || [],
-        "Classes Assigned": ["4A, ", "6B, ", "5C"],
+        "Classes Assigned": data.assignClasses.class,
         "Employee Id": data?.teacherId,
       };
 
