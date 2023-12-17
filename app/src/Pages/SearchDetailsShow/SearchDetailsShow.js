@@ -7,7 +7,7 @@ const SearchDetailsShow = () => {
   const { id } = useParams();
   const location = useLocation();
   const { resultData } = location.state || {};
-  const who = location.state.who;
+  const who = location.state?.who || " ";
 
   console.log(resultData);
 
@@ -21,11 +21,22 @@ const SearchDetailsShow = () => {
                 head="Name"
                 disc={`${resultData.firstName} ${resultData.lastName}`}
               />
-              <TextNameComponent head="Class" disc={resultData.joiningClass} />
+              <TextNameComponent
+                head="Class"
+                disc={
+                  who === "student"
+                    ? resultData.joiningClass
+                    : resultData.classTeacher
+                }
+              />
               <TextNameComponent head="Mobile No." disc={resultData.mobileNo} />
               <TextNameComponent
                 head="Year joined"
-                disc={resultData.admissionDate}
+                disc={
+                  who === "student"
+                    ? resultData.admissionDate
+                    : resultData.experienceDetails.joiningDate
+                }
               />
             </div>
             <div className="search-wrapper">
@@ -38,22 +49,35 @@ const SearchDetailsShow = () => {
                 }
               />
               <TextNameComponent
-                head="Transport Slab "
+                head="Transport Slab"
                 disc={resultData.transportSlab}
               />
-              <TextNameComponent head="Fee Slab" disc={resultData.feeslab} />
+              <TextNameComponent
+                head={who === "student" ? "Fee Slab" : "Designation"}
+                disc={
+                  who === "student"
+                    ? resultData.feeslab
+                    : resultData.designation
+                }
+              />
               <TextNameComponent
                 head="Section"
-                disc={resultData.joiningClass}
+                disc={
+                  who === "student"
+                    ? resultData.joiningClass
+                    : resultData.assignClasses?.class || "N/A"
+                }
               />
             </div>
           </div>
           <div className="profile-container">
-            <img
-              src={resultData.profilePic}
-              alt={`${resultData.firstName} ${resultData.lastName}`}
-              className="profile-img-search-deatils"
-            />
+            {resultData.profilePic && (
+              <img
+                src={resultData.profilePic}
+                alt={`${resultData.firstName} ${resultData.lastName}`}
+                className="profile-img-search-details"
+              />
+            )}
           </div>
         </div>
       )}

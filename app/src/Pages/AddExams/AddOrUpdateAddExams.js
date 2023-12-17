@@ -3,7 +3,13 @@ import Modal from "../../Components/Modal";
 import Alert from "@mui/material/Alert";
 import "../AddTeacher/AddTeacherForm.css";
 
-import { addExamToDatabase, getSpecificExamData, updateExamInDatabase } from "../../api/ExamAddtion/AddExam";
+import {
+  addExamToDatabase,
+  getSpecificExamData,
+  updateExamInDatabase,
+} from "../../api/ExamAddtion/AddExam";
+import { getAllOptionalSubjectsName } from "../../api/ClassMaster/AddOptionalSubject";
+import { getAllclassesAndSubjects } from "../../api/ClassMaster/AddClassAndSection";
 
 const AddOrUpdateFeeSlab = ({
   isUpdateOn,
@@ -13,33 +19,28 @@ const AddOrUpdateFeeSlab = ({
   handleFeeSlabAdded,
   handleFeeSlabUpdated,
 }) => {
-const inticalData = {
-  examName: "",
-  totalExamMarksReduced: 0,
-  classesAndSubjects: [
-    {
-      className: "",
-      subjects: [],
-      optionalSubjects: []
-    },
-    {
-      className: "",
-      subjects: [],
-      optionalSubjects: []
-    }
-  ],
-  freezeDate: "", 
-}; 
-  const [examData, setExamData] = useState(inticalData);
- 
+  const [examData, setExamData] = useState({
+    examName: "",
+    totalExamMarksReduced: 0,
+    classesAndSubjects: [],
+    freezeDate: null,
+  });
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const [classesAndSubjectsData, setClassesAndSubjectData] = useState([]);
 
   useEffect(() => {
     if (isModalOpen && isUpdateOn) {
       getExamData(DocId);
     }
+    getClassesAndSubjects();
   }, [isModalOpen, isUpdateOn]);
+
+  const getClassesAndSubjects = async () => {
+    await getAllclassesAndSubjects().then((data) => {
+      setClassesAndSubjectData(data);
+    });
+  };
 
   const getExamData = async (DocId) => {
     try {
@@ -54,36 +55,90 @@ const inticalData = {
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, checked } = e.target;
 
-    if (type === "checkbox") {
-      // If the input is a checkbox, handle it separately
-      const updatedClasses = checked
-        ? [...(examData.applicableClasses ?? []), name]
-        : (examData.applicableClasses ?? []).filter(
-            (className) => className !== name
-          );
+    if (name) {
+      setExamData((prevData) => {
+        const [subject, className] = name.split("-");
 
-      setExamData({
-        ...examData,
-        applicableClasses: updatedClasses,
+        const updatedSubjects = prevData.classesAndSubjects.map((classInfo) => {
+          const {
+            className: currentClassName,
+            subjects,
+            optionalSubjects,
+          } = classInfo;
+
+          if (currentClassName === className) {
+            return {
+              className: currentClassName,
+              subjects: subjects.includes(subject)
+                ? subjects.filter(
+                    (selectedSubject) => selectedSubject !== subject
+                  )
+                : checked && !optionalSubjects.includes(subject)
+                ? [...subjects, subject]
+                : subjects,
+              optionalSubjects: optionalSubjects.includes(subject)
+                ? optionalSubjects.filter(
+                    (selectedSubject) => selectedSubject !== subject
+                  )
+                : checked
+                ? [...optionalSubjects, subject]
+                : optionalSubjects,
+            };
+          }
+
+          return classInfo;
+        });
+
+        const classInfo = updatedSubjects.find(
+          ({ className: currentClassName, subjects, optionalSubjects }) =>
+            currentClassName === className &&
+            (subjects.includes(subject) || optionalSubjects.includes(subject))
+        );
+
+        if (!classInfo && checked) {
+          // If the classInfo does not exist, add a new entry
+          updatedSubjects.push({
+            className,
+            subjects: checked ? [subject] : [],
+            optionalSubjects: checked ? [] : [],
+          });
+        }
+
+        return {
+          ...prevData,
+          classesAndSubjects: updatedSubjects,
+        };
       });
     } else {
-      // For other input types, handle normally
       setExamData({
         ...examData,
         [name]: value,
       });
     }
+
+    console.log(examData);
+  };
+  const handleInputChange1 = (e) => {
+    const { name, value } = e.target;
+    setExamData({
+      ...examData,
+      [name]: e.target.value,
+    });
   };
 
   const handleUpdate = async () => {
     try {
-      console.log("pppp");
       const response = await updateExamInDatabase(DocId, examData);
 
       setConfirmationMessage(response.message);
-      setExamData(inticalData);
+      setExamData({
+        examName: "",
+        totalExamMarksReduced: 0,
+        classesAndSubjects: [],
+        freezeDate: null,
+      });
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
@@ -100,7 +155,12 @@ const inticalData = {
 
       setConfirmationMessage(response.message);
 
-      setExamData(inticalData);
+      setExamData({
+        examName: "",
+        totalExamMarksReduced: 0,
+        classesAndSubjects: [],
+        freezeDate: null,
+      });
     } catch (error) {
       console.error("Error updating subject data", error);
     }
@@ -122,73 +182,103 @@ const inticalData = {
       )}
 
       <h2 className="text-[20px] font-bold text-left bg-[#333333] text-white addTeacher-header">
-        {isUpdateOn ? "Update Holidays/Event" : "Add Event/Holidays"}
+        {isUpdateOn ? "Update Exam Selection" : "Exam Selection"}
       </h2>
       <div className="addTeacher-form">
         <form>
           <div className="addTeacher-main-form subject-form">
             <div className="form-first">
               <div className="select-form-container">
-                <label className="block text-sm font-medium text-gray-700">
-                  Slab Name*
+                <label className="block text-sm font-medium text-[#333333]">
+                  Exam Name*
                 </label>
                 <input
                   type="text"
-                  name="slabName"
-                  value={examData.slabName}
-                  onChange={handleInputChange}
+                  name="examName"
+                  value={examData.examName}
+                  onChange={handleInputChange1}
                   className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
               <div className="select-form-container">
-                <label className="block text-sm font-medium text-gray-700">
-                  Slab I'd*
+                <label className="block text-sm font-medium text-[#333333]">
+                  Evaluated for*
                 </label>
                 <input
-                  type="text"
-                  name="slabId"
-                  value={examData.slabId}
-                  onChange={handleInputChange}
+                  type="number"
+                  name="totalExamMarksReduced"
+                  value={examData.totalExamMarksReduced}
+                  onChange={handleInputChange1}
+                  className="mt-1 p-2 block w-[100%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="select-form-container">
+                <label className="block text-sm font-medium text-[#333333]">
+                  Freeze Date*
+                </label>
+                <input
+                  type="date"
+                  name="freezeDate"
+                  value={examData.freezeDate}
+                  onChange={handleInputChange1}
                   className="mt-1 p-2 block w-[100%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
+
             <div className="form-first second-form">
-              <div className="select-form-container checkbox-select">
-                <label className="block text-sm font-medium text-gray-700">
-                  Applicable for*
-                </label>
-                <div className="checkbox-container">
-                  {classes.map((subject) => (
-                    <div key={subject} className="checbox-many">
-                      <label className="block text-[15px] font-medium text-[#333333]">
-                        {subject}
+              <div className="select-form-container">
+                <div className="checkbox-container-exam">
+                  <label className="block text-[17px] font-bold text-[#333333] text-center exam-label">
+                    Select Classes and Subjects
+                  </label>
+                  {classesAndSubjectsData.map((classInfo) => (
+                    <div
+                      key={classInfo.className}
+                      className="checbox-many-exam"
+                    >
+                      <label className="block text-[15px] font-bold text-[#333333]">
+                        {`Class: ${classInfo.className}`}
                       </label>
-                      <input
-                        type="checkbox"
-                        name={subject}
-                        checked={examData.applicableClasses?.includes(
-                          subject
-                        )}
-                        onChange={handleInputChange}
-                        className="mt-1 p-2 w-4 h-4 block w-half"
-                      />
+                      <div className="flex gap-8">
+                        {classInfo.subjects.map((subject) => (
+                          <div key={subject}>
+                            <label className="inline-flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                name={`${subject}-${classInfo.className}`}
+                                checked={examData.applicableClasses?.includes(
+                                  `${subject}-${classInfo.className}`
+                                )}
+                                onChange={handleInputChange}
+                                className="mt-1 p-2 w-4 h-4 block w-half"
+                              />
+                              {subject}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                      <div>
+                        {classInfo.optionalSubjects.map((optionalSubject) => (
+                          <div key={optionalSubject}>
+                            <label className="inline-flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                name={`${optionalSubject}-${classInfo.className}`}
+                                checked={examData.applicableClasses?.includes(
+                                  `${optionalSubject}-${classInfo.className}`
+                                )}
+                                onChange={handleInputChange}
+                                className="mt-1 p-2 w-4 h-4 block w-half"
+                              />
+                              {optionalSubject}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className="select-form-container text-area">
-                <label className="block text-sm w-[200px] font-medium text-gray-700">
-                  Requirements*
-                </label>
-                <textarea
-                  rows="4"
-                  type="date"
-                  name="requirements"
-                  value={examData.requirements}
-                  onChange={handleInputChange}
-                  className="mt-1 p-2 block w-[110%] border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
               </div>
             </div>
           </div>
