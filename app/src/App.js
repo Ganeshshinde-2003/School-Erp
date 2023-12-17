@@ -26,6 +26,7 @@ import TimetablePage from "./Pages/Timetable/AddTimetable.js";
 import CheckSyllabus from "./Pages/CheckSyllabus/CheckSyllabus.js";
 import AddExams from "./Pages/AddExams/AddExams.js";
 import SearchDetailsShow from "./Pages/SearchDetailsShow/SearchDetailsShow.js";
+import PutAttendance from "./Pages/PutAttendance/PutAttendance.js";
 
 const App = () => {
   return (
@@ -44,7 +45,6 @@ const App = () => {
               path="/class-master/add-optional-subject"
               element={<AddOptionalSubject />}
             />
-
 
             <Route
               path="/class-master/add-class-and-section"
@@ -118,10 +118,17 @@ const App = () => {
               path="/staff-management/salary-to-non-teaching-staff"
               element={<SalaryToNonTeachingStaff />}
             />
-            <Route path="/timetable/add-timetable" element={<TimetablePage />} />
+            <Route
+              path="/timetable/add-timetable"
+              element={<TimetablePage />}
+            />
             <Route
               path="/syllabus/check-syllabus"
               element={<CheckSyllabus />}
+            />
+            <Route
+              path="/staff-attendance/put-attendance"
+              element={<PutAttendance />}
             />
             <Route path="/exam-addition/add-exam" element={<AddExams />} />
             <Route path="/searchresult/:id" element={<SearchDetailsShow />} />
