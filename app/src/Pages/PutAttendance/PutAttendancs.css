@@ -1,0 +1,38 @@
+.pickerWrapper {
+  border: 1px solid red;
+  border-radius: 7px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  padding: 10px 0;
+}
+.headerDate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 30px;
+  height: 30px;
+  width: 95%;
+}
+ion-icon {
+  cursor: pointer;
+}
+.staff-attendance-wrapper {
+  width: 73vw;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.bodyDate {
+  margin: 5px;
+  padding-left: 90px;
+}
+.sevenColGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.sevenColGrid p {
+  font-weight: bold;
+}
