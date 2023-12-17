@@ -7,10 +7,12 @@ import * as RiIcons from "react-icons/ri";
 export const SidebarData = [
   {
     title: "Dashboard",
+    custonIcons:  <img src="assets/icons/1dashbaord.png" className="icon-class" alt="Logo" />,
     path: "/",
   },
   {
     title: "Class Master",
+    custonIcons:  <img src="assets/icons/2classmaster.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -31,6 +33,7 @@ export const SidebarData = [
   },
   {
     title: "Teacher Master",
+    custonIcons:  <img src="assets/icons/3teacher.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -44,6 +47,7 @@ export const SidebarData = [
   },
   {
     title: "Student Master",
+    custonIcons:  <img src="assets/icons/4stdmaster.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -67,6 +71,7 @@ export const SidebarData = [
   },
   {
     title: "Transport Master",
+    custonIcons:  <img src="assets/icons/5transportmaster.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -95,6 +100,7 @@ export const SidebarData = [
   },
   {
     title: "Staff Management",
+    custonIcons:  <img src="assets/icons/6staffmang.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -118,6 +124,7 @@ export const SidebarData = [
   },
   {
     title: "Fee Structures",
+    custonIcons:  <img src="assets/icons/7fee.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -136,6 +143,7 @@ export const SidebarData = [
   },
   {
     title: "Exam Addition",
+    custonIcons:  <img src="assets/icons/8examaddition.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -149,6 +157,7 @@ export const SidebarData = [
   },
   {
     title: "Staff Attendance",
+    custonIcons:  <img src="assets/icons/9staffattendance.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -162,6 +171,7 @@ export const SidebarData = [
   },
   {
     title: "Timetable",
+    custonIcons:  <img src="assets/icons/10timetable.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -175,6 +185,7 @@ export const SidebarData = [
   },
   {
     title: "Syllabus",
+    custonIcons:  <img src="assets/icons/11syllabus.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -188,6 +199,7 @@ export const SidebarData = [
   },
   {
     title: "Add Events/Holidays",
+    custonIcons:  <img src="assets/icons/12addevent.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -201,6 +213,7 @@ export const SidebarData = [
   },
   {
     title: "Statical Reports",
+    custonIcons:  <img src="assets/icons/13statisticalreport.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -214,6 +227,7 @@ export const SidebarData = [
   },
   {
     title: "Send Notices",
+    custonIcons:  <img src="assets/icons/13sendnotice.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -227,6 +241,7 @@ export const SidebarData = [
   },
   {
     title: "Expense Adding",
+    custonIcons:  <img src="assets/icons/14expenceadding.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -240,6 +255,7 @@ export const SidebarData = [
   },
   {
     title: "Promote Students",
+    custonIcons:  <img src="assets/icons/15promotestudent.png" className="icon-class" alt="Logo" />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 

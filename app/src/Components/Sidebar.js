@@ -1,3 +1,4 @@
+// Sidebar.js
 import React from "react";
 import styled from "styled-components";
 import { SidebarData } from "../Database/SidebarData";
@@ -27,13 +28,16 @@ const SidebarWrap = styled.div`
 const Sidebar = () => {
   return (
     <IconContext.Provider value={{ color: "#fff" }}>
-      <SidebarNav>
+      <SidebarNav className="main-sidenavbar">
         <SidebarWrap>
           <div>
             <img src="assets/images/logo.png" className="w-full" alt="Logo" />
           </div>
           {SidebarData.map((item, index) => (
-            <SubMenu item={item} key={index} />
+            <div key={index} className="icon-parent" >
+              {item.custonIcons}
+              <SubMenu item={item} />
+            </div>
           ))}
         </SidebarWrap>
       </SidebarNav>

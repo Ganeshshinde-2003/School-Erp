@@ -90,7 +90,7 @@ const AddDriver = () => {
     }, 2000); // Hide the message after 2 seconds
   };
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4 w-full ov-sc">
       <div className="mt-5 max-w-full">
         <div className="flex justify-around">
           {isLoading ? (

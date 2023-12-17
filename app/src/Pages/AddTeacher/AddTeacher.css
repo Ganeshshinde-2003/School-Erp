@@ -2,3 +2,7 @@
     background-color: #E5E5E5;
 
 }
+
+.add-optional-sub-table {
+    overflow: scroll;
+}

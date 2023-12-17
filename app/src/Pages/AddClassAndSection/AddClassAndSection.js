@@ -5,6 +5,7 @@ import { Oval } from 'react-loader-spinner';
 import { addClassAndSectionsToDatabase, deleteClassAndSectionsData, getAllClassesAndSectionNames, getAllclassesAndSectionNames, getClassAndSectionsDatabase, getSubjectsByClassName } from "../../api/ClassMaster/AddClassAndSection";
 import AddOrUpdateClassAndSectionForm from "./AddOrUpdateClassAndSectionForm ";
 import AlertComponent from "../../Components/AlertComponent";
+import "../../App.css";
 
 const AddClassAndSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,7 +91,7 @@ const handleSubjectUpdated = () => {
 };
 
 return (
-<div className="mt-4 w-full">
+<div className="mt-4 w-full ov-sc">
   <div className="mt-5 max-w-full">
     <div className="flex justify-around">
 

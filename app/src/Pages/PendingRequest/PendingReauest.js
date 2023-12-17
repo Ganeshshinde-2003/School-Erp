@@ -133,7 +133,7 @@ const PendingRequest = () => {
   }
 
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4 w-full ov-sc">
       <div className="mt-5 max-w-full">
         <div className="flex justify-around">
           {isLoading ? (
