@@ -9,6 +9,8 @@ import {
 } from "../../api/TransportMaster/AddDriver";
 import DynamicTable from "../../Components/DynamicTable";
 import AlertComponent from "../../Components/AlertComponent";
+import "../../App.css";
+
 
 const AddDriver = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

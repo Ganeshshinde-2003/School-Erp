@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddButton from "../../Components/AddButton";
 import "../../Pages/AddStudentsDirectly/AddStudent.css";
 import AddOrUpdateNoticeForm from "./AddOrUpdateNotice";
+import "../../App.css";
 
 const AddNoticePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

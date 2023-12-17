@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DynamicTable from "../../Components/DynamicTable";
 import { Oval } from "react-loader-spinner";
 import { getTeacherAndSalaryDataFromDatabase } from "../../api/StaffManagement/SalaryToTeachers";
+import "../../App.css";
 
 const TeacherSalaryTable = () => {
   const [teacherSalaryData, setTeacherSalaryData] = useState([]);

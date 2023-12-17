@@ -8,6 +8,7 @@ import {
   getExpenseDataFromDatabase,
 } from "../../api/ExpenseAdding/AddExpense";
 import AlertComponent from "../../Components/AlertComponent";
+import "../../App.css";
 
 const AddSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

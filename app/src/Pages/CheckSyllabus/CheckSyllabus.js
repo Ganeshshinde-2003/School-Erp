@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Oval } from "react-loader-spinner";
 import { getTimetableTable } from "../../api/Timetable/Timetable";
 import DynamicTimeTable from "../../Components/DynamicTimeTable";
+import "../../App.css";
 
 const CheckSyllabus = () => {
   const [timetableData, setTimetableData] = useState([]);

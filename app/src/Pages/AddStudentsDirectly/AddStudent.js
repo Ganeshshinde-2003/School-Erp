@@ -7,6 +7,7 @@ import AddOrUpdateStudentForm from "./AddOrUpdateStudentForm ";
 import { studentDataTest, updateStudentDirectlyToDatabase } from "../../api/StudentMaster/AddStudentDirectly";
 import { addNonTeachingStaffToDb, deleteStaffData, getSpecificStaffDataFromDb, getStaffDataFromDatabase, testStaffData, updateStaffToDatabase } from "../../api/StaffManagement/AddNonTeachingStaff";
 import { getTeacherAndSalaryDataFromDatabase } from "../../api/StaffManagement/SalaryToTeachers";
+import "../../App.css";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

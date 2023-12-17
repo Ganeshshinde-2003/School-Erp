@@ -11,6 +11,7 @@ import {
 } from "../../api/TeacherMaster/AddTeacher";
 import AlertComponent from "../../Components/AlertComponent";
 import { getSubjectsByClassName } from "../../api/ClassMaster/AddClassAndSection";
+import "../../App.css";
 
 const AddTeacher = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

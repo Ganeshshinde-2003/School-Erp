@@ -8,6 +8,7 @@ import {
   getFeeSlabDataFromDatabase,
 } from "../../api/FeeStructure/AddFeeSlab";
 import { getFeeStructureDataTable } from "../../api/FeeStructure/AddFeeStructure";
+import "../../App.css";
 
 const AddFeeSlab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -8,6 +8,7 @@ import {
   getHolidayAndEventsData,
 } from "../../api/AddHoliday/AddHoliday";
 import AlertComponent from "../../Components/AlertComponent";
+import "../../App.css";
 
 const AddStudent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -5,6 +5,7 @@ import { Oval } from "react-loader-spinner";
 import { getTimetableTable } from "../../api/Timetable/Timetable";
 import DynamicTimeTable from "../../Components/DynamicTimeTable";
 import TimetableModal from "../../Components/TimeTableModal";
+import "../../App.css";
 
 const TimetableTable = () => {
   const [timetableData, setTimetableData] = useState([]);

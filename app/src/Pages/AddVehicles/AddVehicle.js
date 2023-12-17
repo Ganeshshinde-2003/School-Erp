@@ -10,6 +10,7 @@ import DynamicTable from "../../Components/DynamicTable";
 import AddButton from "../../Components/AddButton";
 import AddVehicleForm from "./AdOrUpdateVehicleForm";
 import AlertComponent from "../../Components/AlertComponent";
+import "../../App.css";
 
 const AddVehicle = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

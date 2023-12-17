@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertComponent from "../../Components/AlertComponent.js";
 import { addStudentDirectlyToDatabase } from "../../api/StudentMaster/AddStudentDirectly.js";
 import AddOrUpdateStudentForm from "../AddStudentsDirectly/AddOrUpdateStudentForm .js";
+import "../../App.css";
 
 const PendingRequest = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

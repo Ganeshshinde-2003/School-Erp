@@ -6,6 +6,7 @@ import { deleteOptionalSubject, getOptionalSubjectDatabase } from "../../api/Cla
 import AddOrUpdateOptionalSubjectForm from "./AddOrUpdateOptionalSubjectForm ";
 import { Oval } from 'react-loader-spinner';
 import AlertComponent from "../../Components/AlertComponent";
+import "../../App.css";
 
 const AddOptionalSubject = () => {
 

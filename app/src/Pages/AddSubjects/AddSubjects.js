@@ -10,6 +10,7 @@ import {
 } from "../../api/ClassMaster/Addsubject";
 import { Oval } from "react-loader-spinner";
 import AddOrUpdateSubjectForm from "./AddOrUpdateSubjectForm ";
+import "../../App.css";
 
 const AddSubject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

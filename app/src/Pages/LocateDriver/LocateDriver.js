@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Oval } from "react-loader-spinner";
 import DynamicTable from "../../Components/DynamicTable";
 import { getLocateDataFromDatabase } from "../../api/TransportMaster/LocateDriverOrBus";
+import "../../App.css";
 
 const LocateDriver = () => {
   const [driverData, setDriverData] = useState([]);

@@ -9,6 +9,7 @@ import {
   getTransportDataFromDatabase,
 } from "../../api/TransportMaster/AddStopAndFees";
 import AlertComponent from "../../Components/AlertComponent";
+import "../../App.css";
 
 const AddStop = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

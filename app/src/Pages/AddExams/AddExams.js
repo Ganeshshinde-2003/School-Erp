@@ -6,6 +6,7 @@ import { Oval } from "react-loader-spinner";
 import AddOrUpdateFeeSlab from "./AddOrUpdateAddExams";
 
 import { deleteExam, getExamsDatabase } from "../../api/ExamAddtion/AddExam";
+import "../../App.css";
 
 const AddExam = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

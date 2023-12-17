@@ -8,6 +8,7 @@ import {
   deleteStaffData,
   getStaffDataFromDatabase,
 } from "../../api/StaffManagement/AddNonTeachingStaff";
+import "../../App.css";
 
 const AddNonTeachingStaff = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

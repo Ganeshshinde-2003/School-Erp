@@ -11,6 +11,7 @@ import {
   deleteFeeSlabData,
   getFeeSlabDataFromDatabase,
 } from "../../api/FeeStructure/AddFeeSlab";
+import "../../App.css";
 
 const AddFeeSlab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

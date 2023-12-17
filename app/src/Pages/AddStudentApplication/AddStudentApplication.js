@@ -3,6 +3,7 @@ import AddButton from "../../Components/AddButton";
 import AddStudentForm from "./AddStudentApplicationForm";
 import "../../Pages/AddStudentsDirectly/AddStudent.css";
 import "./AddStudentApplication.css";
+import "../../App.css";
 
 import {
   addStudentByApplicationToDatabase,
