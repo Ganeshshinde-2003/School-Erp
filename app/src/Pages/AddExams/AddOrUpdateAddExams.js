@@ -16,15 +16,16 @@ const AddOrUpdateFeeSlab = ({
   isModalOpen,
   setIsModalOpen,
   DocId,
-  handleFeeSlabAdded,
+  handleExamAdded,
   handleFeeSlabUpdated,
 }) => {
-  const [examData, setExamData] = useState({
+  const initiaclData = {
     examName: "",
     totalExamMarksReduced: 0,
     classesAndSubjects: [],
     freezeDate: null,
-  });
+  };
+  const [examData, setExamData] = useState(initiaclData);
   const [error, setError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(null);
   const [classesAndSubjectsData, setClassesAndSubjectData] = useState([]);
@@ -45,10 +46,9 @@ const AddOrUpdateFeeSlab = ({
   const getExamData = async (DocId) => {
     try {
       const subject = await getSpecificExamData(DocId);
-
-      if (subject) {
-        setExamData(subject);
-      }
+      console.log(subject);
+      setExamData(subject);
+      console.log(examData);
     } catch (error) {
       console.error("Error fetching subject data", error);
     }
@@ -133,12 +133,7 @@ const AddOrUpdateFeeSlab = ({
       const response = await updateExamInDatabase(DocId, examData);
 
       setConfirmationMessage(response.message);
-      setExamData({
-        examName: "",
-        totalExamMarksReduced: 0,
-        classesAndSubjects: [],
-        freezeDate: null,
-      });
+      setExamData(initiaclData);
       setTimeout(() => {
         setConfirmationMessage(null);
         setIsModalOpen(false);
@@ -155,19 +150,14 @@ const AddOrUpdateFeeSlab = ({
 
       setConfirmationMessage(response.message);
 
-      setExamData({
-        examName: "",
-        totalExamMarksReduced: 0,
-        classesAndSubjects: [],
-        freezeDate: null,
-      });
+      setExamData(initiaclData);
     } catch (error) {
       console.error("Error updating subject data", error);
     }
     setTimeout(() => {
       setConfirmationMessage(null);
       setIsModalOpen(false);
-      handleFeeSlabAdded();
+      handleExamAdded();
     }, 2000);
   };
 
@@ -293,7 +283,7 @@ const AddOrUpdateFeeSlab = ({
             <button
               type="button"
               onClick={() => {
-                setExamData(inticalData);
+                setExamData(initiaclData);
                 setIsModalOpen(false);
               }}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white "
