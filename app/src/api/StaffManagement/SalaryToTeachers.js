@@ -11,9 +11,10 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import { calculateAttendancePercentage, calculateNumberOfAbsentDays } from "../StaffAttendance/StaffAttendance";
 
 
-export const getTeacherAndSalaryDataFromDatabase = async () => {
+export const getTeacherAndSalaryDataFromDatabase = async (month) => {
     const teachersRef = collection(db, "AddTeachers");
   
     try {
@@ -35,8 +36,16 @@ export const getTeacherAndSalaryDataFromDatabase = async () => {
         const salaryAmount = data.salaryDetails ? data.salaryDetails.salaryAmount : null;
   
         // Set default values for totalAmount and absentDays
-        const totalAmount = 10000;
-        const absentDays = 2;
+
+        const options = {
+          staffId: staffId,
+          month: month, // Replace with the desired month
+          overall: false,
+        };
+
+        const absentDays = await calculateNumberOfAbsentDays(options);
+        const attendancePercentage = await calculateAttendancePercentage(options) / 100;
+        const totalAmount = salaryAmount * attendancePercentage ;
   
         const modifiedData = {
           id: doc.id,
@@ -44,7 +53,7 @@ export const getTeacherAndSalaryDataFromDatabase = async () => {
           "Staff ID":staffId,
           "Staff Salary":salaryAmount,
           "Absent days":absentDays,
-          "Total Amount":totalAmount,
+          "Total Amount":totalAmount.toFixed(2),
         };
   
         teacherAndSalaryData.push(modifiedData);
