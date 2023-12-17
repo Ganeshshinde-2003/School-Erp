@@ -5,8 +5,9 @@ import {
     getDocs,
   } from "firebase/firestore";
   import { db } from "../../config/firebase";
+import { calculateAttendancePercentage, calculateNumberOfAbsentDays } from "../StaffAttendance/StaffAttendance";
   
-  export const getNonTeachingStaffSalaryDataFromDatabase = async () => {
+  export const getNonTeachingStaffSalaryDataFromDatabase = async (month) => {
     const nonTeachingStaffRef = collection(db, "AddNonTeachingStaff");
   
     try {
@@ -26,8 +27,16 @@ import {
         const staffId = data.staffId;
   
         // Dummy values for absentDays and totalAmount
-        const absentDays = 2;
-        const totalAmount = 10000;
+        const options = {
+          staffId: staffId,
+          month: month, // Replace with the desired month
+          overall: false,
+        };
+
+        const absentDays = await calculateNumberOfAbsentDays(options);
+        console.log(absentDays);
+        const attendancePercentage = await calculateAttendancePercentage(options) / 100;
+        const totalAmount = staffSalary * attendancePercentage ;
   
         const modifiedData = {
           id: doc.id,
@@ -35,7 +44,7 @@ import {
           "Staff Id":staffId,
           "Staff Salary":staffSalary,
           "Absent days":absentDays,
-          "Total Amount":totalAmount,
+          "Total Amount":totalAmount.toFixed(2),
         };
   
         nonTeachingStaffSalaryData.push(modifiedData);

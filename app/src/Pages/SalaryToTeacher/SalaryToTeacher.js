@@ -6,9 +6,11 @@ import { getTeacherAndSalaryDataFromDatabase } from "../../api/StaffManagement/S
 const TeacherSalaryTable = () => {
   const [teacherSalaryData, setTeacherSalaryData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMonth, setSelectedMonth] = useState("");
 
-  const fetchData = () => {
-    getTeacherAndSalaryDataFromDatabase()
+  const fetchData = (selectedMonth) => {
+    setIsLoading(true);
+    getTeacherAndSalaryDataFromDatabase(selectedMonth)
       .then((data) => {
         setTeacherSalaryData(data);
         setIsLoading(false);
@@ -20,8 +22,21 @@ const TeacherSalaryTable = () => {
   };
 
   useEffect(() => {
-    fetchData(); // Fetch data initially
+    // Get the abbreviated month
+    const abbreviatedMonth = new Date().toLocaleString('default', { month: 'short' });
+
+    // Set the initial state for selectedMonth
+    setSelectedMonth(abbreviatedMonth);
+
+    // Fetch data initially with the current month
+    fetchData(abbreviatedMonth);
   }, []);
+
+  const handleMonthChange = (e) => {
+    const selectedMonth = e.target.value;
+    setSelectedMonth(selectedMonth);
+    fetchData(selectedMonth);
+  };
 
   return (
     <div className="mt-4 w-full">
@@ -42,13 +57,34 @@ const TeacherSalaryTable = () => {
             />
           ) : (
             <div className="add-optional-sub-table">
-              <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
-                Salary to be paid
-              </h1>
+            <h1 className="h-16 text-center font-bold text-white flex items-center justify-center">
+            Salary To be Paid
+
+            <select
+            id="teacherMonthSelect"
+            className="text-black ml-4"
+            name="teacherMonthSelect"
+            value={selectedMonth}
+            onChange={handleMonthChange}
+          >
+            <option value="Jan">January</option>
+            <option value="Feb">February</option>
+            <option value="Mar">March</option>
+            <option value="Apr">April</option>
+            <option value="May">May</option>
+            <option value="Jun">June</option>
+            <option value="Jul">July</option>
+            <option value="Aug">August</option>
+            <option value="Sep">September</option>
+            <option value="Oct">October</option>
+            <option value="Nov">November</option>
+            <option value="Dec">December</option>
+          </select>
+          </h1>
               <DynamicTable
                 data={teacherSalaryData}
                 rowHeight={100}
-                action={false} // Set action to false to hide edit and delete options
+                action={false}
                 ispanding={false}
               />
             </div>
