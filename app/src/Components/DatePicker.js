@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../Pages/PutAttendance/PutAttendancs.css";
 
-const DatePicker = () => {
+const DatePicker = ({ minDate, maxDate }) => {
   const monthNames = [
     "January",
     "February",
@@ -25,7 +25,7 @@ const DatePicker = () => {
   };
 
   const getSortedDays = (year, month) => {
-    const dayIndex = getNumberDaysInMonth(year, month);
+    const dayIndex = new Date(year, month, 1).getDay();
     const firstHalf = days.slice(dayIndex);
     return [...firstHalf, ...days.slice(0, dayIndex)];
   };
@@ -37,31 +37,99 @@ const DatePicker = () => {
         result: [...result, current],
         current: current + 1,
       }),
-      { result: [], current: 0 }
+      { result: [], current: start }
     );
 
     return result;
   };
 
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const nextMonth = () => {
+    if (currentMonth < 11) {
+      setCurrentMonth((prev) => prev + 1);
+    } else {
+      setCurrentMonth(0);
+      setCurrentYear((prev) => prev + 1);
+    }
+  };
+
+  const prevMonth = () => {
+    if (currentMonth > 0) {
+      setCurrentMonth((prev) => prev - 1);
+    } else {
+      setCurrentMonth(11);
+      setCurrentYear((prev) => prev - 1);
+    }
+  };
+
+  const handleSelectedDate = (event) => {
+    if (event.target.id === "day") {
+      setSelectedDate(
+        new Date(
+          currentYear,
+          currentMonth,
+          event.target.getAttribute("data-day")
+        )
+      );
+    }
+    console.log(selectedDate);
+  };
+
+  const getTimeFromState = (_day) => {
+    return new Date(currentYear, currentMonth, _day).getTime();
+  };
   return (
     <div className="pickerWrapper">
       <div className="headerDate">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-        <p>
+        <button
+          onClick={prevMonth}
+          disabled={minDate?.getTime() > getTimeFromState(1)}
+        >
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+        <p className="month-name">
           {monthNames[currentMonth]} {currentYear}
         </p>
-        <ion-icon name="chevron-forward-outline"></ion-icon>
+        <button
+          onClick={nextMonth}
+          disabled={
+            maxDate?.getTime() <
+            getTimeFromState(getNumberDaysInMonth(currentYear, currentMonth))
+          }
+        >
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
       </div>
       <div className="bodyDate">
         <div className="sevenColGrid">
-          {getSortedDays().map((day) => (
-            <p>{day}</p>
+          {getSortedDays(currentYear, currentMonth).map((day) => (
+            <p className="month-days">{day}</p>
           ))}
         </div>
-        <div className="sevenColGrid">
+        <div className="sevenColGrid" onClick={handleSelectedDate}>
           {range(1, getNumberDaysInMonth(currentYear, currentMonth) + 1).map(
             (day) => (
-              <p>{day}</p>
+              <p
+                id="day"
+                data-day={day}
+                className={`
+                  ${
+                    selectedDate?.getTime() ===
+                    new Date(currentYear, currentMonth, day).getTime()
+                      ? "active"
+                      : ""
+                  } 
+                  ${
+                    day === new Date().getDate()
+                      ? currentMonth === new Date().getMonth()
+                        ? "current-date"
+                        : ""
+                      : ""
+                  }`}
+              >
+                {day}
+              </p>
             )
           )}
         </div>
